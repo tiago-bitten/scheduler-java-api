@@ -32,11 +32,11 @@ public class User extends BaseEntity {
     @Column(name = "role", nullable = false)
     private UserRole role;
 
-    public User(String name, String email, String password, Instant createdAt, UserRole role) {
+    public User(String name, String email, String password, UserRole role) {
         this.name = name;
         this.email = email;
         this.password = password;
-        this.createdAt = createdAt;
         this.role = role;
+        this.createdAt = Instant.now();
     }
 }

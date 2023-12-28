@@ -32,11 +32,11 @@ public class Volunteer extends BaseEntity {
     @Column(name = "created_at", nullable = false, updatable = false)
     public Instant createdAt;
 
-    public Volunteer(String name, String lastName, String phone, LocalDate birthDate, Instant createdAt) {
+    public Volunteer(String name, String lastName, String phone, LocalDate birthDate) {
         this.name = name;
         this.lastName = lastName;
         this.phone = phone;
         this.birthDate = birthDate;
-        this.createdAt = createdAt;
+        this.createdAt = Instant.now();
     }
 }
