@@ -22,7 +22,7 @@ public class UserService {
                     throw new RuntimeException();
                 });
 
-        User user = new User(dto.name(), dto.email(), dto.password(), Instant.now(), List.of(UserRole.ADMIN));
+        User user = new User(dto.name(), dto.email(), dto.password(), Instant.now(), UserRole.USER);
         userRepository.save(user);
     }
 }
