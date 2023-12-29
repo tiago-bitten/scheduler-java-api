@@ -6,6 +6,8 @@ import com.labi.schedulerjava.repository.VolunteerRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.Optional;
+
 @Service
 public class VolunteerService {
 
@@ -15,5 +17,9 @@ public class VolunteerService {
     public void create(CreateVolunteerDto dto) {
         Volunteer volunteer = new Volunteer(dto.name(), dto.lastName(), dto.phone(), dto.birthDate());
         volunteerRepository.save(volunteer);
+    }
+
+    public Optional<Volunteer> findById(Long id) {
+        return volunteerRepository.findById(id);
     }
 }

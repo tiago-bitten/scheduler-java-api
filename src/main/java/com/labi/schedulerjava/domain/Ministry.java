@@ -1,13 +1,12 @@
 package com.labi.schedulerjava.domain;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 
 import java.time.Instant;
+import java.util.List;
 
 @Data
 @NoArgsConstructor
@@ -25,9 +24,20 @@ public class Ministry extends BaseEntity {
     @Column(name = "created_at", nullable = false, updatable = false)
     public Instant createdAt;
 
+    @ManyToMany
+    @JoinTable(
+            name = "ministry_volunteers",
+            joinColumns = @JoinColumn(name = "ministry_id"),
+            inverseJoinColumns = @JoinColumn(name = "volunteer_id"))
+    public List<Volunteer> volunteers;
+
     public Ministry(String name, String description) {
         this.name = name;
         this.description = description;
         this.createdAt = Instant.now();
+    }
+
+    public void addVolunteer(Volunteer volunteer) {
+        this.volunteers.add(volunteer);
     }
 }

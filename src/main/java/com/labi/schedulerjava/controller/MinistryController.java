@@ -5,10 +5,7 @@ import com.labi.schedulerjava.service.MinistryService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/api/v1/ministries")
@@ -21,5 +18,12 @@ public class MinistryController {
     public ResponseEntity<Void> create(@RequestBody CreateMinistryDto dto) {
         ministryService.create(dto);
         return new ResponseEntity<>(HttpStatus.CREATED);
+    }
+
+    @PostMapping("/addVolunteer")
+    public ResponseEntity<Void> addVolunteer(@RequestParam("ministryId") Long ministryId,
+                                             @RequestParam("volunteerId") Long volunteerId) {
+        ministryService.addVolunteer(ministryId, volunteerId);
+        return new ResponseEntity<>(HttpStatus.OK);
     }
 }

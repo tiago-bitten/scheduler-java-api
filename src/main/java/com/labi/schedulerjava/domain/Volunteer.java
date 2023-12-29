@@ -2,6 +2,7 @@ package com.labi.schedulerjava.domain;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.ManyToMany;
 import jakarta.persistence.Table;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -9,6 +10,7 @@ import lombok.NoArgsConstructor;
 
 import java.time.Instant;
 import java.time.LocalDate;
+import java.util.List;
 
 @Data
 @NoArgsConstructor
@@ -31,6 +33,9 @@ public class Volunteer extends BaseEntity {
 
     @Column(name = "created_at", nullable = false, updatable = false)
     public Instant createdAt;
+
+    @ManyToMany(mappedBy = "volunteers")
+    public List<Ministry> ministries;
 
     public Volunteer(String name, String lastName, String phone, LocalDate birthDate) {
         this.name = name;
