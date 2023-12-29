@@ -5,6 +5,8 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 
+import java.util.List;
+
 @Data
 @NoArgsConstructor
 @EqualsAndHashCode(callSuper = true)
@@ -20,7 +22,11 @@ public class VolunteerMinistry extends BaseEntity{
     @JoinColumn(name = "ministry_id")
     private Ministry ministry;
 
+    @Column(name = "is_active")
     private Boolean isActive;
+
+    @OneToMany(mappedBy = "volunteerMinistry")
+    private List<ScheduleVolunteersMinistries> scheduleVolunteersMinistries;
 
     public VolunteerMinistry(Volunteer volunteer, Ministry ministry, Boolean isActive) {
         this.volunteer = volunteer;
