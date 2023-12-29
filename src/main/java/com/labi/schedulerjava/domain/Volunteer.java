@@ -31,12 +31,8 @@ public class Volunteer extends BaseEntity {
     @Column(name = "created_at", nullable = false, updatable = false)
     public Instant createdAt;
 
-    @ManyToMany
-    @JoinTable(
-            name = "ministry_volunteers",
-            joinColumns = @JoinColumn(name = "volunteer_id"),
-            inverseJoinColumns = @JoinColumn(name = "ministry_id"))
-    public List<Ministry> ministries;
+    @OneToMany(mappedBy = "volunteer")
+    public List<VolunteerMinistry> volunteerMinistries;
 
     public Volunteer(String name, String lastName, String phone, LocalDate birthDate) {
         this.name = name;
@@ -44,9 +40,5 @@ public class Volunteer extends BaseEntity {
         this.phone = phone;
         this.birthDate = birthDate;
         this.createdAt = Instant.now();
-    }
-
-    public void addMinistry(Ministry ministry) {
-        this.ministries.add(ministry);
     }
 }

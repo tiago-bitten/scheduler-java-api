@@ -25,17 +25,12 @@ public class Ministry extends BaseEntity {
     @Column(name = "created_at", nullable = false, updatable = false)
     public Instant createdAt;
 
-    @JsonIgnore
-    @ManyToMany(mappedBy = "ministries")
-    public List<Volunteer> volunteers;
+    @OneToMany(mappedBy = "ministry")
+    public List<VolunteerMinistry> volunteerMinistries;
 
     public Ministry(String name, String description) {
         this.name = name;
         this.description = description;
         this.createdAt = Instant.now();
-    }
-
-    public void addVolunteer(Volunteer volunteer) {
-        this.volunteers.add(volunteer);
     }
 }

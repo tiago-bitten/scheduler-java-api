@@ -2,6 +2,7 @@ package com.labi.schedulerjava.service;
 
 import com.labi.schedulerjava.domain.Ministry;
 import com.labi.schedulerjava.domain.Volunteer;
+import com.labi.schedulerjava.domain.VolunteerMinistry;
 import com.labi.schedulerjava.dtos.CreateVolunteerDto;
 import com.labi.schedulerjava.dtos.ReadMinistryDto;
 import com.labi.schedulerjava.dtos.ReadVolunteerDto;
@@ -10,14 +11,17 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Optional;
-import java.util.stream.Collectors;
+
+import static java.util.stream.Collectors.toList;
 
 @Service
 public class VolunteerService {
 
     @Autowired
     private VolunteerRepository volunteerRepository;
+
+    @Autowired
+    private VolunteerMinistryService volunteerMinistryService;
 
     @Autowired
     private MinistryService ministryService;
@@ -28,22 +32,24 @@ public class VolunteerService {
     }
 
     public void addMinistry(Long volunteerId, Long ministryId) {
-        Ministry ministry = ministryService.findById(ministryId)
-                .orElseThrow(() -> new RuntimeException("Ministry not found"));
         Volunteer volunteer = volunteerRepository.findById(volunteerId)
                 .orElseThrow(() -> new RuntimeException("Volunteer not found"));
+        Ministry ministry = ministryService.findById(ministryId)
+                .orElseThrow(() -> new RuntimeException("Ministry not found"));
 
-        volunteer.addMinistry(ministry);
-        volunteerRepository.save(volunteer);
+        volunteerMinistryService.save(volunteer, ministry);
     }
 
-    public List<ReadVolunteerDto> findAll(Long filter) {
-        if (filter == null) {
-            List<Volunteer> volunteers = volunteerRepository.findAll();
-            return volunteers.stream().map(this::toDto).collect(Collectors.toList());
-        }
-        List<Volunteer> volunteers = volunteerRepository.findAllByMinistriesId(filter);
-        return volunteers.stream().map(this::toDto).collect(Collectors.toList());
+    public List<ReadVolunteerDto> findAll(Long ministryId) {
+        List<Volunteer> volunteers = volunteerRepository.findAll();
+        List<Volunteer> byMinistryId = volunteers.stream()
+                .filter(volunteer -> volunteer.volunteerMinistries.stream()
+                        .anyMatch(volunteerMinistry -> volunteerMinistry.ministry.getId().equals(ministryId)))
+                .toList();
+
+        return byMinistryId.stream()
+                .map(this::toDto)
+                .toList();
     }
 
     public ReadVolunteerDto toDto(Volunteer entity) {
@@ -53,11 +59,11 @@ public class VolunteerService {
                 entity.getLastName(),
                 entity.getPhone(),
                 entity.getBirthDate().toString(),
-                entity.getMinistries().stream().map(ministry -> new ReadMinistryDto(
-                        ministry.getId(),
-                        ministry.getName(),
-                        ministry.getDescription()
-                )).collect(Collectors.toList())
-        );
+                entity.volunteerMinistries.stream()
+                        .map(volunteerMinistry -> new ReadMinistryDto(
+                                volunteerMinistry.ministry.getId(),
+                                volunteerMinistry.ministry.getName(),
+                                volunteerMinistry.ministry.getDescription()))
+                        .toList());
     }
 }
