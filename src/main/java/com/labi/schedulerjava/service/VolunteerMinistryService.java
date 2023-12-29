@@ -7,6 +7,8 @@ import com.labi.schedulerjava.repository.VolunteerMinistryRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.Optional;
+
 @Service
 public class VolunteerMinistryService {
 
@@ -16,5 +18,9 @@ public class VolunteerMinistryService {
     public void save(Volunteer volunteer, Ministry ministry) {
         VolunteerMinistry volunteerMinistry = new VolunteerMinistry(volunteer, ministry, true);
         volunteerMinistryRepository.save(volunteerMinistry);
+    }
+
+    public Optional<VolunteerMinistry> findById(Long id) {
+        return volunteerMinistryRepository.findById(id);
     }
 }
