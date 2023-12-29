@@ -15,9 +15,21 @@ public class VolunteerMinistryService {
     @Autowired
     private VolunteerMinistryRepository volunteerMinistryRepository;
 
-    public void save(Volunteer volunteer, Ministry ministry) {
-        VolunteerMinistry volunteerMinistry = new VolunteerMinistry(volunteer, ministry, true);
-        volunteerMinistryRepository.save(volunteerMinistry);
+    public void associateVolunteerWithMinistry(Volunteer volunteer, Ministry ministry) {
+        VolunteerMinistry volunteerMinistry = findExistingOrNewVolunteerMinistry(volunteer, ministry);
+        if (!volunteerMinistry.getIsActive()) {
+            volunteerMinistry.setIsActive(true);
+            volunteerMinistryRepository.save(volunteerMinistry);
+        } else {
+            throw new RuntimeException("Volunteer is already active in this ministry.");
+        }
+    }
+
+    private VolunteerMinistry findExistingOrNewVolunteerMinistry(Volunteer volunteer, Ministry ministry) {
+        return volunteer.getVolunteerMinistries().stream()
+                .filter(volunteerMinistry -> volunteerMinistry.getMinistry().equals(ministry))
+                .findFirst()
+                .orElseGet(() -> new VolunteerMinistry(volunteer, ministry, true));
     }
 
     public Optional<VolunteerMinistry> findById(Long id) {

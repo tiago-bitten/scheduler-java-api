@@ -11,7 +11,7 @@ public class ScheduleVolunteersMinistriesService {
     @Autowired
     private ScheduleVolunteersMinistriesRepository scheduleVolunteersMinistriesRepository;
 
-    public void save(Schedule schedule, VolunteerMinistry volunteerMinistry) {
+    public void associateScheduleWithVolunteersMinistries(Schedule schedule, VolunteerMinistry volunteerMinistry) {
         ScheduleVolunteersMinistries scheduleVolunteersMinistries = new ScheduleVolunteersMinistries(schedule, volunteerMinistry);
         scheduleVolunteersMinistriesRepository.save(scheduleVolunteersMinistries);
     }

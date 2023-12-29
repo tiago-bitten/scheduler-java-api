@@ -38,6 +38,6 @@ public class ScheduleService {
         if (!volunteerMinistry.getIsActive())
             throw new RuntimeException("Volunteer Ministry is not active");
 
-        scheduleVolunteersMinistriesService.save(schedule, volunteerMinistry);
+        scheduleVolunteersMinistriesService.associateScheduleWithVolunteersMinistries(schedule, volunteerMinistry);
     }
 }

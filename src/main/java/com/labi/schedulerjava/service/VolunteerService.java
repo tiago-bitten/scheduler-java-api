@@ -37,7 +37,7 @@ public class VolunteerService {
         Ministry ministry = ministryService.findById(ministryId)
                 .orElseThrow(() -> new RuntimeException("Ministry not found"));
 
-        volunteerMinistryService.save(volunteer, ministry);
+        volunteerMinistryService.associateVolunteerWithMinistry(volunteer, ministry);
     }
 
     public List<ReadVolunteerDto> findAll(Long ministryId) {
