@@ -19,4 +19,9 @@ public class ScheduleVolunteersMinistries extends BaseEntity {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "schedule_id")
     private VolunteerMinistry volunteerMinistry;
+
+    public ScheduleVolunteersMinistries(Schedule schedule, VolunteerMinistry volunteerMinistry) {
+        this.schedule = schedule;
+        this.volunteerMinistry = volunteerMinistry;
+    }
 }
