@@ -1,14 +1,14 @@
 package com.labi.schedulerjava.controller;
 
 import com.labi.schedulerjava.dtos.CreateVolunteerDto;
+import com.labi.schedulerjava.dtos.ReadVolunteerDto;
 import com.labi.schedulerjava.service.VolunteerService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("/api/v1/volunteers")
@@ -21,5 +21,17 @@ public class VolunteerController {
     public ResponseEntity<Void> create(@RequestBody CreateVolunteerDto dto) {
         volunteerService.create(dto);
         return new ResponseEntity<>(HttpStatus.CREATED);
+    }
+
+    @PostMapping("/addMinistry")
+    public ResponseEntity<Void> addMinistry(@RequestParam Long volunteerId,
+                                            @RequestParam Long ministryId) {
+        volunteerService.addMinistry(volunteerId, ministryId);
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
+
+    @GetMapping
+    public ResponseEntity<List<ReadVolunteerDto>> findAll(@RequestParam Long ministryId) {
+        return new ResponseEntity<>(volunteerService.findAll(ministryId), HttpStatus.OK);
     }
 }

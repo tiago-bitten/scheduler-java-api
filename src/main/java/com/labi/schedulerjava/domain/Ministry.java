@@ -1,5 +1,6 @@
 package com.labi.schedulerjava.domain;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -24,11 +25,8 @@ public class Ministry extends BaseEntity {
     @Column(name = "created_at", nullable = false, updatable = false)
     public Instant createdAt;
 
-    @ManyToMany
-    @JoinTable(
-            name = "ministry_volunteers",
-            joinColumns = @JoinColumn(name = "ministry_id"),
-            inverseJoinColumns = @JoinColumn(name = "volunteer_id"))
+    @JsonIgnore
+    @ManyToMany(mappedBy = "ministries")
     public List<Volunteer> volunteers;
 
     public Ministry(String name, String description) {

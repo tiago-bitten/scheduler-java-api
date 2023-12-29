@@ -1,9 +1,6 @@
 package com.labi.schedulerjava.domain;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.ManyToMany;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
@@ -34,7 +31,11 @@ public class Volunteer extends BaseEntity {
     @Column(name = "created_at", nullable = false, updatable = false)
     public Instant createdAt;
 
-    @ManyToMany(mappedBy = "volunteers")
+    @ManyToMany
+    @JoinTable(
+            name = "ministry_volunteers",
+            joinColumns = @JoinColumn(name = "volunteer_id"),
+            inverseJoinColumns = @JoinColumn(name = "ministry_id"))
     public List<Ministry> ministries;
 
     public Volunteer(String name, String lastName, String phone, LocalDate birthDate) {
@@ -43,5 +44,9 @@ public class Volunteer extends BaseEntity {
         this.phone = phone;
         this.birthDate = birthDate;
         this.createdAt = Instant.now();
+    }
+
+    public void addMinistry(Ministry ministry) {
+        this.ministries.add(ministry);
     }
 }

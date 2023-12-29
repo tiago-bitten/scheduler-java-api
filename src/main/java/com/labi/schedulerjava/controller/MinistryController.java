@@ -19,11 +19,4 @@ public class MinistryController {
         ministryService.create(dto);
         return new ResponseEntity<>(HttpStatus.CREATED);
     }
-
-    @PostMapping("/addVolunteer")
-    public ResponseEntity<Void> addVolunteer(@RequestParam("ministryId") Long ministryId,
-                                             @RequestParam("volunteerId") Long volunteerId) {
-        ministryService.addVolunteer(ministryId, volunteerId);
-        return new ResponseEntity<>(HttpStatus.OK);
-    }
 }
