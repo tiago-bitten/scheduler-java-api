@@ -14,7 +14,7 @@ public class VolunteerMinistryService {
     private VolunteerMinistryRepository volunteerMinistryRepository;
 
     public void save(Volunteer volunteer, Ministry ministry) {
-        VolunteerMinistry volunteerMinistry = new VolunteerMinistry(volunteer, ministry);
+        VolunteerMinistry volunteerMinistry = new VolunteerMinistry(volunteer, ministry, true);
         volunteerMinistryRepository.save(volunteerMinistry);
     }
 }

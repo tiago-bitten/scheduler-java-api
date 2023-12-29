@@ -17,22 +17,22 @@ import java.util.List;
 public class Volunteer extends BaseEntity {
 
     @Column(name = "name", nullable = false)
-    public String name;
+    private String name;
 
     @Column(name = "last_name")
-    public String lastName;
+    private String lastName;
 
     @Column(name = "phone")
-    public String phone;
+    private String phone;
 
     @Column(name = "birth_date")
-    public LocalDate birthDate;
+    private LocalDate birthDate;
 
     @Column(name = "created_at", nullable = false, updatable = false)
-    public Instant createdAt;
+    private Instant createdAt;
 
     @OneToMany(mappedBy = "volunteer")
-    public List<VolunteerMinistry> volunteerMinistries;
+    private List<VolunteerMinistry> volunteerMinistries;
 
     public Volunteer(String name, String lastName, String phone, LocalDate birthDate) {
         this.name = name;

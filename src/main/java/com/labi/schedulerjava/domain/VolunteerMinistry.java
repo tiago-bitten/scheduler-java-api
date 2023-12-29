@@ -14,14 +14,17 @@ public class VolunteerMinistry extends BaseEntity{
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "volunteer_id")
-    public Volunteer volunteer;
+    private Volunteer volunteer;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "ministry_id")
-    public Ministry ministry;
+    private Ministry ministry;
 
-    public VolunteerMinistry(Volunteer volunteer, Ministry ministry) {
+    private Boolean isActive;
+
+    public VolunteerMinistry(Volunteer volunteer, Ministry ministry, Boolean isActive) {
         this.volunteer = volunteer;
         this.ministry = ministry;
+        this.isActive = isActive;
     }
 }

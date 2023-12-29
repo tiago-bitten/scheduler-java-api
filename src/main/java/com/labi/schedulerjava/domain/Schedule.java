@@ -1,20 +1,21 @@
 package com.labi.schedulerjava.domain;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import jakarta.persistence.*;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.Table;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 
 import java.time.Instant;
-import java.util.List;
+import java.time.LocalDate;
 
 @Data
 @NoArgsConstructor
 @EqualsAndHashCode(callSuper = true)
 @Entity
-@Table(name = "ministries")
-public class Ministry extends BaseEntity {
+@Table(name = "schedules")
+public class Schedule extends BaseEntity {
 
     @Column(name = "name", nullable = false)
     private String name;
@@ -22,15 +23,16 @@ public class Ministry extends BaseEntity {
     @Column(name = "description")
     private String description;
 
+    @Column(name = "date")
+    private LocalDate date;
+
     @Column(name = "created_at", nullable = false, updatable = false)
     private Instant createdAt;
 
-    @OneToMany(mappedBy = "ministry")
-    private List<VolunteerMinistry> volunteerMinistries;
-
-    public Ministry(String name, String description) {
+    public Schedule(String name, String description, LocalDate date) {
         this.name = name;
         this.description = description;
+        this.date = date;
         this.createdAt = Instant.now();
     }
 }

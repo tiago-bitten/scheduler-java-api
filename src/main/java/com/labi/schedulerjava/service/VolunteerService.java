@@ -43,8 +43,9 @@ public class VolunteerService {
     public List<ReadVolunteerDto> findAll(Long ministryId) {
         List<Volunteer> volunteers = volunteerRepository.findAll();
         List<Volunteer> byMinistryId = volunteers.stream()
-                .filter(volunteer -> volunteer.volunteerMinistries.stream()
-                        .anyMatch(volunteerMinistry -> volunteerMinistry.ministry.getId().equals(ministryId)))
+                .filter(volunteer -> volunteer.getVolunteerMinistries().stream()
+                        .anyMatch(volunteerMinistry -> volunteerMinistry.getMinistry().getId().equals(ministryId) && volunteerMinistry.getIsActive())
+                )
                 .toList();
 
         return byMinistryId.stream()
