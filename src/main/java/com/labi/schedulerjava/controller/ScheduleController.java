@@ -32,8 +32,9 @@ public class ScheduleController {
 
     @PostMapping("/addVolunteer")
     public ResponseEntity<Void> addVolunteer(@RequestParam Long scheduleId,
-                                             @RequestParam Long volunteerMinistryId) {
-        scheduleService.addVolunteer(scheduleId, volunteerMinistryId);
+                                             @RequestParam Long volunteerId,
+                                             @RequestParam Long ministryId) {
+        scheduleService.addVolunteer(scheduleId, volunteerId, ministryId);
         return new ResponseEntity<>(HttpStatus.OK);
     }
 

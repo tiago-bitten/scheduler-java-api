@@ -37,6 +37,13 @@ public class VolunteerMinistryService {
                 .orElse(null);
     }
 
+    public VolunteerMinistry findByVolunteerIdAndMinistryId(Long volunteerId, Long ministryId) {
+        return volunteerMinistryRepository.findAll().stream()
+                .filter(volunteerMinistry -> volunteerMinistry.getVolunteer().getId().equals(volunteerId) && volunteerMinistry.getMinistry().getId().equals(ministryId))
+                .findFirst()
+                .orElseThrow(() -> new RuntimeException("Volunteer Ministry not found"));
+    }
+
     public Optional<VolunteerMinistry> findById(Long id) {
         return volunteerMinistryRepository.findById(id);
     }
