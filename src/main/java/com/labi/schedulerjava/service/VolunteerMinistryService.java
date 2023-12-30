@@ -16,20 +16,25 @@ public class VolunteerMinistryService {
     private VolunteerMinistryRepository volunteerMinistryRepository;
 
     public void associateVolunteerWithMinistry(Volunteer volunteer, Ministry ministry) {
-        VolunteerMinistry volunteerMinistry = findExistingOrNewVolunteerMinistry(volunteer, ministry);
-        if (!volunteerMinistry.getIsActive()) {
+        VolunteerMinistry volunteerMinistry = findByVolunteerAndMinistry(volunteer, ministry);
+
+        if (volunteerMinistry != null && volunteerMinistry.getIsActive())
+            throw new RuntimeException("VolunteerMinistry already exists");
+
+        if (volunteerMinistry != null) {
             volunteerMinistry.setIsActive(true);
             volunteerMinistryRepository.save(volunteerMinistry);
         } else {
-            throw new RuntimeException("Volunteer is already active in this ministry.");
+            volunteerMinistry = new VolunteerMinistry(volunteer, ministry, true);
+            volunteerMinistryRepository.save(volunteerMinistry);
         }
     }
 
-    private VolunteerMinistry findExistingOrNewVolunteerMinistry(Volunteer volunteer, Ministry ministry) {
-        return volunteer.getVolunteerMinistries().stream()
-                .filter(volunteerMinistry -> volunteerMinistry.getMinistry().equals(ministry))
+    private VolunteerMinistry findByVolunteerAndMinistry(Volunteer volunteer, Ministry ministry) {
+        return volunteerMinistryRepository.findAll().stream()
+                .filter(volunteerMinistry -> volunteerMinistry.getVolunteer().equals(volunteer) && volunteerMinistry.getMinistry().equals(ministry))
                 .findFirst()
-                .orElseGet(() -> new VolunteerMinistry(volunteer, ministry, true));
+                .orElse(null);
     }
 
     public Optional<VolunteerMinistry> findById(Long id) {
