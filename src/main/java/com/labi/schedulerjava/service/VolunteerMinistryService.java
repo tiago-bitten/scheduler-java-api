@@ -30,14 +30,14 @@ public class VolunteerMinistryService {
         }
     }
 
-    private VolunteerMinistry findByVolunteerAndMinistry(Volunteer volunteer, Ministry ministry) {
+    public VolunteerMinistry findByVolunteerAndMinistry(Volunteer volunteer, Ministry ministry) {
         return volunteerMinistryRepository.findAll().stream()
                 .filter(volunteerMinistry -> volunteerMinistry.getVolunteer().equals(volunteer) && volunteerMinistry.getMinistry().equals(ministry))
                 .findFirst()
                 .orElse(null);
     }
 
-    public VolunteerMinistry findByVolunteerIdAndMinistryId(Long volunteerId, Long ministryId) {
+    public VolunteerMinistry findByVolunteerAndMinistry(Long volunteerId, Long ministryId) {
         return volunteerMinistryRepository.findAll().stream()
                 .filter(volunteerMinistry -> volunteerMinistry.getVolunteer().getId().equals(volunteerId) && volunteerMinistry.getMinistry().getId().equals(ministryId))
                 .findFirst()
