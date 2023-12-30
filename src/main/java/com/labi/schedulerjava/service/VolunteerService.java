@@ -60,11 +60,11 @@ public class VolunteerService {
                 entity.getLastName(),
                 entity.getPhone(),
                 entity.getBirthDate().toString(),
-                entity.volunteerMinistries.stream()
+                entity.getVolunteerMinistries().stream()
                         .map(volunteerMinistry -> new ReadMinistryDto(
-                                volunteerMinistry.ministry.getId(),
-                                volunteerMinistry.ministry.getName(),
-                                volunteerMinistry.ministry.getDescription()))
+                                volunteerMinistry.getMinistry().getId(),
+                                volunteerMinistry.getMinistry().getName(),
+                                volunteerMinistry.getMinistry().getDescription()))
                         .toList());
     }
 }
