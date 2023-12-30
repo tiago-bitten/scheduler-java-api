@@ -16,7 +16,7 @@ public class VolunteerMinistryService {
     private VolunteerMinistryRepository volunteerMinistryRepository;
 
     public void associateVolunteerWithMinistry(Volunteer volunteer, Ministry ministry) {
-        VolunteerMinistry volunteerMinistry = findByVolunteerAndMinistry(volunteer, ministry);
+        VolunteerMinistry volunteerMinistry = findByVolunteerAndMinistry(volunteer, ministry).orElse(null);
 
         if (volunteerMinistry != null && volunteerMinistry.getIsActive())
             throw new RuntimeException("VolunteerMinistry already exists");
@@ -30,18 +30,16 @@ public class VolunteerMinistryService {
         }
     }
 
-    public VolunteerMinistry findByVolunteerAndMinistry(Volunteer volunteer, Ministry ministry) {
+    public Optional<VolunteerMinistry> findByVolunteerAndMinistry(Volunteer volunteer, Ministry ministry) {
         return volunteerMinistryRepository.findAll().stream()
                 .filter(volunteerMinistry -> volunteerMinistry.getVolunteer().equals(volunteer) && volunteerMinistry.getMinistry().equals(ministry))
-                .findFirst()
-                .orElse(null);
+                .findFirst();
     }
 
-    public VolunteerMinistry findByVolunteerAndMinistry(Long volunteerId, Long ministryId) {
+    public Optional<VolunteerMinistry> findByVolunteerAndMinistry(Long volunteerId, Long ministryId) {
         return volunteerMinistryRepository.findAll().stream()
                 .filter(volunteerMinistry -> volunteerMinistry.getVolunteer().getId().equals(volunteerId) && volunteerMinistry.getMinistry().getId().equals(ministryId))
-                .findFirst()
-                .orElseThrow(() -> new RuntimeException("Volunteer Ministry not found"));
+                .findFirst();
     }
 
     public Optional<VolunteerMinistry> findById(Long id) {

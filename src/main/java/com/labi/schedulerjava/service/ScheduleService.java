@@ -41,7 +41,8 @@ public class ScheduleService {
     public void addVolunteer(Long scheduleId, Long volunteerId, Long ministryId) {
         Schedule schedule = scheduleRepository.findById(scheduleId)
                 .orElseThrow(() -> new RuntimeException("Schedule not found"));
-        VolunteerMinistry volunteerMinistry = volunteerMinistryService.findByVolunteerAndMinistry(volunteerId, ministryId);
+        VolunteerMinistry volunteerMinistry = volunteerMinistryService.findByVolunteerAndMinistry(volunteerId, ministryId)
+                .orElseThrow(() -> new RuntimeException("Volunteer Ministry not found"));
 
         if (!volunteerMinistry.getIsActive())
             throw new RuntimeException("Volunteer Ministry is not active");
