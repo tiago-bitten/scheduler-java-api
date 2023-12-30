@@ -15,9 +15,15 @@ public class ScheduleController {
     private ScheduleService scheduleService;
 
     @PostMapping("/open")
-    public ResponseEntity<Void> create(@RequestBody CreateScheduleDto dto) {
-        scheduleService.create(dto);
+    public ResponseEntity<Void> open(@RequestBody CreateScheduleDto dto) {
+        scheduleService.open(dto);
         return new ResponseEntity<>(HttpStatus.CREATED);
+    }
+
+    @PutMapping("/close")
+    public ResponseEntity<Void> close(@RequestParam Long scheduleId) {
+        scheduleService.close(scheduleId);
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 
     @PostMapping("/addVolunteer")

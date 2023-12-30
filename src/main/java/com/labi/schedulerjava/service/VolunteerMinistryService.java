@@ -25,7 +25,7 @@ public class VolunteerMinistryService {
             volunteerMinistry.setIsActive(true);
             volunteerMinistryRepository.save(volunteerMinistry);
         } else {
-            volunteerMinistry = new VolunteerMinistry(volunteer, ministry, true);
+            volunteerMinistry = new VolunteerMinistry(volunteer, ministry);
             volunteerMinistryRepository.save(volunteerMinistry);
         }
     }

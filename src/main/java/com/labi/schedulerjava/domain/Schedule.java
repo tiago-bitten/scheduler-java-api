@@ -28,6 +28,9 @@ public class Schedule extends BaseEntity {
     @Column(name = "date")
     private LocalDate date;
 
+    @Column(name = "is_active", nullable = false)
+    private Boolean isActive;
+
     @Column(name = "created_at", nullable = false, updatable = false)
     private Instant createdAt;
 
@@ -38,6 +41,8 @@ public class Schedule extends BaseEntity {
         this.name = name;
         this.description = description;
         this.date = date;
+        this.isActive = true;
         this.createdAt = Instant.now();
+
     }
 }

@@ -21,11 +21,18 @@ public class ScheduleService {
     @Autowired
     private ScheduleVolunteersMinistriesService scheduleVolunteersMinistriesService;
 
-    public void create(CreateScheduleDto dto) {
+    public void open(CreateScheduleDto dto) {
         if (dto.date().isBefore(LocalDate.now())) {
             throw new RuntimeException("Date cannot be in the past");
         }
         Schedule schedule = new Schedule(dto.name(), dto.description(), dto.date());
+        scheduleRepository.save(schedule);
+    }
+
+    public void close(Long scheduleId) {
+        Schedule schedule = scheduleRepository.findById(scheduleId)
+                .orElseThrow(() -> new RuntimeException("Schedule not found"));
+        schedule.setIsActive(false);
         scheduleRepository.save(schedule);
     }
 

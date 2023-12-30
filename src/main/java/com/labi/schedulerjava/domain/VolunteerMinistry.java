@@ -28,9 +28,9 @@ public class VolunteerMinistry extends BaseEntity{
     @OneToMany(mappedBy = "volunteerMinistry")
     private List<ScheduleVolunteersMinistries> scheduleVolunteersMinistries;
 
-    public VolunteerMinistry(Volunteer volunteer, Ministry ministry, Boolean isActive) {
+    public VolunteerMinistry(Volunteer volunteer, Ministry ministry) {
         this.volunteer = volunteer;
         this.ministry = ministry;
-        this.isActive = isActive;
+        this.isActive = true;
     }
 }
