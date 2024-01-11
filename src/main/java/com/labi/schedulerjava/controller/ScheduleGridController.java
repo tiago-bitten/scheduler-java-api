@@ -9,8 +9,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("api/v1/schedules")
-public class ScheduleController {
+@RequestMapping("api/v1/schedules-grid")
+public class ScheduleGridController {
 
     @Autowired
     private ScheduleService scheduleService;

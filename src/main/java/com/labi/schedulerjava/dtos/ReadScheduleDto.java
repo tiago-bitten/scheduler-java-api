@@ -5,9 +5,8 @@ import java.util.List;
 
 public record ReadScheduleDto(
         Long id,
-        String name,
-        String description,
         LocalDate date,
+        Boolean current,
         List<ReadSimpVolunteerMinistry> volunteerMinistries
 ) {
 }

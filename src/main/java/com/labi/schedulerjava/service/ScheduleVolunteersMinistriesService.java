@@ -13,8 +13,8 @@ public class ScheduleVolunteersMinistriesService {
     @Autowired
     private ScheduleVolunteersMinistriesRepository scheduleVolunteersMinistriesRepository;
 
-    public void associateScheduleWithVolunteersMinistries(ScheduleGrid scheduleGrid, VolunteerMinistry volunteerMinistry) {
-        ScheduleVolunteersMinistries scheduleVolunteersMinistries = new ScheduleVolunteersMinistries(scheduleGrid, volunteerMinistry);
+    public void associateScheduleWithVolunteersMinistries(Boolean current, ScheduleGrid scheduleGrid, VolunteerMinistry volunteerMinistry) {
+        ScheduleVolunteersMinistries scheduleVolunteersMinistries = new ScheduleVolunteersMinistries(current, scheduleGrid, volunteerMinistry);
         scheduleVolunteersMinistriesRepository.save(scheduleVolunteersMinistries);
     }
 

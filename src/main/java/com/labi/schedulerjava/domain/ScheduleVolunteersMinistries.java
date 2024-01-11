@@ -12,15 +12,19 @@ import lombok.NoArgsConstructor;
 @Table(name = "schedule_volunteers_ministries")
 public class ScheduleVolunteersMinistries extends BaseEntity {
 
+    @Column(name = "current")
+    private Boolean current;
+
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "schedule_id")
+    @JoinColumn(name = "schedule_grid_id")
     private ScheduleGrid scheduleGrid;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "volunteer_ministry_id")
     private VolunteerMinistry volunteerMinistry;
 
-    public ScheduleVolunteersMinistries(ScheduleGrid scheduleGrid, VolunteerMinistry volunteerMinistry) {
+    public ScheduleVolunteersMinistries(Boolean current, ScheduleGrid scheduleGrid, VolunteerMinistry volunteerMinistry) {
+        this.current = current;
         this.scheduleGrid = scheduleGrid;
         this.volunteerMinistry = volunteerMinistry;
     }

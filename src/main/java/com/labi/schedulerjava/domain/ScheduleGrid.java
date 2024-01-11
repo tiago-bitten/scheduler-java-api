@@ -16,11 +16,14 @@ import java.util.List;
 @NoArgsConstructor
 @EqualsAndHashCode(callSuper = true)
 @Entity
-@Table(name = "schedules")
+@Table(name = "schedules_grid")
 public class ScheduleGrid extends BaseEntity {
 
     @Column(name = "date")
     private LocalDate date;
+
+    @Column(name = "week_number")
+    private Integer weekNumber;
 
     @Column(name = "current")
     private Boolean current;
@@ -31,7 +34,7 @@ public class ScheduleGrid extends BaseEntity {
     @Column(name = "created_at", nullable = false, updatable = false)
     private Instant createdAt;
 
-    @OneToMany(mappedBy = "schedule")
+    @OneToMany(mappedBy = "scheduleGrid")
     private List<ScheduleVolunteersMinistries> scheduleVolunteersMinistries;
 
     public ScheduleGrid(LocalDate date) {

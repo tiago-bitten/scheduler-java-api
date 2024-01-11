@@ -27,7 +27,7 @@ public class ScheduleService {
         if (dto.date().isBefore(LocalDate.now())) {
             throw new RuntimeException("Date cannot be in the past");
         }
-        ScheduleGrid scheduleGrid = new ScheduleGrid(dto.name(), dto.description(), dto.date());
+        ScheduleGrid scheduleGrid = new ScheduleGrid(dto.date());
         scheduleRepository.save(scheduleGrid);
     }
 
@@ -59,9 +59,8 @@ public class ScheduleService {
 
         return new ReadScheduleDto(
                 scheduleGrid.getId(),
-                scheduleGrid.getName(),
-                scheduleGrid.getDescription(),
                 scheduleGrid.getDate(),
+                scheduleGrid.getCurrent(),
                 scheduleVolunteersMinistries.stream()
                         .map(ScheduleVolunteersMinistries::getVolunteerMinistry)
                         .map(volunteerMinistry -> new ReadSimpVolunteerMinistry(
