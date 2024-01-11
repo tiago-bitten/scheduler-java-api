@@ -17,16 +17,13 @@ import java.util.List;
 @EqualsAndHashCode(callSuper = true)
 @Entity
 @Table(name = "schedules")
-public class Schedule extends BaseEntity {
-
-    @Column(name = "name", nullable = false)
-    private String name;
-
-    @Column(name = "description")
-    private String description;
+public class ScheduleGrid extends BaseEntity {
 
     @Column(name = "date")
     private LocalDate date;
+
+    @Column(name = "current")
+    private Boolean current;
 
     @Column(name = "is_active", nullable = false)
     private Boolean isActive;
@@ -37,9 +34,7 @@ public class Schedule extends BaseEntity {
     @OneToMany(mappedBy = "schedule")
     private List<ScheduleVolunteersMinistries> scheduleVolunteersMinistries;
 
-    public Schedule(String name, String description, LocalDate date) {
-        this.name = name;
-        this.description = description;
+    public ScheduleGrid(LocalDate date) {
         this.date = date;
         this.isActive = true;
         this.createdAt = Instant.now();

@@ -14,14 +14,14 @@ public class ScheduleVolunteersMinistries extends BaseEntity {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "schedule_id")
-    private Schedule schedule;
+    private ScheduleGrid scheduleGrid;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "volunteer_ministry_id")
     private VolunteerMinistry volunteerMinistry;
 
-    public ScheduleVolunteersMinistries(Schedule schedule, VolunteerMinistry volunteerMinistry) {
-        this.schedule = schedule;
+    public ScheduleVolunteersMinistries(ScheduleGrid scheduleGrid, VolunteerMinistry volunteerMinistry) {
+        this.scheduleGrid = scheduleGrid;
         this.volunteerMinistry = volunteerMinistry;
     }
 }

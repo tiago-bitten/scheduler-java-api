@@ -1,6 +1,6 @@
 package com.labi.schedulerjava.service;
 
-import com.labi.schedulerjava.domain.Schedule;
+import com.labi.schedulerjava.domain.ScheduleGrid;
 import com.labi.schedulerjava.domain.ScheduleVolunteersMinistries;
 import com.labi.schedulerjava.domain.VolunteerMinistry;
 import com.labi.schedulerjava.dtos.*;
@@ -27,41 +27,41 @@ public class ScheduleService {
         if (dto.date().isBefore(LocalDate.now())) {
             throw new RuntimeException("Date cannot be in the past");
         }
-        Schedule schedule = new Schedule(dto.name(), dto.description(), dto.date());
-        scheduleRepository.save(schedule);
+        ScheduleGrid scheduleGrid = new ScheduleGrid(dto.name(), dto.description(), dto.date());
+        scheduleRepository.save(scheduleGrid);
     }
 
     public void close(Long scheduleId) {
-        Schedule schedule = scheduleRepository.findById(scheduleId)
-                .orElseThrow(() -> new RuntimeException("Schedule not found"));
-        schedule.setIsActive(false);
-        scheduleRepository.save(schedule);
+        ScheduleGrid scheduleGrid = scheduleRepository.findById(scheduleId)
+                .orElseThrow(() -> new RuntimeException("ScheduleGrid not found"));
+        scheduleGrid.setIsActive(false);
+        scheduleRepository.save(scheduleGrid);
     }
 
     public void addVolunteer(Long scheduleId, Long volunteerId, Long ministryId) {
-        Schedule schedule = scheduleRepository.findById(scheduleId)
-                .orElseThrow(() -> new RuntimeException("Schedule not found"));
+        ScheduleGrid scheduleGrid = scheduleRepository.findById(scheduleId)
+                .orElseThrow(() -> new RuntimeException("ScheduleGrid not found"));
         VolunteerMinistry volunteerMinistry = volunteerMinistryService.findByVolunteerAndMinistry(volunteerId, ministryId)
                 .orElseThrow(() -> new RuntimeException("Volunteer Ministry not found"));
 
         if (!volunteerMinistry.getIsActive())
             throw new RuntimeException("Volunteer Ministry is not active");
 
-        scheduleVolunteersMinistriesService.associateScheduleWithVolunteersMinistries(schedule, volunteerMinistry);
+        scheduleVolunteersMinistriesService.associateScheduleWithVolunteersMinistries(scheduleGrid, volunteerMinistry);
     }
 
     public ReadScheduleDto findAll(Long scheduleId) {
-        Schedule schedule = scheduleRepository.findById(scheduleId)
-                .orElseThrow(() -> new RuntimeException("Schedule not found"));
+        ScheduleGrid scheduleGrid = scheduleRepository.findById(scheduleId)
+                .orElseThrow(() -> new RuntimeException("ScheduleGrid not found"));
 
         List<ScheduleVolunteersMinistries> scheduleVolunteersMinistries =
                 scheduleVolunteersMinistriesService.findAllByScheduleId(scheduleId);
 
         return new ReadScheduleDto(
-                schedule.getId(),
-                schedule.getName(),
-                schedule.getDescription(),
-                schedule.getDate(),
+                scheduleGrid.getId(),
+                scheduleGrid.getName(),
+                scheduleGrid.getDescription(),
+                scheduleGrid.getDate(),
                 scheduleVolunteersMinistries.stream()
                         .map(ScheduleVolunteersMinistries::getVolunteerMinistry)
                         .map(volunteerMinistry -> new ReadSimpVolunteerMinistry(

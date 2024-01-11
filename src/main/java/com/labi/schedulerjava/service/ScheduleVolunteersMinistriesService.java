@@ -6,7 +6,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Optional;
 
 @Service
 public class ScheduleVolunteersMinistriesService {
@@ -14,14 +13,14 @@ public class ScheduleVolunteersMinistriesService {
     @Autowired
     private ScheduleVolunteersMinistriesRepository scheduleVolunteersMinistriesRepository;
 
-    public void associateScheduleWithVolunteersMinistries(Schedule schedule, VolunteerMinistry volunteerMinistry) {
-        ScheduleVolunteersMinistries scheduleVolunteersMinistries = new ScheduleVolunteersMinistries(schedule, volunteerMinistry);
+    public void associateScheduleWithVolunteersMinistries(ScheduleGrid scheduleGrid, VolunteerMinistry volunteerMinistry) {
+        ScheduleVolunteersMinistries scheduleVolunteersMinistries = new ScheduleVolunteersMinistries(scheduleGrid, volunteerMinistry);
         scheduleVolunteersMinistriesRepository.save(scheduleVolunteersMinistries);
     }
 
     public List<ScheduleVolunteersMinistries> findAllByScheduleId(Long scheduleId) {
         return scheduleVolunteersMinistriesRepository.findAll().stream()
-                .filter(scheduleVolunteersMinistries -> scheduleVolunteersMinistries.getSchedule().getId().equals(scheduleId))
+                .filter(scheduleVolunteersMinistries -> scheduleVolunteersMinistries.getScheduleGrid().getId().equals(scheduleId))
                 .toList();
     }
 }
