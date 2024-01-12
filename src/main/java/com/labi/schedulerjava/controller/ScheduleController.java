@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("api/v1/schedules-grid")
-public class ScheduleGridController {
+public class ScheduleController {
 
     @Autowired
     private ScheduleService scheduleService;

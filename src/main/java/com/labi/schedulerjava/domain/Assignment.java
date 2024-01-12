@@ -9,23 +9,19 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @EqualsAndHashCode(callSuper = true)
 @Entity
-@Table(name = "schedule_volunteers_ministries")
-public class ScheduleVolunteersMinistries extends BaseEntity {
-
-    @Column(name = "current")
-    private Boolean current;
+@Table(name = "assignments")
+public class Assignment extends BaseEntity {
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "schedule_grid_id")
-    private ScheduleGrid scheduleGrid;
+    @JoinColumn(name = "schedule_id")
+    private Schedule schedule;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "volunteer_ministry_id")
     private VolunteerMinistry volunteerMinistry;
 
-    public ScheduleVolunteersMinistries(Boolean current, ScheduleGrid scheduleGrid, VolunteerMinistry volunteerMinistry) {
-        this.current = current;
-        this.scheduleGrid = scheduleGrid;
+    public Assignment(Schedule schedule, VolunteerMinistry volunteerMinistry) {
+        this.schedule = schedule;
         this.volunteerMinistry = volunteerMinistry;
     }
 }

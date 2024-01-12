@@ -1,14 +1,14 @@
 package com.labi.schedulerjava.service;
 
-import com.labi.schedulerjava.domain.ScheduleGrid;
-import com.labi.schedulerjava.domain.ScheduleVolunteersMinistries;
+import com.labi.schedulerjava.domain.Schedule;
+import com.labi.schedulerjava.domain.Assignment;
 import com.labi.schedulerjava.domain.VolunteerMinistry;
 import com.labi.schedulerjava.dtos.*;
 import com.labi.schedulerjava.repository.ScheduleRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Service
@@ -21,48 +21,49 @@ public class ScheduleService {
     private VolunteerMinistryService volunteerMinistryService;
 
     @Autowired
-    private ScheduleVolunteersMinistriesService scheduleVolunteersMinistriesService;
+    private AssignmentService assignmentService;
 
     public void open(CreateScheduleDto dto) {
-        if (dto.date().isBefore(LocalDate.now())) {
+        if (dto.startDate().isBefore(LocalDateTime.now()) || dto.endDate().isBefore(LocalDateTime.now())) {
             throw new RuntimeException("Date cannot be in the past");
         }
-        ScheduleGrid scheduleGrid = new ScheduleGrid(dto.date());
-        scheduleRepository.save(scheduleGrid);
+        Schedule schedule = new Schedule(dto.name(), dto.description(), dto.startDate(), dto.endDate(), dto.weekNumber());
+        scheduleRepository.save(schedule);
     }
 
     public void close(Long scheduleId) {
-        ScheduleGrid scheduleGrid = scheduleRepository.findById(scheduleId)
+        Schedule schedule = scheduleRepository.findById(scheduleId)
                 .orElseThrow(() -> new RuntimeException("ScheduleGrid not found"));
-        scheduleGrid.setIsActive(false);
-        scheduleRepository.save(scheduleGrid);
+        schedule.setIsActive(false);
+        scheduleRepository.save(schedule);
     }
 
     public void addVolunteer(Long scheduleId, Long volunteerId, Long ministryId) {
-        ScheduleGrid scheduleGrid = scheduleRepository.findById(scheduleId)
-                .orElseThrow(() -> new RuntimeException("ScheduleGrid not found"));
+        Schedule schedule = scheduleRepository.findById(scheduleId)
+                .orElseThrow(() -> new RuntimeException("Schedule not found"));
         VolunteerMinistry volunteerMinistry = volunteerMinistryService.findByVolunteerAndMinistry(volunteerId, ministryId)
                 .orElseThrow(() -> new RuntimeException("Volunteer Ministry not found"));
 
         if (!volunteerMinistry.getIsActive())
             throw new RuntimeException("Volunteer Ministry is not active");
 
-        scheduleVolunteersMinistriesService.associateScheduleWithVolunteersMinistries(scheduleGrid, volunteerMinistry);
+        assignmentService.create(schedule, volunteerMinistry);
     }
 
     public ReadScheduleDto findAll(Long scheduleId) {
-        ScheduleGrid scheduleGrid = scheduleRepository.findById(scheduleId)
+        Schedule schedule = scheduleRepository.findById(scheduleId)
                 .orElseThrow(() -> new RuntimeException("ScheduleGrid not found"));
 
-        List<ScheduleVolunteersMinistries> scheduleVolunteersMinistries =
-                scheduleVolunteersMinistriesService.findAllByScheduleId(scheduleId);
+        List<Assignment> scheduleVolunteersMinistries =
+                assignmentService.findAllByScheduleId(scheduleId);
 
         return new ReadScheduleDto(
-                scheduleGrid.getId(),
-                scheduleGrid.getDate(),
-                scheduleGrid.getCurrent(),
+                schedule.getId(),
+                schedule.getStartDate(),
+                schedule.getEndDate(),
+                schedule.getWeekNumber(),
                 scheduleVolunteersMinistries.stream()
-                        .map(ScheduleVolunteersMinistries::getVolunteerMinistry)
+                        .map(Assignment::getVolunteerMinistry)
                         .map(volunteerMinistry -> new ReadSimpVolunteerMinistry(
                                 volunteerMinistry.getId(),
                                 new ReadSimpVolunteerDto(
