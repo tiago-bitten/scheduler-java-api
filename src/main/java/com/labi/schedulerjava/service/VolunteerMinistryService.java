@@ -3,6 +3,7 @@ package com.labi.schedulerjava.service;
 import com.labi.schedulerjava.domain.Ministry;
 import com.labi.schedulerjava.domain.Volunteer;
 import com.labi.schedulerjava.domain.VolunteerMinistry;
+import com.labi.schedulerjava.enterprise.BusinessRuleException;
 import com.labi.schedulerjava.repository.VolunteerMinistryRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -19,7 +20,7 @@ public class VolunteerMinistryService {
         VolunteerMinistry volunteerMinistry = findByVolunteerAndMinistry(volunteer, ministry).orElse(null);
 
         if (volunteerMinistry != null && volunteerMinistry.getIsActive())
-            throw new RuntimeException("VolunteerMinistry already exists");
+            throw new BusinessRuleException("O voluntário já está vinculado a este ministério");
 
         if (volunteerMinistry != null) {
             volunteerMinistry.setIsActive(true);

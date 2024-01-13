@@ -2,6 +2,7 @@ package com.labi.schedulerjava.service;
 
 import com.labi.schedulerjava.domain.User;
 import com.labi.schedulerjava.dtos.CreateUserDto;
+import com.labi.schedulerjava.enterprise.BusinessRuleException;
 import com.labi.schedulerjava.enums.UserRole;
 import com.labi.schedulerjava.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,7 +19,7 @@ public class UserService {
 
     public void create(CreateUserDto dto) {
         if (userRepository.findByEmail(dto.email()).isPresent()) {
-            throw new RuntimeException("User already exists");
+            throw new BusinessRuleException("Este e-mail já está cadastrado");
         }
 
         userMinistryService.validateMinistries(dto.ministries());

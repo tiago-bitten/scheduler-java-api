@@ -1,6 +1,7 @@
 package com.labi.schedulerjava.service;
 
 import com.labi.schedulerjava.domain.*;
+import com.labi.schedulerjava.enterprise.BusinessRuleException;
 import com.labi.schedulerjava.repository.AssignmentRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -22,16 +23,16 @@ public class AssignmentService {
 
     public void assignVolunteerToSchedule(Long scheduleId, Long volunteerId, Long ministryId) {
         Schedule schedule = scheduleService.findById(scheduleId)
-                .orElseThrow(() -> new RuntimeException("ScheduleGrid not found"));
+                .orElseThrow(() -> new BusinessRuleException("Agenda não encontrada"));
         VolunteerMinistry volunteerMinistry = volunteerMinistryService.findByVolunteerAndMinistry(volunteerId, ministryId)
-                .orElseThrow(() -> new RuntimeException("Volunteer Ministry not found"));
+                .orElseThrow(() -> new BusinessRuleException("Vinculo entre voluntário e ministério não encontrado"));
 
         Optional<Assignment> existsAssignment = schedule.getAssignments().stream()
                 .filter(assignment -> assignment.getVolunteerMinistry().getVolunteer().getId().equals(volunteerId))
                 .findFirst();
 
         if (existsAssignment.isPresent())
-            throw new RuntimeException("Volunteer already assigned to this schedule");
+            throw new BusinessRuleException("Voluntário já está vinculado a esta agenda");
 
         Assignment assignment = new Assignment(schedule, volunteerMinistry);
         assignmentRepository.save(assignment);

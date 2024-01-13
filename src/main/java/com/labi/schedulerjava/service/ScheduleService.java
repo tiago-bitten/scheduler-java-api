@@ -4,6 +4,7 @@ import com.labi.schedulerjava.domain.Schedule;
 import com.labi.schedulerjava.domain.Assignment;
 import com.labi.schedulerjava.domain.VolunteerMinistry;
 import com.labi.schedulerjava.dtos.*;
+import com.labi.schedulerjava.enterprise.BusinessRuleException;
 import com.labi.schedulerjava.repository.ScheduleRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -21,10 +22,10 @@ public class ScheduleService {
 
     public void open(CreateScheduleDto dto) {
         if (dto.startDate().isBefore(LocalDateTime.now()) || dto.endDate().isBefore(LocalDateTime.now()))
-            throw new RuntimeException("Date cannot be in the past");
+            throw new BusinessRuleException("A data de início e fim não podem ser anteriores a data atual");
 
         if (dto.startDate().isAfter(dto.endDate()))
-            throw new RuntimeException("Start date cannot be after end date");
+            throw new BusinessRuleException("A data de início não pode ser posterior a data de fim");
 
         Schedule schedule = new Schedule(dto.name(), dto.description(), dto.startDate(), dto.endDate(), dto.weekNumber());
         scheduleRepository.save(schedule);
@@ -32,7 +33,7 @@ public class ScheduleService {
 
     public void close(Long scheduleId) {
         Schedule schedule = scheduleRepository.findById(scheduleId)
-                .orElseThrow(() -> new RuntimeException("Schedule not found"));
+                .orElseThrow(() -> new BusinessRuleException("Não foi possível encontrar a agenda"));
         schedule.setIsActive(false);
         scheduleRepository.save(schedule);
     }
@@ -43,9 +44,9 @@ public class ScheduleService {
 
     public ReadScheduleDto findAll(Long scheduleId) {
         Schedule schedule = scheduleRepository.findById(scheduleId)
-                .orElseThrow(() -> new RuntimeException("ScheduleGrid not found"));
+                .orElseThrow(() -> new BusinessRuleException("Não foi possível encontrar a agenda"));
 
-        if (!schedule.getIsActive()) throw new RuntimeException("Schedule is closed");
+        if (!schedule.getIsActive()) throw new BusinessRuleException("Agenda não está ativa");
 
         List<Assignment> scheduleVolunteersMinistries = schedule.getAssignments();
 
