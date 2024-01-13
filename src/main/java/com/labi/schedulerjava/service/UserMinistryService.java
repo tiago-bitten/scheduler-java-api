@@ -20,6 +20,8 @@ public class UserMinistryService {
     private MinistryService ministryService;
 
     public void validateMinistries(List<Long> ministriesId) {
+        if (ministriesId.isEmpty())
+            throw new BusinessRuleException("É necessário informar ao menos um ministério");
         ministriesId.forEach(id -> {
             if (ministryService.findById(id).isEmpty())
                 throw new BusinessRuleException("O ID informado " + id + " não corresponde a um ministério cadastrado");
