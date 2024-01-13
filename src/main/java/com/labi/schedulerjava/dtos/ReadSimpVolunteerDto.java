@@ -7,7 +7,6 @@ public record ReadSimpVolunteerDto(
         String name,
         String lastName,
         String phone,
-        LocalDate birthDate,
-        ReadMinistryDto ministry
+        LocalDate birthDate
 ) {
 }

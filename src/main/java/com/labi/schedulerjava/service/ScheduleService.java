@@ -34,6 +34,10 @@ public class ScheduleService {
     public void close(Long scheduleId) {
         Schedule schedule = scheduleRepository.findById(scheduleId)
                 .orElseThrow(() -> new BusinessRuleException("Não foi possível encontrar a agenda"));
+
+        if (!schedule.getIsActive())
+            throw new BusinessRuleException("A agenda já está fechada");
+
         schedule.setIsActive(false);
         scheduleRepository.save(schedule);
     }
@@ -42,7 +46,23 @@ public class ScheduleService {
         return scheduleRepository.findById(id);
     }
 
-    public ReadScheduleDto findAll(Long scheduleId) {
+    public List<ReadSimpSchedule> findSchedules(Integer month, Integer year) {
+        List<Schedule> schedules = scheduleRepository.findAll().stream()
+                .filter(schedule -> schedule.getStartDate().getMonthValue() == month && schedule.getStartDate().getYear() == year)
+                .toList();
+
+        return schedules.stream()
+                .map(schedule -> new ReadSimpSchedule(
+                        schedule.getId(),
+                        schedule.getName(),
+                        schedule.getStartDate(),
+                        schedule.getEndDate(),
+                        schedule.getWeekNumber(),
+                        schedule.getIsActive()
+                )).toList();
+    }
+
+    public ReadScheduleDto findScheduleAppointments(Long scheduleId) {
         Schedule schedule = scheduleRepository.findById(scheduleId)
                 .orElseThrow(() -> new BusinessRuleException("Não foi possível encontrar a agenda"));
 
@@ -64,13 +84,13 @@ public class ScheduleService {
                                         volunteerMinistry.getVolunteer().getName(),
                                         volunteerMinistry.getVolunteer().getLastName(),
                                         volunteerMinistry.getVolunteer().getPhone(),
-                                        volunteerMinistry.getVolunteer().getBirthDate(),
-                                        new ReadMinistryDto(
-                                                volunteerMinistry.getMinistry().getId(),
-                                                volunteerMinistry.getMinistry().getName(),
-                                                volunteerMinistry.getMinistry().getDescription()
+                                        volunteerMinistry.getVolunteer().getBirthDate()
+                                ),
+                                new ReadMinistryDto(
+                                        volunteerMinistry.getMinistry().getId(),
+                                        volunteerMinistry.getMinistry().getName(),
+                                        volunteerMinistry.getMinistry().getDescription()
 
-                                        )
                                 )
                         )).toList()
         );

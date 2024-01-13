@@ -16,7 +16,7 @@ public class VolunteerMinistryService {
     @Autowired
     private VolunteerMinistryRepository volunteerMinistryRepository;
 
-    public void associateVolunteerWithMinistry(Volunteer volunteer, Ministry ministry) {
+    public void associate(Volunteer volunteer, Ministry ministry) {
         VolunteerMinistry volunteerMinistry = findByVolunteerAndMinistry(volunteer, ministry).orElse(null);
 
         if (volunteerMinistry != null && volunteerMinistry.getIsActive())

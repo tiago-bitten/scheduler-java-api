@@ -38,7 +38,7 @@ public class VolunteerService {
         Ministry ministry = ministryService.findById(ministryId)
                 .orElseThrow(() -> new BusinessRuleException("O ID informado " + ministryId + " não corresponde a um ministério cadastrado"));
 
-        volunteerMinistryService.associateVolunteerWithMinistry(volunteer, ministry);
+        volunteerMinistryService.associate(volunteer, ministry);
     }
 
     public List<ReadVolunteerDto> findAll(Long ministryId) {
