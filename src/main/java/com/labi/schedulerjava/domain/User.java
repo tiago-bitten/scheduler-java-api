@@ -28,15 +28,13 @@ public class User extends BaseEntity {
     @Column(name = "created_at", nullable = false)
     private Instant createdAt;
 
-    @Enumerated(EnumType.STRING)
-    @Column(name = "role", nullable = false)
-    private UserRole role;
+    @OneToMany(mappedBy = "user")
+    private List<UserMinistry> userMinistries;
 
-    public User(String name, String email, String password, UserRole role) {
+    public User(String name, String email, String password) {
         this.name = name;
         this.email = email;
         this.password = password;
-        this.role = role;
         this.createdAt = Instant.now();
     }
 }

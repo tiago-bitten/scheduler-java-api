@@ -16,11 +16,18 @@ public class MinistryService {
     private MinistryRepository ministryRepository;
 
     public void create(CreateMinistryDto dto) {
+        if (ministryRepository.findByName(dto.name()).isPresent())
+            throw new RuntimeException("Ministry already exists");
+
         Ministry ministry = new Ministry(dto.name(), dto.description());
         ministryRepository.save(ministry);
     }
 
     public Optional<Ministry> findById(Long id) {
         return ministryRepository.findById(id);
+    }
+
+    public Optional<Ministry> findByName(String name) {
+        return ministryRepository.findByName(name);
     }
 }

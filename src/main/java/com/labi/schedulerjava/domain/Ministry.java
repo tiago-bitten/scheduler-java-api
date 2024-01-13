@@ -28,6 +28,9 @@ public class Ministry extends BaseEntity {
     @OneToMany(mappedBy = "ministry")
     private List<VolunteerMinistry> volunteerMinistries;
 
+    @OneToMany(mappedBy = "ministry")
+    private List<UserMinistry> userMinistries;
+
     public Ministry(String name, String description) {
         this.name = name;
         this.description = description;

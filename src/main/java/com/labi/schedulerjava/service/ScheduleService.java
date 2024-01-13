@@ -19,12 +19,6 @@ public class ScheduleService {
     @Autowired
     private ScheduleRepository scheduleRepository;
 
-    @Autowired
-    private VolunteerMinistryService volunteerMinistryService;
-
-    @Autowired
-    private AssignmentService assignmentService;
-
     public void open(CreateScheduleDto dto) {
         if (dto.startDate().isBefore(LocalDateTime.now()) || dto.endDate().isBefore(LocalDateTime.now()))
             throw new RuntimeException("Date cannot be in the past");
@@ -50,6 +44,8 @@ public class ScheduleService {
     public ReadScheduleDto findAll(Long scheduleId) {
         Schedule schedule = scheduleRepository.findById(scheduleId)
                 .orElseThrow(() -> new RuntimeException("ScheduleGrid not found"));
+
+        if (!schedule.getIsActive()) throw new RuntimeException("Schedule is closed");
 
         List<Assignment> scheduleVolunteersMinistries = schedule.getAssignments();
 

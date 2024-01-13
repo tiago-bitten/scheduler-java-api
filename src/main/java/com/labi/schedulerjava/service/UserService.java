@@ -13,13 +13,18 @@ public class UserService {
     @Autowired
     private UserRepository userRepository;
 
-    public void create(CreateUserDto dto) {
-        userRepository.findByEmail(dto.email())
-                .ifPresent(user -> {
-                    throw new RuntimeException("Email já está cadastrado");
-                });
+    @Autowired
+    private UserMinistryService userMinistryService;
 
-        User user = new User(dto.name(), dto.email(), dto.password(), UserRole.USER);
+    public void create(CreateUserDto dto) {
+        if (userRepository.findByEmail(dto.email()).isPresent()) {
+            throw new RuntimeException("User already exists");
+        }
+
+        userMinistryService.validateMinistries(dto.ministries());
+
+        User user = new User(dto.name(), dto.email(), dto.password());
         userRepository.save(user);
+        userMinistryService.associate(user, dto.ministries());
     }
 }
