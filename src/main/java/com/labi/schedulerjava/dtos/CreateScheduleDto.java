@@ -9,6 +9,5 @@ public record CreateScheduleDto(
         LocalDateTime startDate,
         LocalDateTime endDate,
         Integer weekNumber
-
 ) {
 }

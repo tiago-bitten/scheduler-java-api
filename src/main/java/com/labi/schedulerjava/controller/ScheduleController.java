@@ -9,7 +9,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("api/v1/schedules-grid")
+@RequestMapping("api/v1/schedules")
 public class ScheduleController {
 
     @Autowired
@@ -25,14 +25,6 @@ public class ScheduleController {
     public ResponseEntity<Void> close(@RequestParam Long scheduleId) {
         scheduleService.close(scheduleId);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
-    }
-
-    @PostMapping("/addVolunteer")
-    public ResponseEntity<Void> addVolunteer(@RequestParam Long scheduleId,
-                                             @RequestParam Long volunteerId,
-                                             @RequestParam Long ministryId) {
-        scheduleService.addVolunteer(scheduleId, volunteerId, ministryId);
-        return new ResponseEntity<>(HttpStatus.OK);
     }
 
     @GetMapping

@@ -7,9 +7,6 @@ import com.labi.schedulerjava.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.time.Instant;
-import java.util.List;
-
 @Service
 public class UserService {
 
@@ -19,7 +16,7 @@ public class UserService {
     public void create(CreateUserDto dto) {
         userRepository.findByEmail(dto.email())
                 .ifPresent(user -> {
-                    throw new RuntimeException();
+                    throw new RuntimeException("Email já está cadastrado");
                 });
 
         User user = new User(dto.name(), dto.email(), dto.password(), UserRole.USER);

@@ -8,8 +8,10 @@ import com.labi.schedulerjava.repository.ScheduleRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import javax.swing.text.html.Option;
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class ScheduleService {
@@ -24,38 +26,32 @@ public class ScheduleService {
     private AssignmentService assignmentService;
 
     public void open(CreateScheduleDto dto) {
-        if (dto.startDate().isBefore(LocalDateTime.now()) || dto.endDate().isBefore(LocalDateTime.now())) {
+        if (dto.startDate().isBefore(LocalDateTime.now()) || dto.endDate().isBefore(LocalDateTime.now()))
             throw new RuntimeException("Date cannot be in the past");
-        }
+
+        if (dto.startDate().isAfter(dto.endDate()))
+            throw new RuntimeException("Start date cannot be after end date");
+
         Schedule schedule = new Schedule(dto.name(), dto.description(), dto.startDate(), dto.endDate(), dto.weekNumber());
         scheduleRepository.save(schedule);
     }
 
     public void close(Long scheduleId) {
         Schedule schedule = scheduleRepository.findById(scheduleId)
-                .orElseThrow(() -> new RuntimeException("ScheduleGrid not found"));
+                .orElseThrow(() -> new RuntimeException("Schedule not found"));
         schedule.setIsActive(false);
         scheduleRepository.save(schedule);
     }
 
-    public void addVolunteer(Long scheduleId, Long volunteerId, Long ministryId) {
-        Schedule schedule = scheduleRepository.findById(scheduleId)
-                .orElseThrow(() -> new RuntimeException("Schedule not found"));
-        VolunteerMinistry volunteerMinistry = volunteerMinistryService.findByVolunteerAndMinistry(volunteerId, ministryId)
-                .orElseThrow(() -> new RuntimeException("Volunteer Ministry not found"));
-
-        if (!volunteerMinistry.getIsActive())
-            throw new RuntimeException("Volunteer Ministry is not active");
-
-        assignmentService.create(schedule, volunteerMinistry);
+    public Optional<Schedule> findById(Long id) {
+        return scheduleRepository.findById(id);
     }
 
     public ReadScheduleDto findAll(Long scheduleId) {
         Schedule schedule = scheduleRepository.findById(scheduleId)
                 .orElseThrow(() -> new RuntimeException("ScheduleGrid not found"));
 
-        List<Assignment> scheduleVolunteersMinistries =
-                assignmentService.findAllByScheduleId(scheduleId);
+        List<Assignment> scheduleVolunteersMinistries = schedule.getAssignments();
 
         return new ReadScheduleDto(
                 schedule.getId(),

@@ -18,7 +18,7 @@ import java.util.List;
 @NoArgsConstructor
 @EqualsAndHashCode(callSuper = true)
 @Entity
-@Table(name = "schedule")
+@Table(name = "schedules")
 public class Schedule extends BaseEntity {
 
     @Column(name = "name")
@@ -43,7 +43,7 @@ public class Schedule extends BaseEntity {
     private Instant createdAt;
 
     @OneToMany(mappedBy = "schedule")
-    private List<Assignment> scheduleVolunteersMinistries;
+    private List<Assignment> assignments;
 
     public Schedule(String name, String description, LocalDateTime startDate, LocalDateTime endDate, Integer weekNumber) {
         this.name = name;

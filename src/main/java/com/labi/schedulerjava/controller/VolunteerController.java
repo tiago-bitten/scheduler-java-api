@@ -27,7 +27,7 @@ public class VolunteerController {
     public ResponseEntity<Void> addMinistry(@RequestParam Long volunteerId,
                                             @RequestParam Long ministryId) {
         volunteerService.addMinistry(volunteerId, ministryId);
-        return new ResponseEntity<>(HttpStatus.OK);
+        return new ResponseEntity<>(HttpStatus.CREATED);
     }
 
     @GetMapping
