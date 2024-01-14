@@ -1,19 +1,16 @@
 package com.labi.schedulerjava.service;
 
-import com.labi.schedulerjava.domain.Ministry;
-import com.labi.schedulerjava.domain.Volunteer;
-import com.labi.schedulerjava.domain.VolunteerMinistry;
+import com.labi.schedulerjava.core.domain.Ministry;
+import com.labi.schedulerjava.core.domain.Volunteer;
 import com.labi.schedulerjava.dtos.CreateVolunteerDto;
 import com.labi.schedulerjava.dtos.ReadMinistryDto;
 import com.labi.schedulerjava.dtos.ReadVolunteerDto;
 import com.labi.schedulerjava.enterprise.BusinessRuleException;
-import com.labi.schedulerjava.repository.VolunteerRepository;
+import com.labi.schedulerjava.adapters.persistence.VolunteerRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-
-import static java.util.stream.Collectors.toList;
 
 @Service
 public class VolunteerService {

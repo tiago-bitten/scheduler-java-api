@@ -1,6 +1,6 @@
-package com.labi.schedulerjava.repository;
+package com.labi.schedulerjava.adapters.persistence;
 
-import com.labi.schedulerjava.domain.Ministry;
+import com.labi.schedulerjava.core.domain.Ministry;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.Optional;

@@ -1,10 +1,10 @@
 package com.labi.schedulerjava.service;
 
-import com.labi.schedulerjava.domain.Schedule;
-import com.labi.schedulerjava.domain.Appointment;
+import com.labi.schedulerjava.core.domain.Schedule;
+import com.labi.schedulerjava.core.domain.Appointment;
 import com.labi.schedulerjava.dtos.*;
 import com.labi.schedulerjava.enterprise.BusinessRuleException;
-import com.labi.schedulerjava.repository.ScheduleRepository;
+import com.labi.schedulerjava.adapters.persistence.ScheduleRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

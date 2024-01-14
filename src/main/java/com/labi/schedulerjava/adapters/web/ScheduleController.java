@@ -1,4 +1,4 @@
-package com.labi.schedulerjava.controller;
+package com.labi.schedulerjava.adapters.web;
 
 import com.labi.schedulerjava.dtos.CreateScheduleDto;
 import com.labi.schedulerjava.dtos.ReadScheduleDto;

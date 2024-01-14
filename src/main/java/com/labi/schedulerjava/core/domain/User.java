@@ -1,4 +1,4 @@
-package com.labi.schedulerjava.domain;
+package com.labi.schedulerjava.core.domain;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
