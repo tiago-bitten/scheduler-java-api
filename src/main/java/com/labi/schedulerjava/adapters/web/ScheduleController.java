@@ -1,5 +1,6 @@
 package com.labi.schedulerjava.adapters.web;
 
+import com.labi.schedulerjava.core.usecases.schedule.OpenScheduleUseCase;
 import com.labi.schedulerjava.dtos.CreateScheduleDto;
 import com.labi.schedulerjava.dtos.ReadScheduleDto;
 import com.labi.schedulerjava.dtos.ReadSimpSchedule;
@@ -18,10 +19,13 @@ public class ScheduleController {
     @Autowired
     private _ScheduleService scheduleService;
 
+    @Autowired
+    private OpenScheduleUseCase openScheduleUseCase;
+
     @PostMapping("/open")
     public ResponseEntity<Void> open(@RequestBody CreateScheduleDto dto) {
-        scheduleService.open(dto);
-        return new ResponseEntity<>(HttpStatus.CREATED);
+        openScheduleUseCase.execute(new OpenScheduleUseCase.InputValues(dto));
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 
     @PutMapping("/close")

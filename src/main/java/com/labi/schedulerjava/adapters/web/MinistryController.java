@@ -23,7 +23,7 @@ public class MinistryController {
     private CreateMinistryUseCase createMinistryUseCase;
 
     @PostMapping("/create")
-    public ResponseEntity<CreateMinistryUseCase.OutputValues> create(@RequestBody CreateMinistryDto dto) {
+    public ResponseEntity<Void> create(@RequestBody CreateMinistryDto dto) {
         createMinistryUseCase.execute(new CreateMinistryUseCase.InputValues(dto));
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
