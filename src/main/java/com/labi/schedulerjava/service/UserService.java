@@ -37,8 +37,7 @@ public class UserService {
     }
 
     public List<ReadUserDto> findUsersToApprove() {
-        return userRepository.findAll().stream()
-                .filter(user -> user.getIsApproved().equals(false))
+        return userRepository.usersToApprove().stream()
                 .map(user -> new ReadUserDto(
                         user.getId(),
                         user.getName(),
@@ -57,6 +56,7 @@ public class UserService {
     public void approve(Long userToApproveId, Long userApproverId, Boolean isSuperUser) {
         User userToApprove = userRepository.findById(userToApproveId)
                 .orElseThrow(() -> new BusinessRuleException("O ID informado " + userToApproveId + " não corresponde a um usuário cadastrado"));
+
         User userApprover = userRepository.findById(userApproverId)
                 .orElseThrow(() -> new BusinessRuleException("O ID informado " + userApproverId + " não corresponde a um usuário cadastrado"));
 

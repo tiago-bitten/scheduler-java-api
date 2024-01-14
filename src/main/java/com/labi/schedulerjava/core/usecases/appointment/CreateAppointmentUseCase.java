@@ -7,9 +7,7 @@ import com.labi.schedulerjava.core.domain.model.User;
 import com.labi.schedulerjava.core.domain.model.VolunteerMinistry;
 import com.labi.schedulerjava.core.domain.service.ScheduleService;
 import com.labi.schedulerjava.core.domain.service.UserService;
-import com.labi.schedulerjava.core.usecases.schedule.FindScheduleByIdUseCase;
-import com.labi.schedulerjava.core.usecases.user.FindUserByIdUseCaseUseCase;
-import com.labi.schedulerjava.core.usecases.volunteerministry.FindVolunteerMinistryByVolunteerAndMinistryUseCase;
+import com.labi.schedulerjava.core.domain.service.VolunteerMinistryService;
 import com.labi.schedulerjava.enterprise.BusinessRuleException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -29,7 +27,7 @@ public class CreateAppointmentUseCase {
     private ScheduleService scheduleService;
 
     @Autowired
-    private FindVolunteerMinistryByVolunteerAndMinistryUseCase findVolunteerMinistryByVolunteerAndMinistryUseCase;
+    private VolunteerMinistryService volunteerMinistryService;
 
     public void create(Long scheduleId, Long volunteerId, Long ministryId, Long userId) {
         User user = userService.findById(userId)
@@ -38,7 +36,7 @@ public class CreateAppointmentUseCase {
         Schedule schedule = scheduleService.findById(scheduleId)
                 .orElseThrow(() -> new BusinessRuleException("Agenda não encontrada"));
 
-        VolunteerMinistry volunteerMinistry = findVolunteerMinistryByVolunteerAndMinistryUseCase.findByVolunteerAndMinistry(volunteerId, ministryId)
+        VolunteerMinistry volunteerMinistry = volunteerMinistryService.findByVolunteerAndMinistry(volunteerId, ministryId)
                 .orElseThrow(() -> new BusinessRuleException("Vinculo entre voluntário e ministério não encontrado"));
 
         Optional<Appointment> existsAppointment = schedule.getAppointments().stream()

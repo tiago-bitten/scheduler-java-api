@@ -66,14 +66,14 @@ public class ScheduleService {
 
         if (!schedule.getIsActive()) throw new BusinessRuleException("Agenda não está ativa");
 
-        List<Appointment> scheduleVolunteersMinistries = schedule.getAppointments();
+        List<Appointment> appointments = schedule.getAppointments();
 
         return new ReadScheduleDto(
                 schedule.getId(),
                 schedule.getStartDate(),
                 schedule.getEndDate(),
                 schedule.getWeekNumber(),
-                scheduleVolunteersMinistries.stream()
+                appointments.stream()
                         .map(Appointment::getVolunteerMinistry)
                         .map(volunteerMinistry -> new ReadVolunteerMinistry(
                                 volunteerMinistry.getId(),
