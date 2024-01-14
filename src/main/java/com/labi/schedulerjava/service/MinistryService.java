@@ -2,7 +2,7 @@ package com.labi.schedulerjava.service;
 
 import com.labi.schedulerjava.core.domain.model.Ministry;
 import com.labi.schedulerjava.dtos.CreateMinistryDto;
-import com.labi.schedulerjava.enterprise.BusinessRuleException;
+import com.labi.schedulerjava.core.domain.exception.BusinessRuleException;
 import com.labi.schedulerjava.adapters.persistence.MinistryRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

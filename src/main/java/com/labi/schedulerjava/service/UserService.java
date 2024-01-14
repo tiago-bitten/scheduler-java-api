@@ -4,7 +4,7 @@ import com.labi.schedulerjava.core.domain.model.User;
 import com.labi.schedulerjava.dtos.CreateUserDto;
 import com.labi.schedulerjava.dtos.ReadMinistryDto;
 import com.labi.schedulerjava.dtos.ReadUserDto;
-import com.labi.schedulerjava.enterprise.BusinessRuleException;
+import com.labi.schedulerjava.core.domain.exception.BusinessRuleException;
 import com.labi.schedulerjava.adapters.persistence.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

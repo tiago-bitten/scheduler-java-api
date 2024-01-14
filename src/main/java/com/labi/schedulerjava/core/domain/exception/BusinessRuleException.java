@@ -1,4 +1,4 @@
-package com.labi.schedulerjava.enterprise;
+package com.labi.schedulerjava.core.domain.exception;
 
 public class BusinessRuleException extends RuntimeException {
 

@@ -1,4 +1,4 @@
-package com.labi.schedulerjava.enterprise;
+package com.labi.schedulerjava.core.domain.exception;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
