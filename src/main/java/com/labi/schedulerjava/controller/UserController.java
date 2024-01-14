@@ -31,8 +31,9 @@ public class UserController {
 
     @PutMapping("/approve")
     public ResponseEntity<Void> approve(@RequestParam Long userToApproveId,
-                                        @RequestParam Long userApproverId) {
-        userService.approve(userToApproveId, userApproverId);
+                                        @RequestParam Long userApproverId,
+                                        @RequestParam(defaultValue = "false") Boolean isSuperUser) {
+        userService.approve(userToApproveId, userApproverId, isSuperUser);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 }

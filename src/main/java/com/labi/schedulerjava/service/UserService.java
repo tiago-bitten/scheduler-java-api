@@ -54,19 +54,20 @@ public class UserService {
                 )).toList();
     }
 
-    public void approve(Long userToApproveId, Long userApproverId) {
+    public void approve(Long userToApproveId, Long userApproverId, Boolean isSuperUser) {
         User userToApprove = userRepository.findById(userToApproveId)
                 .orElseThrow(() -> new BusinessRuleException("O ID informado " + userToApproveId + " não corresponde a um usuário cadastrado"));
         User userApprover = userRepository.findById(userApproverId)
                 .orElseThrow(() -> new BusinessRuleException("O ID informado " + userApproverId + " não corresponde a um usuário cadastrado"));
 
-        if (!userApprover.getIsApproved())
-            throw new BusinessRuleException("O usuário aprovador não está aprovado");
+        if (!userApprover.getIsApproved() && !userApprover.getIsSuperUser())
+            throw new BusinessRuleException("O usuário aprovador não está aprovado ou não possui permissão para aprovar usuários");
 
         if (userToApprove.getIsApproved())
             throw new BusinessRuleException("O usuário já está aprovado");
 
         userToApprove.setIsApproved(true);
+        userToApprove.setIsSuperUser(isSuperUser);
         userRepository.save(userToApprove);
 
         userApproveService.register(userToApprove, userApprover);
