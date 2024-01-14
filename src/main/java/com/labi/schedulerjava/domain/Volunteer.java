@@ -28,6 +28,9 @@ public class Volunteer extends BaseEntity {
     @Column(name = "birth_date")
     private LocalDate birthDate;
 
+    @Column(name = "profile_image_url")
+    public String profileImageURL;
+
     @Column(name = "created_at", nullable = false, updatable = false)
     private Instant createdAt;
 

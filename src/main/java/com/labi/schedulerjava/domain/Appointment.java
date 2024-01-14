@@ -9,8 +9,8 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @EqualsAndHashCode(callSuper = true)
 @Entity
-@Table(name = "assignments")
-public class Assignment extends BaseEntity {
+@Table(name = "appointments")
+public class Appointment extends BaseEntity {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "schedule_id")
@@ -20,7 +20,7 @@ public class Assignment extends BaseEntity {
     @JoinColumn(name = "volunteer_ministry_id")
     private VolunteerMinistry volunteerMinistry;
 
-    public Assignment(Schedule schedule, VolunteerMinistry volunteerMinistry) {
+    public Appointment(Schedule schedule, VolunteerMinistry volunteerMinistry) {
         this.schedule = schedule;
         this.volunteerMinistry = volunteerMinistry;
     }

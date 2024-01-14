@@ -7,10 +7,8 @@ import jakarta.persistence.Table;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
-import org.hibernate.annotations.CollectionId;
 
 import java.time.Instant;
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -43,7 +41,7 @@ public class Schedule extends BaseEntity {
     private Instant createdAt;
 
     @OneToMany(mappedBy = "schedule")
-    private List<Assignment> assignments;
+    private List<Appointment> appointments;
 
     public Schedule(String name, String description, LocalDateTime startDate, LocalDateTime endDate, Integer weekNumber) {
         this.name = name;

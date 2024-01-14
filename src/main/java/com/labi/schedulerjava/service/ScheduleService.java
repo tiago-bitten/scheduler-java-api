@@ -1,15 +1,13 @@
 package com.labi.schedulerjava.service;
 
 import com.labi.schedulerjava.domain.Schedule;
-import com.labi.schedulerjava.domain.Assignment;
-import com.labi.schedulerjava.domain.VolunteerMinistry;
+import com.labi.schedulerjava.domain.Appointment;
 import com.labi.schedulerjava.dtos.*;
 import com.labi.schedulerjava.enterprise.BusinessRuleException;
 import com.labi.schedulerjava.repository.ScheduleRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import javax.swing.text.html.Option;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
@@ -68,7 +66,7 @@ public class ScheduleService {
 
         if (!schedule.getIsActive()) throw new BusinessRuleException("Agenda não está ativa");
 
-        List<Assignment> scheduleVolunteersMinistries = schedule.getAssignments();
+        List<Appointment> scheduleVolunteersMinistries = schedule.getAppointments();
 
         return new ReadScheduleDto(
                 schedule.getId(),
@@ -76,7 +74,7 @@ public class ScheduleService {
                 schedule.getEndDate(),
                 schedule.getWeekNumber(),
                 scheduleVolunteersMinistries.stream()
-                        .map(Assignment::getVolunteerMinistry)
+                        .map(Appointment::getVolunteerMinistry)
                         .map(volunteerMinistry -> new ReadSimpVolunteerMinistry(
                                 volunteerMinistry.getId(),
                                 new ReadSimpVolunteerDto(

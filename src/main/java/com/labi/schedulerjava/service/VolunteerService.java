@@ -42,6 +42,11 @@ public class VolunteerService {
     }
 
     public List<ReadVolunteerDto> findAll(Long ministryId) {
+        if (ministryId == null)
+            return volunteerRepository.findAll().stream()
+                    .map(this::toDto)
+                    .toList();
+
         List<Volunteer> volunteers = volunteerRepository.findAll().stream()
                 .filter(volunteer -> volunteer.getVolunteerMinistries().stream()
                         .anyMatch(volunteerMinistry -> volunteerMinistry.getMinistry().getId().equals(ministryId) && volunteerMinistry.getIsActive()))
