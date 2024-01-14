@@ -1,6 +1,7 @@
 package com.labi.schedulerjava.adapters.web;
 
 import com.labi.schedulerjava.core.usecases.schedule.CloseScheduleUseCase;
+import com.labi.schedulerjava.core.usecases.schedule.FindScheduleAppointmentsUseCase;
 import com.labi.schedulerjava.core.usecases.schedule.OpenScheduleUseCase;
 import com.labi.schedulerjava.dtos.CreateScheduleDto;
 import com.labi.schedulerjava.dtos.ReadScheduleDto;
@@ -26,6 +27,9 @@ public class ScheduleController {
     @Autowired
     private CloseScheduleUseCase closeScheduleUseCase;
 
+    @Autowired
+    private FindScheduleAppointmentsUseCase findScheduleAppointmentsUseCase;
+
     @PostMapping("/open")
     public ResponseEntity<Void> open(@RequestBody CreateScheduleDto dto) {
         openScheduleUseCase.execute(new OpenScheduleUseCase.InputValues(dto));
@@ -39,9 +43,10 @@ public class ScheduleController {
     }
 
     @GetMapping("/appointments")
-    public ResponseEntity<ReadScheduleDto> findScheduleAppointmens(@RequestParam Long scheduleId) {
-        ReadScheduleDto schedule = scheduleService.findScheduleAppointments(scheduleId);
-        return new ResponseEntity<>(schedule, HttpStatus.OK);
+    public ResponseEntity<FindScheduleAppointmentsUseCase.OutputValues> findScheduleAppointmens(@RequestParam Long scheduleId) {
+        FindScheduleAppointmentsUseCase.OutputValues outputValues =
+                findScheduleAppointmentsUseCase.execute(new FindScheduleAppointmentsUseCase.InputValues(scheduleId));
+        return new ResponseEntity<>(outputValues, HttpStatus.OK);
     }
 
     @GetMapping
