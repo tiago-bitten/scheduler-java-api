@@ -33,8 +33,7 @@ public class CreateAppointmentUseCase {
         User user = userService.findById(userId)
                 .orElseThrow(() -> new BusinessRuleException("Usuário não encontrado"));
 
-        Schedule schedule = scheduleService.findById(scheduleId)
-                .orElseThrow(() -> new BusinessRuleException("Agenda não encontrada"));
+        Schedule schedule = scheduleService.validateSchedule(scheduleId);
 
         VolunteerMinistry volunteerMinistry = volunteerMinistryService.findByVolunteerAndMinistry(volunteerId, ministryId)
                 .orElseThrow(() -> new BusinessRuleException("Vinculo entre voluntário e ministério não encontrado"));
