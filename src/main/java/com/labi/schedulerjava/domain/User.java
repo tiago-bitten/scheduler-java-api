@@ -1,7 +1,9 @@
 package com.labi.schedulerjava.domain;
 
-import com.labi.schedulerjava.enums.UserRole;
-import jakarta.persistence.*;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.OneToMany;
+import jakarta.persistence.Table;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
@@ -38,6 +40,7 @@ public class User extends BaseEntity {
         this.name = name;
         this.email = email;
         this.password = password;
+        this.isApproved = false;
         this.createdAt = Instant.now();
     }
 }
