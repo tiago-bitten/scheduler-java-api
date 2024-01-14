@@ -1,5 +1,6 @@
 package com.labi.schedulerjava.adapters.web;
 
+import com.labi.schedulerjava.core.usecases.schedule.CloseScheduleUseCase;
 import com.labi.schedulerjava.core.usecases.schedule.OpenScheduleUseCase;
 import com.labi.schedulerjava.dtos.CreateScheduleDto;
 import com.labi.schedulerjava.dtos.ReadScheduleDto;
@@ -22,6 +23,9 @@ public class ScheduleController {
     @Autowired
     private OpenScheduleUseCase openScheduleUseCase;
 
+    @Autowired
+    private CloseScheduleUseCase closeScheduleUseCase;
+
     @PostMapping("/open")
     public ResponseEntity<Void> open(@RequestBody CreateScheduleDto dto) {
         openScheduleUseCase.execute(new OpenScheduleUseCase.InputValues(dto));
@@ -30,7 +34,7 @@ public class ScheduleController {
 
     @PutMapping("/close")
     public ResponseEntity<Void> close(@RequestParam Long scheduleId) {
-        scheduleService.close(scheduleId);
+        closeScheduleUseCase.execute(new CloseScheduleUseCase.InputValues(scheduleId));
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 
