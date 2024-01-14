@@ -1,6 +1,6 @@
 package com.labi.schedulerjava.service;
 
-import com.labi.schedulerjava.core.domain.User;
+import com.labi.schedulerjava.core.domain.model.User;
 import com.labi.schedulerjava.dtos.CreateUserDto;
 import com.labi.schedulerjava.dtos.ReadMinistryDto;
 import com.labi.schedulerjava.dtos.ReadUserDto;

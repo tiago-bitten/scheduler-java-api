@@ -1,14 +1,14 @@
-package com.labi.schedulerjava.core.usecases.user;
+package com.labi.schedulerjava.core.domain.service;
 
 import com.labi.schedulerjava.adapters.persistence.UserRepository;
 import com.labi.schedulerjava.core.domain.model.User;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 
 import java.util.Optional;
 
-@Component
-public class FindUserByIdUseCaseUseCase {
+@Service
+public class UserService {
 
     @Autowired
     private UserRepository userRepository;

@@ -1,7 +1,7 @@
 package com.labi.schedulerjava.service;
 
-import com.labi.schedulerjava.core.domain.Schedule;
-import com.labi.schedulerjava.core.domain.Appointment;
+import com.labi.schedulerjava.core.domain.model.Schedule;
+import com.labi.schedulerjava.core.domain.model.Appointment;
 import com.labi.schedulerjava.dtos.*;
 import com.labi.schedulerjava.enterprise.BusinessRuleException;
 import com.labi.schedulerjava.adapters.persistence.ScheduleRepository;

@@ -1,7 +1,7 @@
 package com.labi.schedulerjava.service;
 
-import com.labi.schedulerjava.core.domain.Ministry;
-import com.labi.schedulerjava.core.domain.Volunteer;
+import com.labi.schedulerjava.core.domain.model.Ministry;
+import com.labi.schedulerjava.core.domain.model.Volunteer;
 import com.labi.schedulerjava.dtos.CreateVolunteerDto;
 import com.labi.schedulerjava.dtos.ReadMinistryDto;
 import com.labi.schedulerjava.dtos.ReadVolunteerDto;
