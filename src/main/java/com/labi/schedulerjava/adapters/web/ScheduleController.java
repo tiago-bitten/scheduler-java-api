@@ -3,7 +3,7 @@ package com.labi.schedulerjava.adapters.web;
 import com.labi.schedulerjava.dtos.CreateScheduleDto;
 import com.labi.schedulerjava.dtos.ReadScheduleDto;
 import com.labi.schedulerjava.dtos.ReadSimpSchedule;
-import com.labi.schedulerjava.service.ScheduleService;
+import com.labi.schedulerjava.service._ScheduleService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -16,7 +16,7 @@ import java.util.List;
 public class ScheduleController {
 
     @Autowired
-    private ScheduleService scheduleService;
+    private _ScheduleService scheduleService;
 
     @PostMapping("/open")
     public ResponseEntity<Void> open(@RequestBody CreateScheduleDto dto) {

@@ -13,7 +13,7 @@ import java.util.List;
 import java.util.Optional;
 
 @Service
-public class ScheduleService {
+public class _ScheduleService {
 
     @Autowired
     private ScheduleRepository scheduleRepository;

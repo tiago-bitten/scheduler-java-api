@@ -11,7 +11,7 @@ import org.springframework.stereotype.Service;
 import java.util.Optional;
 
 @Service
-public class VolunteerMinistryService {
+public class _VolunteerMinistryService {
 
     @Autowired
     private VolunteerMinistryRepository volunteerMinistryRepository;

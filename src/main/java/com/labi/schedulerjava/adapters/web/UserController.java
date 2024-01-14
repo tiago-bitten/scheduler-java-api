@@ -2,7 +2,7 @@ package com.labi.schedulerjava.adapters.web;
 
 import com.labi.schedulerjava.dtos.CreateUserDto;
 import com.labi.schedulerjava.dtos.ReadUserDto;
-import com.labi.schedulerjava.service.UserService;
+import com.labi.schedulerjava.service._UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -15,7 +15,7 @@ import java.util.List;
 public class UserController {
 
     @Autowired
-    private UserService userService;
+    private _UserService userService;
 
     @PostMapping("/create")
     public ResponseEntity<Void> create(@RequestBody CreateUserDto dto) {

@@ -11,13 +11,13 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 
 @Service
-public class UserMinistryService {
+public class _UserMinistryService {
 
     @Autowired
     private UserMinistryRepository userMinistryRepository;
 
     @Autowired
-    private MinistryService ministryService;
+    private _MinistryService ministryService;
 
     public void validateMinistries(List<Long> ministriesId) {
         if (ministriesId.isEmpty())

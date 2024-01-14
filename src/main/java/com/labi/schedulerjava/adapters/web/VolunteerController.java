@@ -2,7 +2,7 @@ package com.labi.schedulerjava.adapters.web;
 
 import com.labi.schedulerjava.dtos.CreateVolunteerDto;
 import com.labi.schedulerjava.dtos.ReadVolunteerDto;
-import com.labi.schedulerjava.service.VolunteerService;
+import com.labi.schedulerjava.service._VolunteerService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -15,7 +15,7 @@ import java.util.List;
 public class VolunteerController {
 
     @Autowired
-    private VolunteerService volunteerService;
+    private _VolunteerService volunteerService;
 
     @PostMapping("/create")
     public ResponseEntity<Void> create(@RequestBody CreateVolunteerDto dto) {

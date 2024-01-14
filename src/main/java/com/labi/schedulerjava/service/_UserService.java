@@ -13,16 +13,16 @@ import java.util.List;
 import java.util.Optional;
 
 @Service
-public class UserService {
+public class _UserService {
 
     @Autowired
     private UserRepository userRepository;
 
     @Autowired
-    private UserMinistryService userMinistryService;
+    private _UserMinistryService userMinistryService;
 
     @Autowired
-    private UserApproveService userApproveService;
+    private _UserApproveService userApproveService;
 
     public void create(CreateUserDto dto) {
         if (userRepository.findByEmail(dto.email()).isPresent()) {

@@ -4,10 +4,7 @@ import com.labi.schedulerjava.core.usecases.appointment.CreateAppointmentUseCase
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("api/v1/appointments")
@@ -21,7 +18,7 @@ public class AppointmentController {
                                         @RequestParam Long volunteerId,
                                         @RequestParam Long ministryId,
                                         @RequestParam Long userId) {
-        appointmentUseCase.create(scheduleId, volunteerId, ministryId, userId);
+        appointmentUseCase.execute(new CreateAppointmentUseCase.InputValues(scheduleId, volunteerId, ministryId, userId));
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 }

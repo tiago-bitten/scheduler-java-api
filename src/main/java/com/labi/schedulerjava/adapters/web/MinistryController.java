@@ -1,7 +1,7 @@
 package com.labi.schedulerjava.adapters.web;
 
 import com.labi.schedulerjava.dtos.CreateMinistryDto;
-import com.labi.schedulerjava.service.MinistryService;
+import com.labi.schedulerjava.service._MinistryService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.*;
 public class MinistryController {
 
     @Autowired
-    private MinistryService ministryService;
+    private _MinistryService ministryService;
 
     @PostMapping("/create")
     public ResponseEntity<Void> create(@RequestBody CreateMinistryDto dto) {

@@ -13,16 +13,16 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 
 @Service
-public class VolunteerService {
+public class _VolunteerService {
 
     @Autowired
     private VolunteerRepository volunteerRepository;
 
     @Autowired
-    private VolunteerMinistryService volunteerMinistryService;
+    private _VolunteerMinistryService volunteerMinistryService;
 
     @Autowired
-    private MinistryService ministryService;
+    private _MinistryService ministryService;
 
     public void create(CreateVolunteerDto dto) {
         Volunteer volunteer = new Volunteer(dto.name(), dto.lastName(), dto.phone(), dto.birthDate());
