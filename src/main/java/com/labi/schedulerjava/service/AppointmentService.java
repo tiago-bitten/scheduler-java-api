@@ -20,7 +20,13 @@ public class AppointmentService {
     @Autowired
     private ScheduleService scheduleService;
 
-    public void appoint(Long scheduleId, Long volunteerId, Long ministryId) {
+    @Autowired
+    private UserService userService;
+
+    public void appoint(Long scheduleId, Long volunteerId, Long ministryId, Long userId) {
+        User user = userService.findById(userId)
+                .orElseThrow(() -> new BusinessRuleException("Usuário não encontrado"));
+
         Schedule schedule = scheduleService.findById(scheduleId)
                 .orElseThrow(() -> new BusinessRuleException("Agenda não encontrada"));
         VolunteerMinistry volunteerMinistry = volunteerMinistryService.findByVolunteerAndMinistry(volunteerId, ministryId)
@@ -33,7 +39,7 @@ public class AppointmentService {
         if (existsAssignment.isPresent())
             throw new BusinessRuleException("Voluntário já está vinculado a esta agenda");
 
-        Appointment appointment = new Appointment(schedule, volunteerMinistry);
+        Appointment appointment = new Appointment(schedule, volunteerMinistry, user);
         appointmentRepository.save(appointment);
     }
 }

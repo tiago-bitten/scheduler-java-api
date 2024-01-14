@@ -1,6 +1,6 @@
 package com.labi.schedulerjava.dtos;
 
-public record ReadSimpVolunteerMinistry(
+public record ReadVolunteerMinistry(
         Long id,
         ReadSimpVolunteerDto volunteer,
         ReadMinistryDto ministry

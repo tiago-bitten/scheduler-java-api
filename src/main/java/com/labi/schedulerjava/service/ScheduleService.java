@@ -75,7 +75,7 @@ public class ScheduleService {
                 schedule.getWeekNumber(),
                 scheduleVolunteersMinistries.stream()
                         .map(Appointment::getVolunteerMinistry)
-                        .map(volunteerMinistry -> new ReadSimpVolunteerMinistry(
+                        .map(volunteerMinistry -> new ReadVolunteerMinistry(
                                 volunteerMinistry.getId(),
                                 new ReadSimpVolunteerDto(
                                         volunteerMinistry.getVolunteer().getId(),

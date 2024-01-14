@@ -19,8 +19,9 @@ public class AppointmentController {
     @PostMapping("/appoint")
     public ResponseEntity<Void> appoint(@RequestParam Long scheduleId,
                                         @RequestParam Long volunteerId,
-                                        @RequestParam Long ministryId) {
-        appointmentService.appoint(scheduleId, volunteerId, ministryId);
+                                        @RequestParam Long ministryId,
+                                        @RequestParam Long userId) {
+        appointmentService.appoint(scheduleId, volunteerId, ministryId, userId);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 }

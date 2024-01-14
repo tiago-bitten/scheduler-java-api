@@ -5,6 +5,8 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 
+import java.time.Instant;
+
 @Data
 @NoArgsConstructor
 @EqualsAndHashCode(callSuper = true)
@@ -20,8 +22,17 @@ public class Appointment extends BaseEntity {
     @JoinColumn(name = "volunteer_ministry_id")
     private VolunteerMinistry volunteerMinistry;
 
-    public Appointment(Schedule schedule, VolunteerMinistry volunteerMinistry) {
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "appointed_by_id")
+    private User appointedBy;
+
+    @Column(name = "appointed_at", nullable = false)
+    private Instant appointedAt;
+
+    public Appointment(Schedule schedule, VolunteerMinistry volunteerMinistry, User appointedBy) {
         this.schedule = schedule;
         this.volunteerMinistry = volunteerMinistry;
+        this.appointedBy = appointedBy;
+        this.appointedAt = Instant.now();
     }
 }
