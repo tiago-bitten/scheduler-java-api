@@ -28,4 +28,10 @@ public class UserController {
         List<ReadUserDto> users = userService.findUsersToApprove();
         return new ResponseEntity<>(users, HttpStatus.OK);
     }
+
+    @PutMapping("/approve")
+    public ResponseEntity<Void> approve(@RequestParam Long userId) {
+        userService.approve(userId);
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+    }
 }

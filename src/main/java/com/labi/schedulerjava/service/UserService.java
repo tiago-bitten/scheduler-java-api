@@ -50,4 +50,15 @@ public class UserService {
                                 )).toList()
                 )).toList();
     }
+
+    public void approve(Long userId) {
+        User user = userRepository.findById(userId)
+                .orElseThrow(() -> new BusinessRuleException("O ID informado " + userId + " não corresponde a um usuário cadastrado"));
+
+        if (user.getIsApproved())
+            throw new BusinessRuleException("O usuário já está aprovado");
+
+        user.setIsApproved(true);
+        userRepository.save(user);
+    }
 }
