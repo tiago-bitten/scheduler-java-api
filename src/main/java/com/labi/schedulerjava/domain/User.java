@@ -25,6 +25,9 @@ public class User extends BaseEntity {
     @Column(name = "password", nullable = false)
     private String password;
 
+    @Column(name = "is_approved", nullable = false)
+    private Boolean isApproved;
+
     @Column(name = "created_at", nullable = false)
     private Instant createdAt;
 
