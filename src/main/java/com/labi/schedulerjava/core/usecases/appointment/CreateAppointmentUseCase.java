@@ -30,13 +30,9 @@ public class CreateAppointmentUseCase {
     private VolunteerMinistryService volunteerMinistryService;
 
     public void create(Long scheduleId, Long volunteerId, Long ministryId, Long userId) {
-        User user = userService.findById(userId)
-                .orElseThrow(() -> new BusinessRuleException("Usuário não encontrado"));
-
+        User user = userService.findById(userId).get();
         Schedule schedule = scheduleService.validateSchedule(scheduleId);
-
-        VolunteerMinistry volunteerMinistry = volunteerMinistryService.findByVolunteerAndMinistry(volunteerId, ministryId)
-                .orElseThrow(() -> new BusinessRuleException("Vinculo entre voluntário e ministério não encontrado"));
+        VolunteerMinistry volunteerMinistry = volunteerMinistryService.validateVolunteerMinistry(volunteerId, ministryId);
 
         Optional<Appointment> existsAppointment = schedule.getAppointments().stream()
                 .filter(appointment -> appointment.getVolunteerMinistry().getVolunteer().getId().equals(volunteerId))
