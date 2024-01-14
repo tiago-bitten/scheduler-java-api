@@ -44,13 +44,13 @@ public class _ScheduleService {
         return scheduleRepository.findById(id);
     }
 
-    public List<ReadSimpSchedule> findSchedules(Integer month, Integer year) {
+    public List<ReadSimpScheduleDto> findSchedules(Integer month, Integer year) {
         List<Schedule> schedules = scheduleRepository.findAll().stream()
                 .filter(schedule -> schedule.getStartDate().getMonthValue() == month && schedule.getStartDate().getYear() == year)
                 .toList();
 
         return schedules.stream()
-                .map(schedule -> new ReadSimpSchedule(
+                .map(schedule -> new ReadSimpScheduleDto(
                         schedule.getId(),
                         schedule.getName(),
                         schedule.getStartDate(),

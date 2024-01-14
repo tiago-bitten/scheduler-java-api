@@ -1,11 +1,12 @@
 package com.labi.schedulerjava.adapters.web;
 
+import com.labi.schedulerjava.core.usecases.UseCase;
 import com.labi.schedulerjava.core.usecases.schedule.CloseScheduleUseCase;
 import com.labi.schedulerjava.core.usecases.schedule.FindScheduleAppointmentsUseCase;
+import com.labi.schedulerjava.core.usecases.schedule.FindSchedulesUseCase;
 import com.labi.schedulerjava.core.usecases.schedule.OpenScheduleUseCase;
 import com.labi.schedulerjava.dtos.CreateScheduleDto;
-import com.labi.schedulerjava.dtos.ReadScheduleDto;
-import com.labi.schedulerjava.dtos.ReadSimpSchedule;
+import com.labi.schedulerjava.dtos.ReadSimpScheduleDto;
 import com.labi.schedulerjava.service._ScheduleService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -30,6 +31,9 @@ public class ScheduleController {
     @Autowired
     private FindScheduleAppointmentsUseCase findScheduleAppointmentsUseCase;
 
+    @Autowired
+    private FindSchedulesUseCase findSchedulesUseCase;
+
     @PostMapping("/open")
     public ResponseEntity<Void> open(@RequestBody CreateScheduleDto dto) {
         openScheduleUseCase.execute(new OpenScheduleUseCase.InputValues(dto));
@@ -37,22 +41,23 @@ public class ScheduleController {
     }
 
     @PutMapping("/close")
-    public ResponseEntity<Void> close(@RequestParam Long scheduleId) {
+    public ResponseEntity<UseCase.OutputValues> close(@RequestParam Long scheduleId) {
         closeScheduleUseCase.execute(new CloseScheduleUseCase.InputValues(scheduleId));
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 
     @GetMapping("/appointments")
-    public ResponseEntity<FindScheduleAppointmentsUseCase.OutputValues> findScheduleAppointmens(@RequestParam Long scheduleId) {
+    public ResponseEntity<UseCase.OutputValues> findScheduleAppointmens(@RequestParam Long scheduleId) {
         FindScheduleAppointmentsUseCase.OutputValues outputValues =
                 findScheduleAppointmentsUseCase.execute(new FindScheduleAppointmentsUseCase.InputValues(scheduleId));
         return new ResponseEntity<>(outputValues, HttpStatus.OK);
     }
 
     @GetMapping
-    public ResponseEntity<List<ReadSimpSchedule>> findSchedules(@RequestParam Integer month,
-                                                                @RequestParam Integer year) {
-        List<ReadSimpSchedule> schedules = scheduleService.findSchedules(month, year);
-        return new ResponseEntity<>(schedules, HttpStatus.OK);
+    public ResponseEntity<UseCase.OutputValues> findSchedules(@RequestParam Integer month,
+                                                              @RequestParam Integer year) {
+        FindSchedulesUseCase.OutputValues outputValues =
+                findSchedulesUseCase.execute(new FindSchedulesUseCase.InputValues(month, year));
+        return new ResponseEntity<>(outputValues, HttpStatus.OK);
     }
 }
