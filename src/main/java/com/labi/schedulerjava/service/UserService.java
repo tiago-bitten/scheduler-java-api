@@ -21,6 +21,9 @@ public class UserService {
     @Autowired
     private UserMinistryService userMinistryService;
 
+    @Autowired
+    private UserApproveService userApproveService;
+
     public void create(CreateUserDto dto) {
         if (userRepository.findByEmail(dto.email()).isPresent()) {
             throw new BusinessRuleException("Este e-mail já está cadastrado");
@@ -51,14 +54,21 @@ public class UserService {
                 )).toList();
     }
 
-    public void approve(Long userId) {
-        User user = userRepository.findById(userId)
-                .orElseThrow(() -> new BusinessRuleException("O ID informado " + userId + " não corresponde a um usuário cadastrado"));
+    public void approve(Long userToApproveId, Long userApproverId) {
+        User userToApprove = userRepository.findById(userToApproveId)
+                .orElseThrow(() -> new BusinessRuleException("O ID informado " + userToApproveId + " não corresponde a um usuário cadastrado"));
+        User userApprover = userRepository.findById(userApproverId)
+                .orElseThrow(() -> new BusinessRuleException("O ID informado " + userApproverId + " não corresponde a um usuário cadastrado"));
 
-        if (user.getIsApproved())
+        if (!userApprover.getIsApproved())
+            throw new BusinessRuleException("O usuário aprovador não está aprovado");
+
+        if (userToApprove.getIsApproved())
             throw new BusinessRuleException("O usuário já está aprovado");
 
-        user.setIsApproved(true);
-        userRepository.save(user);
+        userToApprove.setIsApproved(true);
+        userRepository.save(userToApprove);
+
+        userApproveService.register(userToApprove, userApprover);
     }
 }

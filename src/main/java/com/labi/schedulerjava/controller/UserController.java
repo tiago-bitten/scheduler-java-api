@@ -30,8 +30,9 @@ public class UserController {
     }
 
     @PutMapping("/approve")
-    public ResponseEntity<Void> approve(@RequestParam Long userId) {
-        userService.approve(userId);
+    public ResponseEntity<Void> approve(@RequestParam Long userToApproveId,
+                                        @RequestParam Long userApproverId) {
+        userService.approve(userToApproveId, userApproverId);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 }
