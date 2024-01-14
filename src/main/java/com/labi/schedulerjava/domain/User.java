@@ -30,6 +30,9 @@ public class User extends BaseEntity {
     @Column(name = "is_approved", nullable = false)
     private Boolean isApproved;
 
+    @Column(name = "is_super_user", nullable = false)
+    private Boolean isSuperUser;
+
     @Column(name = "created_at", nullable = false)
     private Instant createdAt;
 
@@ -47,6 +50,7 @@ public class User extends BaseEntity {
         this.email = email;
         this.password = password;
         this.isApproved = false;
+        this.isSuperUser = false;
         this.createdAt = Instant.now();
     }
 }
