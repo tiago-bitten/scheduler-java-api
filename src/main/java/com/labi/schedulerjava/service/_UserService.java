@@ -19,22 +19,7 @@ public class _UserService {
     private UserRepository userRepository;
 
     @Autowired
-    private _UserMinistryService userMinistryService;
-
-    @Autowired
     private _UserApproveService userApproveService;
-
-    public void create(CreateUserDto dto) {
-        if (userRepository.findByEmail(dto.email()).isPresent()) {
-            throw new BusinessRuleException("Este e-mail já está cadastrado");
-        }
-
-        userMinistryService.validateMinistries(dto.ministries());
-
-        User user = new User(dto.name(), dto.email(), dto.password());
-        userRepository.save(user);
-        userMinistryService.associate(user, dto.ministries());
-    }
 
     public List<ReadUserDto> findUsersToApprove() {
         return userRepository.usersToApprove().stream()

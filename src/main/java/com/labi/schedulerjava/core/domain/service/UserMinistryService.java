@@ -1,23 +1,23 @@
-package com.labi.schedulerjava.service;
+package com.labi.schedulerjava.core.domain.service;
 
+import com.labi.schedulerjava.adapters.persistence.UserMinistryRepository;
+import com.labi.schedulerjava.core.domain.exception.BusinessRuleException;
 import com.labi.schedulerjava.core.domain.model.Ministry;
 import com.labi.schedulerjava.core.domain.model.User;
 import com.labi.schedulerjava.core.domain.model.UserMinistry;
-import com.labi.schedulerjava.core.domain.exception.BusinessRuleException;
-import com.labi.schedulerjava.adapters.persistence.UserMinistryRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 
 @Service
-public class _UserMinistryService {
+public class UserMinistryService {
 
     @Autowired
     private UserMinistryRepository userMinistryRepository;
 
     @Autowired
-    private _MinistryService ministryService;
+    private MinistryService ministryService;
 
     public void validateMinistries(List<Long> ministriesId) {
         if (ministriesId.isEmpty())
