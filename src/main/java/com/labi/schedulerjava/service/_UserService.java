@@ -18,9 +18,6 @@ public class _UserService {
     @Autowired
     private UserRepository userRepository;
 
-    @Autowired
-    private _UserApproveService userApproveService;
-
     public List<ReadUserDto> findUsersToApprove() {
         return userRepository.usersToApprove().stream()
                 .map(user -> new ReadUserDto(
@@ -54,8 +51,6 @@ public class _UserService {
         userToApprove.setIsApproved(true);
         userToApprove.setIsSuperUser(isSuperUser);
         userRepository.save(userToApprove);
-
-        userApproveService.register(userToApprove, userApprover);
     }
 
     public Optional<User> findById(Long id) {

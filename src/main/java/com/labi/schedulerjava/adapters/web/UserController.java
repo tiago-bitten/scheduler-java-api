@@ -1,6 +1,7 @@
 package com.labi.schedulerjava.adapters.web;
 
 import com.labi.schedulerjava.core.usecases.UseCase;
+import com.labi.schedulerjava.core.usecases.user.ApproveUserUseCase;
 import com.labi.schedulerjava.core.usecases.user.CreateUserUseCase;
 import com.labi.schedulerjava.core.usecases.user.FindUsersToApproveUseCase;
 import com.labi.schedulerjava.dtos.CreateUserDto;
@@ -26,6 +27,9 @@ public class UserController {
     @Autowired
     private FindUsersToApproveUseCase findUsersToApproveUseCase;
 
+    @Autowired
+    private ApproveUserUseCase approveUserUseCase;
+
     @PostMapping("/create")
     public ResponseEntity<Void> create(@RequestBody CreateUserDto dto) {
         createUserUseCase.execute(new CreateUserUseCase.InputValues(dto));
@@ -43,7 +47,7 @@ public class UserController {
     public ResponseEntity<Void> approve(@RequestParam Long userToApproveId,
                                         @RequestParam Long userApproverId,
                                         @RequestParam(defaultValue = "false") Boolean isSuperUser) {
-        userService.approve(userToApproveId, userApproverId, isSuperUser);
+        approveUserUseCase.execute(new ApproveUserUseCase.InputValues(userToApproveId, userApproverId, isSuperUser));
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 }
