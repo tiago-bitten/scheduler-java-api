@@ -1,5 +1,6 @@
 package com.labi.schedulerjava.adapters.web;
 
+import com.labi.schedulerjava.core.usecases.volunteer.CreateVolunteerUseCase;
 import com.labi.schedulerjava.dtos.CreateVolunteerDto;
 import com.labi.schedulerjava.dtos.ReadVolunteerDto;
 import com.labi.schedulerjava.service._VolunteerService;
@@ -17,9 +18,12 @@ public class VolunteerController {
     @Autowired
     private _VolunteerService volunteerService;
 
+    @Autowired
+    private CreateVolunteerUseCase createVolunteerUseCase;
+
     @PostMapping("/create")
     public ResponseEntity<Void> create(@RequestBody CreateVolunteerDto dto) {
-        volunteerService.create(dto);
+        createVolunteerUseCase.execute(new CreateVolunteerUseCase.InputValues(dto));
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 
