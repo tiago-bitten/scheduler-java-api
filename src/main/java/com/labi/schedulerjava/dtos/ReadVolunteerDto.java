@@ -1,5 +1,6 @@
 package com.labi.schedulerjava.dtos;
 
+import java.time.LocalDate;
 import java.util.List;
 
 public record ReadVolunteerDto(
@@ -7,7 +8,7 @@ public record ReadVolunteerDto(
         String name,
         String lastName,
         String phone,
-        String birthDate,
+        LocalDate birthDate,
         List<ReadMinistryDto> ministries
 ) {
 }

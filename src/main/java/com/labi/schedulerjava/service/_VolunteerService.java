@@ -60,7 +60,7 @@ public class _VolunteerService {
                 entity.getName(),
                 entity.getLastName(),
                 entity.getPhone(),
-                entity.getBirthDate().toString(),
+                entity.getBirthDate(),
                 entity.getVolunteerMinistries().stream()
                         .map(volunteerMinistry -> new ReadMinistryDto(
                                 volunteerMinistry.getMinistry().getId(),
