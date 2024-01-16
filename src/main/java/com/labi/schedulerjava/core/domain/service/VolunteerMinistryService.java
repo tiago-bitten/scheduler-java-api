@@ -8,6 +8,7 @@ import com.labi.schedulerjava.core.domain.exception.BusinessRuleException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -15,6 +16,12 @@ public class VolunteerMinistryService {
 
     @Autowired
     private VolunteerMinistryRepository volunteerMinistryRepository;
+
+    @Autowired
+    private MinistryService ministryService;
+
+    @Autowired
+    private VolunteerService volunteerService;
 
     public VolunteerMinistry validateVolunteerMinistry(Long volunteer, Long ministry) {
         VolunteerMinistry volunteerMinistry = findByVolunteerAndMinistry(volunteer, ministry)
@@ -27,14 +34,20 @@ public class VolunteerMinistryService {
     }
 
     public Optional<VolunteerMinistry> findByVolunteerAndMinistry(Volunteer volunteer, Ministry ministry) {
-        return volunteerMinistryRepository.findAll().stream()
-                .filter(volunteerMinistry -> volunteerMinistry.getVolunteer().equals(volunteer) && volunteerMinistry.getMinistry().equals(ministry))
-                .findFirst();
+        if (volunteerService.findById(volunteer.getId()).isEmpty())
+            throw new BusinessRuleException("O ID informando " + volunteer.getId() + " não corresponde a um voluntário cadastrado");
+        if (ministryService.findById(ministry.getId()).isEmpty())
+            throw new BusinessRuleException("O ID informando " + ministry.getId() + " não corresponde a um ministério cadastrado");
+
+        return volunteerMinistryRepository.findByVolunteerAndMinistry(volunteer, ministry);
     }
 
     public Optional<VolunteerMinistry> findByVolunteerAndMinistry(Long volunteerId, Long ministryId) {
-        return volunteerMinistryRepository.findAll().stream()
-                .filter(volunteerMinistry -> volunteerMinistry.getVolunteer().getId().equals(volunteerId) && volunteerMinistry.getMinistry().getId().equals(ministryId))
-                .findFirst();
+        Volunteer volunteer = volunteerService.findById(volunteerId)
+                .orElseThrow(() -> new BusinessRuleException("O ID informando " + volunteerId + " não corresponde a um voluntário cadastrado"));
+        Ministry ministry = ministryService.findById(ministryId)
+                .orElseThrow(() -> new BusinessRuleException("O ID informando " + ministryId + " não corresponde a um ministério cadastrado"));
+
+        return volunteerMinistryRepository.findByVolunteerAndMinistry(volunteer, ministry);
     }
 }

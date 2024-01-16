@@ -49,10 +49,10 @@ public class CreateAppointmentUseCase extends UseCase<CreateAppointmentUseCase.I
 
     @Value
     public static class InputValues implements UseCase.InputValues {
-        private Long scheduleId;
-        private Long volunteerId;
-        private Long ministryId;
-        private Long userId;
+        Long scheduleId;
+        Long volunteerId;
+        Long ministryId;
+        Long userId;
     }
 
     @Value

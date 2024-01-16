@@ -2,8 +2,6 @@ package com.labi.schedulerjava.core.usecases.volunteerministry;
 
 import com.labi.schedulerjava.adapters.persistence.VolunteerMinistryRepository;
 import com.labi.schedulerjava.core.domain.exception.BusinessRuleException;
-import com.labi.schedulerjava.core.domain.model.Ministry;
-import com.labi.schedulerjava.core.domain.model.Volunteer;
 import com.labi.schedulerjava.core.domain.model.VolunteerMinistry;
 import com.labi.schedulerjava.core.domain.service.MinistryService;
 import com.labi.schedulerjava.core.domain.service.VolunteerMinistryService;
@@ -13,45 +11,30 @@ import lombok.Value;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import java.util.Optional;
-
 @Component
-public class AssociateVolunteerMinistryUseCase extends UseCase<AssociateVolunteerMinistryUseCase.InputValues, AssociateVolunteerMinistryUseCase.OutputValues> {
+public class DisassociateVolunteerMinistryUseCase extends UseCase<DisassociateVolunteerMinistryUseCase.InputValues, DisassociateVolunteerMinistryUseCase.OutputValues> {
 
     @Autowired
     private VolunteerMinistryRepository volunteerMinistryRepository;
 
     @Autowired
-    private VolunteerService volunteerService;
+    private MinistryService ministryService;
 
     @Autowired
-    private MinistryService ministryService;
+    private VolunteerService volunteerService;
 
     @Autowired
     private VolunteerMinistryService volunteerMinistryService;
 
     @Override
     public OutputValues execute(InputValues input) {
-        VolunteerMinistry volunteerMinistry;
-        Optional<VolunteerMinistry> existsVolunteerMinistry =
-                volunteerMinistryService.findByVolunteerAndMinistry(input.volunteerId, input.ministryId);
+        VolunteerMinistry volunteerMinistry = volunteerMinistryService.findByVolunteerAndMinistry(input.volunteerId, input.ministryId)
+                        .orElseThrow(() -> new BusinessRuleException("Não existe vínculo entre o voluntário e o ministério"));
 
-        if (existsVolunteerMinistry.isEmpty()) {
-            Volunteer volunteer = volunteerService.findById(input.volunteerId).get();
-            Ministry ministry = ministryService.findById(input.ministryId).get();
+        if (!volunteerMinistry.getIsActive())
+            throw new BusinessRuleException("O vínculo entre o voluntário e o ministério já está inativo");
 
-            volunteerMinistry = new VolunteerMinistry(volunteer, ministry);
-            volunteerMinistryRepository.save(volunteerMinistry);
-
-            return new OutputValues();
-        }
-
-        volunteerMinistry = existsVolunteerMinistry.get();
-
-        if (volunteerMinistry.getIsActive())
-            throw new BusinessRuleException("O voluntário já está vinculado a este ministério");
-
-        volunteerMinistry.setIsActive(true);
+        volunteerMinistry.setIsActive(false);
         volunteerMinistryRepository.save(volunteerMinistry);
 
         return new OutputValues();
