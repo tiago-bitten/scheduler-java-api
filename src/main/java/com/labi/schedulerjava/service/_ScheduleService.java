@@ -77,6 +77,7 @@ public class _ScheduleService {
                         .map(Appointment::getVolunteerMinistry)
                         .map(volunteerMinistry -> new ReadVolunteerMinistry(
                                 volunteerMinistry.getId(),
+                                volunteerMinistry.getIsActive(),
                                 new ReadSimpVolunteerDto(
                                         volunteerMinistry.getVolunteer().getId(),
                                         volunteerMinistry.getVolunteer().getName(),
