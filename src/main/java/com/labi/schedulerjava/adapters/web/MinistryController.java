@@ -17,9 +17,6 @@ import java.net.URI;
 public class MinistryController {
 
     @Autowired
-    private _MinistryService ministryService;
-
-    @Autowired
     private CreateMinistryUseCase createMinistryUseCase;
 
     @PostMapping("/create")

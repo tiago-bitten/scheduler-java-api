@@ -1,6 +1,8 @@
 package com.labi.schedulerjava.adapters.web;
 
+import com.labi.schedulerjava.core.usecases.UseCase;
 import com.labi.schedulerjava.core.usecases.user.CreateUserUseCase;
+import com.labi.schedulerjava.core.usecases.user.FindUsersToApproveUseCase;
 import com.labi.schedulerjava.dtos.CreateUserDto;
 import com.labi.schedulerjava.dtos.ReadUserDto;
 import com.labi.schedulerjava.service._UserService;
@@ -21,6 +23,9 @@ public class UserController {
     @Autowired
     private CreateUserUseCase createUserUseCase;
 
+    @Autowired
+    private FindUsersToApproveUseCase findUsersToApproveUseCase;
+
     @PostMapping("/create")
     public ResponseEntity<Void> create(@RequestBody CreateUserDto dto) {
         createUserUseCase.execute(new CreateUserUseCase.InputValues(dto));
@@ -28,9 +33,10 @@ public class UserController {
     }
 
     @GetMapping("/approve")
-    public ResponseEntity<List<ReadUserDto>> findUsersToApprove() {
-        List<ReadUserDto> users = userService.findUsersToApprove();
-        return new ResponseEntity<>(users, HttpStatus.OK);
+    public ResponseEntity<UseCase.OutputValues> findUsersToApprove() {
+        UseCase.OutputValues outputValues =
+                findUsersToApproveUseCase.execute(new FindUsersToApproveUseCase.InputValues());
+        return new ResponseEntity<>(outputValues, HttpStatus.OK);
     }
 
     @PutMapping("/approve")

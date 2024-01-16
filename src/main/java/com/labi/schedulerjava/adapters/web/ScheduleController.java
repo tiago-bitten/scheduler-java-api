@@ -41,14 +41,14 @@ public class ScheduleController {
     }
 
     @PutMapping("/close")
-    public ResponseEntity<UseCase.OutputValues> close(@RequestParam Long scheduleId) {
+    public ResponseEntity<Void> close(@RequestParam Long scheduleId) {
         closeScheduleUseCase.execute(new CloseScheduleUseCase.InputValues(scheduleId));
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 
     @GetMapping("/appointments")
     public ResponseEntity<UseCase.OutputValues> findScheduleAppointmens(@RequestParam Long scheduleId) {
-        FindScheduleAppointmentsUseCase.OutputValues outputValues =
+        UseCase.OutputValues outputValues =
                 findScheduleAppointmentsUseCase.execute(new FindScheduleAppointmentsUseCase.InputValues(scheduleId));
         return new ResponseEntity<>(outputValues, HttpStatus.OK);
     }
@@ -56,7 +56,7 @@ public class ScheduleController {
     @GetMapping
     public ResponseEntity<UseCase.OutputValues> findSchedules(@RequestParam Integer month,
                                                               @RequestParam Integer year) {
-        FindSchedulesUseCase.OutputValues outputValues =
+        UseCase.OutputValues outputValues =
                 findSchedulesUseCase.execute(new FindSchedulesUseCase.InputValues(month, year));
         return new ResponseEntity<>(outputValues, HttpStatus.OK);
     }

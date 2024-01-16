@@ -41,6 +41,6 @@ public class FindSchedulesUseCase extends UseCase<FindSchedulesUseCase.InputValu
 
     @Value
     public static class OutputValues implements UseCase.OutputValues {
-        private List<ReadSimpScheduleDto> dto;
+        private List<ReadSimpScheduleDto> schedules;
     }
 }

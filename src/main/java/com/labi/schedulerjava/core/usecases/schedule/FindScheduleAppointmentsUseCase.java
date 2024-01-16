@@ -64,6 +64,6 @@ public class FindScheduleAppointmentsUseCase extends UseCase<FindScheduleAppoint
 
     @Value
     public static class OutputValues implements UseCase.OutputValues {
-        private ReadScheduleDto dto;
+        private ReadScheduleDto schedule;
     }
 }
