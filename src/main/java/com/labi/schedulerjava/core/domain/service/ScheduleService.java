@@ -14,8 +14,8 @@ public class ScheduleService {
     @Autowired
     private ScheduleRepository scheduleRepository;
 
-    public Schedule validateSchedule(Long shceduleId) {
-        Schedule schedule = findById(shceduleId)
+    public Schedule validateSchedule(Long scheduleId) {
+        Schedule schedule = findById(scheduleId)
                 .orElseThrow(() -> new BusinessRuleException("Agenda não encontrada"));
 
         if (!schedule.getIsActive())
