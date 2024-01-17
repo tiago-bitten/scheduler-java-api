@@ -5,6 +5,6 @@ public record ReadMinistryDto(
         String name,
         String description,
         String color,
-        Long totalUsers
+        Long totalVolunteers
 ) {
 }
