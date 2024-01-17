@@ -50,7 +50,9 @@ public class FindVolunteersUseCase extends UseCase<FindVolunteersUseCase.InputVa
                         .map(volunteerMinistry -> new ReadMinistryDto(
                                 volunteerMinistry.getMinistry().getId(),
                                 volunteerMinistry.getMinistry().getName(),
-                                volunteerMinistry.getMinistry().getDescription()))
-                        .toList());
+                                volunteerMinistry.getMinistry().getDescription(),
+                                volunteerMinistry.getMinistry().getColor()
+                        )).toList()
+        );
     }
 }

@@ -29,7 +29,8 @@ public class FindUsersToApproveUseCase extends UseCase<FindUsersToApproveUseCase
                                 .map(userMinistry -> new ReadMinistryDto(
                                         userMinistry.getMinistry().getId(),
                                         userMinistry.getMinistry().getName(),
-                                        userMinistry.getMinistry().getDescription()
+                                        userMinistry.getMinistry().getDescription(),
+                                        userMinistry.getMinistry().getColor()
                                 )).toList()
                 )).toList());
     }
