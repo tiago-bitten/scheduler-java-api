@@ -25,7 +25,7 @@ public class CreateUnavailableDateUseCase extends UseCase<CreateUnavailableDateU
         Volunteer volunteer = volunteerService.findById(input.getVolunteerId())
                 .orElseThrow(() -> new BusinessRuleException("O ID informado " + input.getVolunteerId() + " não corresponde a um voluntário cadastrado"));
 
-        UnavailableDate unavailableDate = new UnavailableDate(input.dto.date(), input.dto.rrule(), volunteer);
+        UnavailableDate unavailableDate = new UnavailableDate(input.dto.startDate(), input.dto.endDate(), input.dto.rrule(), volunteer);
         unavailableDateRepository.save(unavailableDate);
 
         return new OutputValues();

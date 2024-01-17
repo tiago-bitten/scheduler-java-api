@@ -1,9 +1,10 @@
 package com.labi.schedulerjava.dtos;
 
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 public record CreateUnavailableDateDto(
-        LocalDate date,
+        LocalDateTime startDate,
+        LocalDateTime endDate,
         String rrule
 ) {
 }

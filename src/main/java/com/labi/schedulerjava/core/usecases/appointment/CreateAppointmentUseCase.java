@@ -6,10 +6,7 @@ import com.labi.schedulerjava.core.domain.model.Appointment;
 import com.labi.schedulerjava.core.domain.model.Schedule;
 import com.labi.schedulerjava.core.domain.model.User;
 import com.labi.schedulerjava.core.domain.model.VolunteerMinistry;
-import com.labi.schedulerjava.core.domain.service.AppointmentService;
-import com.labi.schedulerjava.core.domain.service.ScheduleService;
-import com.labi.schedulerjava.core.domain.service.UserService;
-import com.labi.schedulerjava.core.domain.service.VolunteerMinistryService;
+import com.labi.schedulerjava.core.domain.service.*;
 import com.labi.schedulerjava.core.usecases.UseCase;
 import lombok.Value;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -33,6 +30,9 @@ public class CreateAppointmentUseCase extends UseCase<CreateAppointmentUseCase.I
     @Autowired
     private AppointmentService appointmentService;
 
+    @Autowired
+    private UnavailableDateService unavailableDateService;
+
     @Override
     public OutputValues execute(InputValues input) {
         User user = userService.findById(input.getUserId()).get();
@@ -41,6 +41,9 @@ public class CreateAppointmentUseCase extends UseCase<CreateAppointmentUseCase.I
 
         if (appointmentService.validateAppointment(schedule, input.volunteerId))
             throw new BusinessRuleException("Voluntário já agendado neste horário");
+
+        if (unavailableDateService.isUnavailableDate(schedule.getStartDate(), schedule.getEndDate(), input.volunteerId))
+            throw new BusinessRuleException("Voluntário não pode ser agendado nesta data");
 
         Appointment appointment = new Appointment(schedule, volunteerMinistry, user);
         appointmentRepository.save(appointment);

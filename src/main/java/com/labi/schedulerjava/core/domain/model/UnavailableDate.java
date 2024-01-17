@@ -5,7 +5,7 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 @Data
 @NoArgsConstructor
@@ -14,8 +14,11 @@ import java.time.LocalDate;
 @Table(name = "unavailable_dates")
 public class UnavailableDate extends BaseEntity {
 
-    @Column(name = "date", nullable = false)
-    private LocalDate date;
+    @Column(name = "start_date", nullable = false)
+    private LocalDateTime startDate;
+
+    @Column(name = "end_date", nullable = false)
+    private LocalDateTime endDate;
 
     @Column(name = "rrule")
     private String rrule;
@@ -24,8 +27,9 @@ public class UnavailableDate extends BaseEntity {
     @JoinColumn(name = "volunteer_id", nullable = false)
     private Volunteer volunteer;
 
-    public UnavailableDate(LocalDate date, String rrule, Volunteer volunteer) {
-        this.date = date;
+    public UnavailableDate(LocalDateTime startDate, LocalDateTime endDate, String rrule, Volunteer volunteer) {
+        this.startDate = startDate;
+        this.endDate = endDate;
         this.rrule = rrule;
         this.volunteer = volunteer;
     }
