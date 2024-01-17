@@ -35,6 +35,7 @@ public class DisassociateVolunteerMinistryUseCase extends UseCase<DisassociateVo
             throw new BusinessRuleException("O vínculo entre o voluntário e o ministério já está inativo");
 
         volunteerMinistry.setIsActive(false);
+        volunteerMinistry.getMinistry().setTotalVolunteers(volunteerMinistry.getMinistry().getTotalVolunteers() - 1);
         volunteerMinistryRepository.save(volunteerMinistry);
 
         return new OutputValues();

@@ -30,7 +30,8 @@ public class FindUsersToApproveUseCase extends UseCase<FindUsersToApproveUseCase
                                         userMinistry.getMinistry().getId(),
                                         userMinistry.getMinistry().getName(),
                                         userMinistry.getMinistry().getDescription(),
-                                        userMinistry.getMinistry().getColor()
+                                        userMinistry.getMinistry().getColor(),
+                                        userMinistry.getMinistry().getTotalVolunteers()
                                 )).toList()
                 )).toList());
     }

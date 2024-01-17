@@ -52,7 +52,8 @@ public class FindScheduleAppointmentsUseCase extends UseCase<FindScheduleAppoint
                                         volunteerMinistry.getMinistry().getId(),
                                         volunteerMinistry.getMinistry().getName(),
                                         volunteerMinistry.getMinistry().getDescription(),
-                                        volunteerMinistry.getMinistry().getColor()
+                                        volunteerMinistry.getMinistry().getColor(),
+                                        volunteerMinistry.getMinistry().getTotalVolunteers()
                                 )
                         )).toList()
         ));

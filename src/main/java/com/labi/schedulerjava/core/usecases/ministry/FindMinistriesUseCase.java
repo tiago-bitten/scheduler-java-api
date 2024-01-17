@@ -43,6 +43,7 @@ public class FindMinistriesUseCase extends UseCase<FindMinistriesUseCase.InputVa
                 entity.getId(),
                 entity.getName(),
                 entity.getDescription(),
-                entity.getColor());
+                entity.getColor(),
+                entity.getTotalVolunteers());
     }
 }

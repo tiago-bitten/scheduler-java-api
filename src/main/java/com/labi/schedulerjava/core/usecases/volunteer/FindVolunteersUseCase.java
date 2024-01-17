@@ -51,7 +51,8 @@ public class FindVolunteersUseCase extends UseCase<FindVolunteersUseCase.InputVa
                                 volunteerMinistry.getMinistry().getId(),
                                 volunteerMinistry.getMinistry().getName(),
                                 volunteerMinistry.getMinistry().getDescription(),
-                                volunteerMinistry.getMinistry().getColor()
+                                volunteerMinistry.getMinistry().getColor(),
+                                volunteerMinistry.getMinistry().getTotalVolunteers()
                         )).toList()
         );
     }

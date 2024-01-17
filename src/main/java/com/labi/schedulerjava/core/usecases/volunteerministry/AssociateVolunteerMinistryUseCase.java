@@ -41,6 +41,7 @@ public class AssociateVolunteerMinistryUseCase extends UseCase<AssociateVoluntee
             Ministry ministry = ministryService.findById(input.ministryId).get();
 
             volunteerMinistry = new VolunteerMinistry(volunteer, ministry);
+            ministry.setTotalVolunteers(ministry.getTotalVolunteers() + 1);
             volunteerMinistryRepository.save(volunteerMinistry);
 
             return new OutputValues();
@@ -52,6 +53,7 @@ public class AssociateVolunteerMinistryUseCase extends UseCase<AssociateVoluntee
             throw new BusinessRuleException("O voluntário já está vinculado a este ministério");
 
         volunteerMinistry.setIsActive(true);
+        volunteerMinistry.getMinistry().setTotalVolunteers(volunteerMinistry.getMinistry().getTotalVolunteers() + 1);
         volunteerMinistryRepository.save(volunteerMinistry);
 
         return new OutputValues();

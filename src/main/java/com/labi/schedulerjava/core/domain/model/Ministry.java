@@ -27,6 +27,9 @@ public class Ministry extends BaseEntity {
     @Column(name = "color")
     private String color;
 
+    @Column(name = "total_volunteers")
+    private Long totalVolunteers;
+
     @Column(name = "created_at", nullable = false, updatable = false)
     private Instant createdAt;
 
@@ -40,6 +43,7 @@ public class Ministry extends BaseEntity {
         this.name = name;
         this.description = description;
         this.color = color;
+        this.totalVolunteers = 0L;
         this.createdAt = Instant.now();
     }
 }
