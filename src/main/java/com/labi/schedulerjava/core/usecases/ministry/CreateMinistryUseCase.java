@@ -22,7 +22,7 @@ public class CreateMinistryUseCase extends UseCase<CreateMinistryUseCase.InputVa
             throw new BusinessRuleException("Este ministério já está cadastrado");
         }
 
-        Ministry ministry = new Ministry(input.dto.name(), input.dto.description());
+        Ministry ministry = new Ministry(input.dto.name(), input.dto.description(), input.dto.color());
         ministryRepository.save(ministry);
         return new OutputValues();
     }

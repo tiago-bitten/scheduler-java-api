@@ -24,6 +24,9 @@ public class Ministry extends BaseEntity {
     @Column(name = "description")
     private String description;
 
+    @Column(name = "color")
+    private String color;
+
     @Column(name = "created_at", nullable = false, updatable = false)
     private Instant createdAt;
 
@@ -33,9 +36,10 @@ public class Ministry extends BaseEntity {
     @OneToMany(mappedBy = "ministry")
     private List<UserMinistry> userMinistries;
 
-    public Ministry(String name, String description) {
+    public Ministry(String name, String description, String color) {
         this.name = name;
         this.description = description;
+        this.color = color;
         this.createdAt = Instant.now();
     }
 }
