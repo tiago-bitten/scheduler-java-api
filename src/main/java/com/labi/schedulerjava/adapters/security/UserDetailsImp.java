@@ -1,6 +1,7 @@
 package com.labi.schedulerjava.adapters.security;
 
 import com.labi.schedulerjava.core.domain.model.BaseEntity;
+import com.labi.schedulerjava.core.domain.model.User;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -28,8 +29,16 @@ public class UserDetailsImp extends BaseEntity implements UserDetails {
         this.createdAt = createdAt;
     }
 
-    public static UserDetailsImp build(Long id, String name, String email, String password, Boolean isApproved, Boolean isSuperUser, Instant createdAt) {
-        return new UserDetailsImp(id, name, email, password, isApproved, isSuperUser, createdAt);
+    public static UserDetailsImp build(User user) {
+        return new UserDetailsImp(
+                user.getId(),
+                user.getName(),
+                user.getEmail(),
+                user.getPassword(),
+                user.getIsApproved(),
+                user.getIsSuperUser(),
+                user.getCreatedAt()
+        );
     }
 
     @Override
