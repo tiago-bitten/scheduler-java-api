@@ -12,4 +12,7 @@ public interface MinistryRepository extends JpaRepository<Ministry, Long> {
 
     @Query("SELECT m FROM Ministry m JOIN VolunteerMinistry vm ON m.id = vm.ministry.id WHERE vm.volunteer.id = ?1")
     List<Ministry> findAll(Long volunteerId);
+
+    @Query("SELECT m FROM Ministry m JOIN UserMinistry um ON m.id = um.ministry.id WHERE um.user.id = ?1")
+    List<Ministry> findAllByUserId(Long userId);
 }
