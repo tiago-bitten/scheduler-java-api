@@ -1,10 +1,12 @@
 package com.labi.schedulerjava.core.domain.model;
 
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
+import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 
-@Getter
+@Data
 @EqualsAndHashCode(of = "id")
 @MappedSuperclass
 public abstract class BaseEntity {
