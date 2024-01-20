@@ -1,6 +1,7 @@
 package com.labi.schedulerjava.adapters.config;
 
 import com.labi.schedulerjava.adapters.security.CustomAccessDenied;
+import com.labi.schedulerjava.adapters.security.CustomAuthenticationEntryPoint;
 import com.labi.schedulerjava.adapters.security.JwtTokenFilter;
 import com.labi.schedulerjava.adapters.security.UserApprovedFilter;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,6 +30,9 @@ public class SecurityConfig {
     private UserApprovedFilter userApprovedFilter;
 
     @Autowired
+    private CustomAuthenticationEntryPoint customAuthenticationEntryPoint;
+
+    @Autowired
     private CustomAccessDenied customAccessDenied;
 
     @Bean
@@ -43,6 +47,7 @@ public class SecurityConfig {
                 .addFilterBefore(jwtTokenFilter, UsernamePasswordAuthenticationFilter.class)
                 .addFilterAfter(userApprovedFilter, JwtTokenFilter.class)
                 .exceptionHandling(exception -> exception
+                        .authenticationEntryPoint(customAuthenticationEntryPoint)
                         .accessDeniedHandler(customAccessDenied));
 
         return http.build();
