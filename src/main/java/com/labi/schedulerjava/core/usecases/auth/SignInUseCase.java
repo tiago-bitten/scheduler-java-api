@@ -1,6 +1,7 @@
 package com.labi.schedulerjava.core.usecases.auth;
 
 import com.labi.schedulerjava.adapters.security.JwtTokenProvider;
+import com.labi.schedulerjava.core.domain.model.User;
 import com.labi.schedulerjava.core.usecases.UseCase;
 import com.labi.schedulerjava.dtos.ReadTokenDto;
 import com.labi.schedulerjava.dtos.SignInDto;
@@ -23,6 +24,11 @@ public class SignInUseCase extends UseCase<SignInUseCase.InputValues, SignInUseC
     public OutputValues execute(InputValues input) {
         var usernamePassword = new UsernamePasswordAuthenticationToken(input.dto.email(), input.dto.password());
         var authentication = authenticationManager.authenticate(usernamePassword);
+
+        User user = (User) authentication.getPrincipal();
+
+        if (!user.getIsApproved())
+            authentication.setAuthenticated(false);
 
         return new OutputValues(new ReadTokenDto(jwtTokenProvider.generateToken(input.dto.email())));
     }
