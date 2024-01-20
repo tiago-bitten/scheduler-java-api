@@ -26,4 +26,17 @@ public class GlobalExceptionHandler {
 
         return new ResponseEntity<>(errorMessage, HttpStatus.UNPROCESSABLE_ENTITY);
     }
+
+    @ExceptionHandler(UserAccountNotApprovedException.class)
+    public ResponseEntity<ErrorMessage> handleUserAccountNotApprovedException(UserAccountNotApprovedException e) {
+        logger.error("User account not approved exception {}", e.getMessage());
+
+        ErrorMessage errorMessage = new ErrorMessage(
+                Instant.now(),
+                e.getMessage(),
+                HttpStatus.UNAUTHORIZED.value()
+        );
+
+        return new ResponseEntity<>(errorMessage, HttpStatus.UNAUTHORIZED);
+    }
 }

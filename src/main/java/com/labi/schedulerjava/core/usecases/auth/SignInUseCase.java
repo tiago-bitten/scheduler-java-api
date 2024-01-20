@@ -1,7 +1,9 @@
 package com.labi.schedulerjava.core.usecases.auth;
 
 import com.labi.schedulerjava.adapters.security.JwtTokenProvider;
+import com.labi.schedulerjava.core.domain.exception.UserAccountNotApprovedException;
 import com.labi.schedulerjava.core.domain.model.User;
+import com.labi.schedulerjava.core.domain.service.UserService;
 import com.labi.schedulerjava.core.usecases.UseCase;
 import com.labi.schedulerjava.dtos.ReadTokenDto;
 import com.labi.schedulerjava.dtos.SignInDto;
@@ -20,15 +22,20 @@ public class SignInUseCase extends UseCase<SignInUseCase.InputValues, SignInUseC
     @Autowired
     private JwtTokenProvider jwtTokenProvider;
 
+    @Autowired
+    private UserService userService;
+
     @Override
     public OutputValues execute(InputValues input) {
         var usernamePassword = new UsernamePasswordAuthenticationToken(input.dto.email(), input.dto.password());
         var authentication = authenticationManager.authenticate(usernamePassword);
 
-        User user = (User) authentication.getPrincipal();
+        User user = userService.findByEmail(input.dto.email()).get();
 
-        if (!user.getIsApproved())
+        if (!user.getIsApproved()) {
             authentication.setAuthenticated(false);
+            throw new UserAccountNotApprovedException();
+        }
 
         return new OutputValues(new ReadTokenDto(jwtTokenProvider.generateToken(input.dto.email())));
     }

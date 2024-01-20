@@ -21,21 +21,16 @@ public class UserApprovedFilter extends OncePerRequestFilter {
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
-        try {
-            if (isPublicRequest(request)) {
-                filterChain.doFilter(request, response);
-                return;
-            }
-
-            User user = jwtTokenProvider.getUserFromToken(request.getHeader("Authorization"));
-            if (!user.getIsApproved())
-                response.sendError(HttpStatus.UNAUTHORIZED.value(), "Sua conta ainda não foi aprovada");
-            else
-                filterChain.doFilter(request, response);
-
-        } catch (BusinessRuleException e) {
-            response.sendError(HttpStatus.UNAUTHORIZED.value(), e.getMessage());
+        if (isPublicRequest(request)) {
+            filterChain.doFilter(request, response);
+            return;
         }
+
+        User user = jwtTokenProvider.getUserFromToken(request.getHeader("Authorization"));
+        if (!user.getIsApproved())
+            response.sendError(HttpStatus.UNAUTHORIZED.value(), "Sua conta ainda não foi aprovada");
+        else
+            filterChain.doFilter(request, response);
     }
 
     private boolean isPublicRequest(HttpServletRequest request) {
