@@ -1,6 +1,7 @@
 package com.labi.schedulerjava.adapters.config;
 
 import com.labi.schedulerjava.adapters.security.JwtTokenFilter;
+import com.labi.schedulerjava.adapters.security.UserApprovedFilter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -23,6 +24,9 @@ public class SecurityConfig {
     @Autowired
     private JwtTokenFilter jwtTokenFilter;
 
+    @Autowired
+    private UserApprovedFilter userApprovedFilter;
+
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
@@ -32,7 +36,8 @@ public class SecurityConfig {
                         .requestMatchers(HttpMethod.POST, "/api/v1/auth/signin").permitAll()
                         .requestMatchers(HttpMethod.POST, "/api/v1/auth/signup").permitAll()
                         .anyRequest().authenticated())
-                .addFilterBefore(jwtTokenFilter, UsernamePasswordAuthenticationFilter.class);
+                .addFilterBefore(jwtTokenFilter, UsernamePasswordAuthenticationFilter.class)
+                .addFilterAfter(userApprovedFilter, JwtTokenFilter.class);
 
         return http.build();
     }
