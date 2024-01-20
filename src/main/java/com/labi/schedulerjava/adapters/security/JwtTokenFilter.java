@@ -32,6 +32,8 @@ public class JwtTokenFilter extends OncePerRequestFilter {
 
             if (token != null && jwtTokenProvider.validateToken(token)) {
                 UserDetails userDetails = userDetailsService.loadUserByUsername(jwtTokenProvider.getEmailFromToken(token));
+                if (!userDetailsService.isUserAccountApproved(userDetails))
+                    throw new AccessDeniedException("Sua conta não está aprovada");
 
                 var authentication = new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
                 SecurityContextHolder.getContext().setAuthentication(authentication);

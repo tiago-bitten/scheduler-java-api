@@ -2,6 +2,7 @@ package com.labi.schedulerjava.adapters.security;
 
 import com.labi.schedulerjava.core.domain.model.BaseEntity;
 import com.labi.schedulerjava.core.domain.model.User;
+import lombok.Data;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -74,5 +75,9 @@ public class UserDetailsImp extends BaseEntity implements UserDetails {
     @Override
     public boolean isEnabled() {
         return true;
+    }
+
+    public boolean getIsApproved() {
+        return this.isApproved;
     }
 }

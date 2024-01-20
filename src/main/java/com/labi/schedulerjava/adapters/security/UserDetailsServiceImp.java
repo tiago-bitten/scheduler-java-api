@@ -21,4 +21,12 @@ public class UserDetailsServiceImp implements UserDetailsService {
 
         return UserDetailsImp.build(user);
     }
+
+    public boolean isUserAccountApproved(UserDetails userDetails) {
+        String email = userDetails.getUsername();
+        User user = userService.findByEmail(email)
+                .orElseThrow(() -> new UsernameNotFoundException("Usuário não encontrado"));
+
+        return user.getIsApproved();
+    }
 }
