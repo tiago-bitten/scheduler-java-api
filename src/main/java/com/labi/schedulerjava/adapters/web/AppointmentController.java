@@ -14,11 +14,11 @@ public class AppointmentController {
     private CreateAppointmentUseCase appointmentUseCase;
 
     @PostMapping("/appoint")
-    public ResponseEntity<Void> appoint(@RequestParam Long scheduleId,
+    public ResponseEntity<Void> appoint(@RequestHeader("Authorization") String authHeader,
+                                        @RequestParam Long scheduleId,
                                         @RequestParam Long volunteerId,
-                                        @RequestParam Long ministryId,
-                                        @RequestParam Long userId) {
-        appointmentUseCase.execute(new CreateAppointmentUseCase.InputValues(scheduleId, volunteerId, ministryId, userId));
+                                        @RequestParam Long ministryId) {
+        appointmentUseCase.execute(new CreateAppointmentUseCase.InputValues(scheduleId, volunteerId, ministryId, authHeader));
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 }

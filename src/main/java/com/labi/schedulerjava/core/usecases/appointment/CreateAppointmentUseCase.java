@@ -1,6 +1,7 @@
 package com.labi.schedulerjava.core.usecases.appointment;
 
 import com.labi.schedulerjava.adapters.persistence.AppointmentRepository;
+import com.labi.schedulerjava.adapters.security.JwtTokenProvider;
 import com.labi.schedulerjava.core.domain.exception.BusinessRuleException;
 import com.labi.schedulerjava.core.domain.model.Appointment;
 import com.labi.schedulerjava.core.domain.model.Schedule;
@@ -19,9 +20,6 @@ public class CreateAppointmentUseCase extends UseCase<CreateAppointmentUseCase.I
     private AppointmentRepository appointmentRepository;
 
     @Autowired
-    private UserService userService;
-
-    @Autowired
     private ScheduleService scheduleService;
 
     @Autowired
@@ -33,9 +31,18 @@ public class CreateAppointmentUseCase extends UseCase<CreateAppointmentUseCase.I
     @Autowired
     private UnavailableDateService unavailableDateService;
 
+    @Autowired
+    private UserMinistryService userMinistryService;
+
+    @Autowired
+    private JwtTokenProvider jwtTokenProvider;
+
     @Override
     public OutputValues execute(InputValues input) {
-        User user = userService.findById(input.getUserId()).get();
+        User user = jwtTokenProvider.getUserFromToken(input.authHeader);
+        if (!userMinistryService.validateUserMinistryRelation(user.getId(), input.ministryId))
+            throw new BusinessRuleException("Você não tem permissão para agendar voluntários neste ministério");
+
         Schedule schedule = scheduleService.validateSchedule(input.getScheduleId());
         VolunteerMinistry volunteerMinistry = volunteerMinistryService.validateVolunteerMinistry(input.volunteerId, input.ministryId);
 
@@ -55,7 +62,7 @@ public class CreateAppointmentUseCase extends UseCase<CreateAppointmentUseCase.I
         Long scheduleId;
         Long volunteerId;
         Long ministryId;
-        Long userId;
+        String authHeader;
     }
 
     @Value

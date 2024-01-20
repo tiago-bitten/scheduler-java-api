@@ -37,7 +37,7 @@ public class UserMinistryService {
         });
     }
 
-    public boolean checkUserMinistryRelation(Long userId, Long ministryId) {
+    public boolean validateUserMinistryRelation(Long userId, Long ministryId) {
         return userMinistryRepository.existsByUserIdAndMinistryId(userId, ministryId);
     }
 }

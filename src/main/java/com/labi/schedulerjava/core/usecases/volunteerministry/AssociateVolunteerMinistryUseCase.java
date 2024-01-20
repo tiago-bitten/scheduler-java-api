@@ -42,7 +42,7 @@ public class AssociateVolunteerMinistryUseCase extends UseCase<AssociateVoluntee
     @Override
     public OutputValues execute(InputValues input) {
         User user = jwtTokenProvider.getUserFromToken(input.authHeader);
-        if (!userMinistryService.checkUserMinistryRelation(user.getId(), input.ministryId))
+        if (!userMinistryService.validateUserMinistryRelation(user.getId(), input.ministryId))
             throw new BusinessRuleException("Você não tem permissão para associar voluntários a este ministério");
 
         VolunteerMinistry volunteerMinistry;
