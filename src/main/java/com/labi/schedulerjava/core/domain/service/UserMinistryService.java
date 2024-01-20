@@ -36,4 +36,8 @@ public class UserMinistryService {
             userMinistryRepository.save(userMinistry);
         });
     }
+
+    public boolean checkUserMinistryRelation(Long userId, Long ministryId) {
+        return userMinistryRepository.existsByUserIdAndMinistryId(userId, ministryId);
+    }
 }

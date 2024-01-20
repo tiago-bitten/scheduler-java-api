@@ -1,13 +1,13 @@
 package com.labi.schedulerjava.core.usecases.volunteerministry;
 
 import com.labi.schedulerjava.adapters.persistence.VolunteerMinistryRepository;
+import com.labi.schedulerjava.adapters.security.JwtTokenProvider;
 import com.labi.schedulerjava.core.domain.exception.BusinessRuleException;
 import com.labi.schedulerjava.core.domain.model.Ministry;
+import com.labi.schedulerjava.core.domain.model.User;
 import com.labi.schedulerjava.core.domain.model.Volunteer;
 import com.labi.schedulerjava.core.domain.model.VolunteerMinistry;
-import com.labi.schedulerjava.core.domain.service.MinistryService;
-import com.labi.schedulerjava.core.domain.service.VolunteerMinistryService;
-import com.labi.schedulerjava.core.domain.service.VolunteerService;
+import com.labi.schedulerjava.core.domain.service.*;
 import com.labi.schedulerjava.core.usecases.UseCase;
 import lombok.Value;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,8 +30,21 @@ public class AssociateVolunteerMinistryUseCase extends UseCase<AssociateVoluntee
     @Autowired
     private VolunteerMinistryService volunteerMinistryService;
 
+    @Autowired
+    private JwtTokenProvider jwtTokenProvider;
+
+    @Autowired
+    private UserService userService;
+
+    @Autowired
+    private UserMinistryService userMinistryService;
+
     @Override
     public OutputValues execute(InputValues input) {
+        User user = jwtTokenProvider.getUserFromToken(input.authHeader);
+        if (!userMinistryService.checkUserMinistryRelation(user.getId(), input.ministryId))
+            throw new BusinessRuleException("Você não tem permissão para associar voluntários a este ministério");
+
         VolunteerMinistry volunteerMinistry;
         Optional<VolunteerMinistry> existsVolunteerMinistry =
                 volunteerMinistryService.findByVolunteerAndMinistry(input.volunteerId, input.ministryId);
@@ -63,6 +76,7 @@ public class AssociateVolunteerMinistryUseCase extends UseCase<AssociateVoluntee
     public static class InputValues implements UseCase.InputValues {
         Long volunteerId;
         Long ministryId;
+        String authHeader;
     }
 
     @Value

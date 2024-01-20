@@ -18,9 +18,10 @@ public class VolunteerMinistryController {
     private DisassociateVolunteerMinistryUseCase disassociateVolunteerMinistryUseCase;
 
     @PostMapping("/associate")
-    public ResponseEntity<Void> associate(@RequestParam Long volunteerId,
+    public ResponseEntity<Void> associate(@RequestHeader("Authorization") String authHeader,
+                                          @RequestParam Long volunteerId,
                                           @RequestParam Long ministryId) {
-        associateVolunteerMinistryUseCase.execute(new AssociateVolunteerMinistryUseCase.InputValues(volunteerId, ministryId));
+        associateVolunteerMinistryUseCase.execute(new AssociateVolunteerMinistryUseCase.InputValues(volunteerId, ministryId, authHeader));
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 
