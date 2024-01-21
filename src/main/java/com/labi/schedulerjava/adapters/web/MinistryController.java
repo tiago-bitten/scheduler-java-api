@@ -20,8 +20,9 @@ public class MinistryController {
     private FindMinistriesUseCase findMinistriesUseCase;
 
     @PostMapping("/create")
-    public ResponseEntity<Void> create(@RequestBody CreateMinistryDto dto) {
-        createMinistryUseCase.execute(new CreateMinistryUseCase.InputValues(dto));
+    public ResponseEntity<Void> create(@RequestHeader("Authorization") String authHeader,
+                                       @RequestBody CreateMinistryDto dto) {
+        createMinistryUseCase.execute(new CreateMinistryUseCase.InputValues(dto, authHeader));
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 
