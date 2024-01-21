@@ -41,7 +41,7 @@ public class SignUpUseCase extends UseCase<SignUpUseCase.InputValues, SignUpUseC
 
     @Value
     public static class InputValues implements UseCase.InputValues {
-        private SignUpDto dto;
+        SignUpDto dto;
     }
 
     @Value
