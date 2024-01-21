@@ -1,9 +1,6 @@
 package com.labi.schedulerjava.core.domain.model;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.OneToMany;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
@@ -33,10 +30,10 @@ public class Ministry extends BaseEntity {
     @Column(name = "created_at", nullable = false, updatable = false)
     private Instant createdAt;
 
-    @OneToMany(mappedBy = "ministry")
+    @OneToMany(mappedBy = "ministry", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<VolunteerMinistry> volunteerMinistries;
 
-    @OneToMany(mappedBy = "ministry")
+    @OneToMany(mappedBy = "ministry", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<UserMinistry> userMinistries;
 
     public Ministry(String name, String description, String color) {

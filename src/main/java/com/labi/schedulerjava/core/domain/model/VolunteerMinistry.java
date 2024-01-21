@@ -25,7 +25,7 @@ public class VolunteerMinistry extends BaseEntity{
     @Column(name = "is_active")
     private Boolean isActive;
 
-    @OneToMany(mappedBy = "volunteerMinistry")
+    @OneToMany(mappedBy = "volunteerMinistry", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Appointment> appointments;
 
     public VolunteerMinistry(Volunteer volunteer, Ministry ministry) {

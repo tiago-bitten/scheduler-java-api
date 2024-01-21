@@ -40,7 +40,7 @@ public class CreateAppointmentUseCase extends UseCase<CreateAppointmentUseCase.I
     @Override
     public OutputValues execute(InputValues input) {
         User user = jwtTokenProvider.getUserFromToken(input.authHeader);
-        if (!userMinistryService.validateUserMinistryRelation(user.getId(), input.ministryId))
+        if (!userMinistryService.existsUserMinistryRelation(user.getId(), input.ministryId))
             throw new BusinessRuleException("Você não tem permissão para agendar voluntários neste ministério");
 
         Schedule schedule = scheduleService.validateSchedule(input.getScheduleId());

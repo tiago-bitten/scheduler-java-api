@@ -1,9 +1,12 @@
 package com.labi.schedulerjava.core.usecases.volunteerministry;
 
 import com.labi.schedulerjava.adapters.persistence.VolunteerMinistryRepository;
+import com.labi.schedulerjava.adapters.security.JwtTokenProvider;
 import com.labi.schedulerjava.core.domain.exception.BusinessRuleException;
+import com.labi.schedulerjava.core.domain.model.User;
 import com.labi.schedulerjava.core.domain.model.VolunteerMinistry;
 import com.labi.schedulerjava.core.domain.service.MinistryService;
+import com.labi.schedulerjava.core.domain.service.UserMinistryService;
 import com.labi.schedulerjava.core.domain.service.VolunteerMinistryService;
 import com.labi.schedulerjava.core.domain.service.VolunteerService;
 import com.labi.schedulerjava.core.usecases.UseCase;
@@ -26,8 +29,18 @@ public class DisassociateVolunteerMinistryUseCase extends UseCase<DisassociateVo
     @Autowired
     private VolunteerMinistryService volunteerMinistryService;
 
+    @Autowired
+    private JwtTokenProvider jwtTokenProvider;
+
+    @Autowired
+    private UserMinistryService userMinistryService;
+
     @Override
     public OutputValues execute(InputValues input) {
+        User user = jwtTokenProvider.getUserFromToken(input.authHeader);
+        if (!userMinistryService.existsUserMinistryRelation(user.getId(), input.ministryId))
+            throw new BusinessRuleException("Você não tem permissão para desassociar voluntários deste ministério");
+
         VolunteerMinistry volunteerMinistry = volunteerMinistryService.findByVolunteerAndMinistry(input.volunteerId, input.ministryId)
                         .orElseThrow(() -> new BusinessRuleException("Não existe vínculo entre o voluntário e o ministério"));
 
@@ -45,6 +58,7 @@ public class DisassociateVolunteerMinistryUseCase extends UseCase<DisassociateVo
     public static class InputValues implements UseCase.InputValues {
         Long volunteerId;
         Long ministryId;
+        String authHeader;
     }
 
     @Value
