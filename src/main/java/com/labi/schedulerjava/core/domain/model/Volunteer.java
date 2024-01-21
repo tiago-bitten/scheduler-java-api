@@ -40,6 +40,9 @@ public class Volunteer extends BaseEntity {
     @OneToMany(mappedBy = "volunteer")
     private List<UnavailableDate> unavailableDates;
 
+    @ManyToOne(fetch = FetchType.LAZY)
+    public Group group;
+
     public Volunteer(String name, String lastName, String phone, LocalDate birthDate) {
         this.name = name;
         this.lastName = lastName;
