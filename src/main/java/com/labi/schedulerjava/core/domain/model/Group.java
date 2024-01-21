@@ -32,4 +32,9 @@ public class Group extends BaseEntity {
         this.createdAt = Instant.now();
         this.updatedAt = Instant.now();
     }
+
+    public void addVolunteer(Volunteer volunteer) {
+        this.volunteers.add(volunteer);
+        volunteer.setGroup(this);
+    }
 }
