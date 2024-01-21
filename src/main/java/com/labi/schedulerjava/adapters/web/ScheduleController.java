@@ -27,6 +27,9 @@ public class ScheduleController {
     @Autowired
     private ReOpenScheduleUseCase reOpenScheduleUseCase;
 
+    @Autowired
+    private RemoveScheduleUseCase removeScheduleUseCase;
+
     @PostMapping("/open")
     public ResponseEntity<Void> open(@RequestBody CreateScheduleDto dto) {
         openScheduleUseCase.execute(new OpenScheduleUseCase.InputValues(dto));
@@ -58,5 +61,11 @@ public class ScheduleController {
         UseCase.OutputValues outputValues =
                 findSchedulesUseCase.execute(new FindSchedulesUseCase.InputValues(month, year));
         return new ResponseEntity<>(outputValues, HttpStatus.OK);
+    }
+
+    @DeleteMapping("/remove")
+    public ResponseEntity<Void> remove(@RequestParam Long scheduleId) {
+        removeScheduleUseCase.execute(new RemoveScheduleUseCase.InputValues(scheduleId));
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 }
