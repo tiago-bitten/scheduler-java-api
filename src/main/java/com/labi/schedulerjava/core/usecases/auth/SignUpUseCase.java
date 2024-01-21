@@ -25,9 +25,8 @@ public class SignUpUseCase extends UseCase<SignUpUseCase.InputValues, SignUpUseC
 
     @Override
     public OutputValues execute(InputValues input) {
-        if (userRepository.findByEmail(input.dto.email()).isPresent()) {
+        if (userRepository.findByEmail(input.dto.email()).isPresent())
             throw new BusinessRuleException("Este e-mail já está cadastrado");
-        }
 
         userMinistryService.validateMinistries(input.dto.ministries());
 

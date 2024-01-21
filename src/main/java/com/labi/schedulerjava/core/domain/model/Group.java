@@ -1,13 +1,11 @@
 package com.labi.schedulerjava.core.domain.model;
 
-import jakarta.persistence.CascadeType;
-import jakarta.persistence.Entity;
-import jakarta.persistence.OneToMany;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 
+import java.time.Instant;
 import java.util.List;
 
 @Data
@@ -17,6 +15,21 @@ import java.util.List;
 @Table(name = "groups")
 public class Group extends BaseEntity {
 
+    @Column(name = "name", nullable = false)
+    private String name;
+
+    @Column(name = "created_at", nullable = false, updatable = false)
+    private Instant createdAt;
+
+    @Column(name = "updated_at", nullable = false)
+    private Instant updatedAt;
+
     @OneToMany(mappedBy = "group", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Volunteer> volunteers;
+
+    public Group(String name) {
+        this.name = name;
+        this.createdAt = Instant.now();
+        this.updatedAt = Instant.now();
+    }
 }
