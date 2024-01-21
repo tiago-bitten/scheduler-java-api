@@ -33,7 +33,7 @@ public class CreateMinistryUseCase extends UseCase<CreateMinistryUseCase.InputVa
             throw new BusinessRuleException("Este ministério já está cadastrado");
         }
 
-        Ministry ministry = new Ministry(input.dto.name(), input.dto.description(), input.dto.color());
+        Ministry ministry = new Ministry(input.dto.name().toUpperCase(), input.dto.description(), input.dto.color());
         ministryRepository.save(ministry);
 
         User user = jwtTokenProvider.getUserFromToken(input.authHeader);
