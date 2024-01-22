@@ -36,7 +36,7 @@ public class SignInUseCase extends UseCase<SignInUseCase.InputValues, SignInUseC
             throw new UserAccountNotApprovedException();
         }
 
-        return new OutputValues(jwtTokenProvider.generateToken(input.dto.email()));
+        return new OutputValues(jwtTokenProvider.generateToken(user));
     }
 
     @Value

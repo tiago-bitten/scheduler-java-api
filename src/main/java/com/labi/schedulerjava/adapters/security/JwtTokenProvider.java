@@ -9,6 +9,7 @@ import com.labi.schedulerjava.core.domain.model.User;
 import com.labi.schedulerjava.core.domain.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.security.core.GrantedAuthority;
 import org.springframework.stereotype.Service;
 
 import java.util.Date;
@@ -25,12 +26,17 @@ public class JwtTokenProvider {
     @Autowired
     private UserService userService;
 
-    public String generateToken(String email) {
+    public String generateToken(User user) {
         try {
+            String[] ministries = user.getUserMinistries().stream()
+                    .map(userMinistry -> userMinistry.getMinistry().getName())
+                    .toArray(String[]::new);
+
             Algorithm algorithm = Algorithm.HMAC256(secret);
             return JWT.create()
                     .withIssuer("labi")
-                    .withSubject(email)
+                    .withSubject(user.getEmail())
+                    .withArrayClaim("ministries", ministries)
                     .withExpiresAt(new Date(System.currentTimeMillis() + expiration))
                     .sign(algorithm);
         }
@@ -55,10 +61,8 @@ public class JwtTokenProvider {
     }
 
     public String resolveToken(String token) {
-        if (token != null && token.startsWith("Bearer ")) {
+        if (token != null && token.startsWith("Bearer "))
             return token.substring(7);
-        }
-
         return null;
     }
 
@@ -73,9 +77,8 @@ public class JwtTokenProvider {
 
     public User getUserFromToken(String authHeader) {
         String token = resolveToken(authHeader);
-        User user = userService.findByEmail(getEmailFromToken(token))
-                .orElseThrow(() -> new BusinessRuleException("Usuário não encontrado"));
 
-        return user;
+        return userService.findByEmail(getEmailFromToken(token))
+                .orElseThrow(() -> new BusinessRuleException("Usuário não encontrado"));
     }
 }
