@@ -31,7 +31,10 @@ public class AssociateVolunteerWithGroupUseCase extends UseCase<AssociateVolunte
 
         for (Long volunteerId : input.dto.volunteersId()) {
             Optional<Volunteer> existsVolunteer = volunteerService.findById(volunteerId);
-            existsVolunteer.ifPresent(group::addVolunteer);
+            if (existsVolunteer.isPresent()) {
+                group.addVolunteer(existsVolunteer.get());
+                groupRepository.save(group);
+            }
         }
 
         return new OutputValues();
