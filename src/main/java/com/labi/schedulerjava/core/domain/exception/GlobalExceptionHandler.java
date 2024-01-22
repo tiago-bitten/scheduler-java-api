@@ -4,6 +4,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
@@ -34,6 +35,19 @@ public class GlobalExceptionHandler {
         ErrorMessage errorMessage = new ErrorMessage(
                 Instant.now(),
                 e.getMessage(),
+                HttpStatus.UNAUTHORIZED.value()
+        );
+
+        return new ResponseEntity<>(errorMessage, HttpStatus.UNAUTHORIZED);
+    }
+
+    @ExceptionHandler(BadCredentialsException.class)
+    public ResponseEntity<ErrorMessage> handleBadCredentialsException(BadCredentialsException e) {
+        logger.error("Bad credentials exception {}", e.getMessage());
+
+        ErrorMessage errorMessage = new ErrorMessage(
+                Instant.now(),
+                "E-mail ou senha inválidos",
                 HttpStatus.UNAUTHORIZED.value()
         );
 

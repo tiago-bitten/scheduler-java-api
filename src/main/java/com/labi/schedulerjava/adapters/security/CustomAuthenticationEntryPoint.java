@@ -26,7 +26,7 @@ public class CustomAuthenticationEntryPoint implements AuthenticationEntryPoint 
 
         ErrorMessage errorMessage = new ErrorMessage(
                 Instant.now(),
-                authException.getMessage(),
+                "Você não está autenticado",
                 HttpServletResponse.SC_UNAUTHORIZED
         );
 
