@@ -5,6 +5,7 @@ import com.labi.schedulerjava.core.domain.exception.BusinessRuleException;
 import com.labi.schedulerjava.core.domain.model.Group;
 import com.labi.schedulerjava.core.domain.model.Volunteer;
 import com.labi.schedulerjava.core.usecases.UseCase;
+import com.labi.schedulerjava.dtos.ReadGroupDto;
 import com.labi.schedulerjava.dtos.ReadMinistryDto;
 import com.labi.schedulerjava.dtos.ReadVolunteerDto;
 import lombok.Value;
@@ -26,9 +27,14 @@ public class FindGroupUseCase extends UseCase<FindGroupUseCase.InputValues, Find
 
         List<Volunteer> volunteers = group.getVolunteers();
 
-        return new OutputValues(volunteers.stream()
-                .map(this::toDto)
-                .toList());
+        return new OutputValues(
+                new ReadGroupDto(
+                        group.getId(),
+                        group.getName(),
+                        volunteers.stream()
+                                .map(this::toDto)
+                                .toList()
+                ));
     }
 
     @Value
@@ -38,7 +44,7 @@ public class FindGroupUseCase extends UseCase<FindGroupUseCase.InputValues, Find
 
     @Value
     public static class OutputValues implements UseCase.OutputValues {
-        List<ReadVolunteerDto> volunteers;
+        ReadGroupDto group;
     }
 
     private ReadVolunteerDto toDto(Volunteer entity) {
