@@ -54,6 +54,7 @@ public class CreateAppointmentUseCase extends UseCase<CreateAppointmentUseCase.I
 
         Appointment appointment = new Appointment(schedule, volunteerMinistry, user);
         appointmentRepository.save(appointment);
+
         return new OutputValues();
     }
 

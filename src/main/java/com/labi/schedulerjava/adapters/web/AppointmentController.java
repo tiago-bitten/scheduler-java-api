@@ -1,6 +1,7 @@
 package com.labi.schedulerjava.adapters.web;
 
 import com.labi.schedulerjava.core.usecases.appointment.CreateAppointmentUseCase;
+import com.labi.schedulerjava.core.usecases.appointment.CreateGroupAppointmentUseCase;
 import com.labi.schedulerjava.core.usecases.appointment.RemoveAppointmentUseCase;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -15,6 +16,9 @@ public class AppointmentController {
     private CreateAppointmentUseCase appointmentUseCase;
 
     @Autowired
+    private CreateGroupAppointmentUseCase createGroupAppointmentUseCase;
+
+    @Autowired
     private RemoveAppointmentUseCase removeAppointmentUseCase;
 
     @PostMapping("/appoint")
@@ -23,6 +27,15 @@ public class AppointmentController {
                                         @RequestParam Long volunteerId,
                                         @RequestParam Long ministryId) {
         appointmentUseCase.execute(new CreateAppointmentUseCase.InputValues(scheduleId, volunteerId, ministryId, authHeader));
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+    }
+
+    @PostMapping("/appoint/group")
+    public ResponseEntity<Void> appointGroup(@RequestHeader("Authorization") String authHeader,
+                                        @RequestParam Long scheduleId,
+                                        @RequestParam Long groupId,
+                                        @RequestParam Long ministryId) {
+        createGroupAppointmentUseCase.execute(new CreateGroupAppointmentUseCase.InputValues(scheduleId, groupId, ministryId, authHeader));
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 

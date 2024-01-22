@@ -28,7 +28,7 @@ public class VolunteerMinistryService {
                 .orElseThrow(() -> new BusinessRuleException("Vinculo voluntário e ministério não encontrado"));
 
         if (!volunteerMinistry.getIsActive())
-            throw new BusinessRuleException("Voluntário não pode ser agendado neste ministério, pois o vinculo está inativo");
+            throw new BusinessRuleException("Vinculo voluntário e ministério não encontrado");
 
         return volunteerMinistry;
     }
