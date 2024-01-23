@@ -49,9 +49,11 @@ public class GroupController {
     }
 
     @GetMapping("{name}")
-    public ResponseEntity<UseCase.OutputValues> findGroupByName(@PathVariable String name) {
+    public ResponseEntity<UseCase.OutputValues> findGroupByName(@PathVariable String name,
+                                                                @RequestParam Long ministryId,
+                                                                @RequestParam Long scheduleId) {
         UseCase.OutputValues outputValues =
-                findGroupByNameUseCase.execute(new FindGroupByNameUseCase.InputValues(name));
+                findGroupByNameUseCase.execute(new FindGroupByNameUseCase.InputValues(name, ministryId, scheduleId));
         return new ResponseEntity<>(outputValues, HttpStatus.OK);
     }
 }
