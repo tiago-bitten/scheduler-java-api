@@ -41,10 +41,10 @@ public class GroupController {
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 
-    @GetMapping
-    public ResponseEntity<UseCase.OutputValues> findGroup(@RequestParam Long groupId) {
+    @GetMapping("{id}")
+    public ResponseEntity<UseCase.OutputValues> findGroup(@PathVariable Long id) {
         UseCase.OutputValues outputValues =
-                findGroupUseCase.execute(new FindGroupUseCase.InputValues(groupId));
+                findGroupUseCase.execute(new FindGroupUseCase.InputValues(id));
         return new ResponseEntity<>(outputValues, HttpStatus.OK);
     }
 

@@ -26,9 +26,9 @@ public class AppointmentController {
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 
-    @DeleteMapping("/remove")
-    public ResponseEntity<Void> remove(@RequestParam Long appointmentId) {
-        removeAppointmentUseCase.execute(new RemoveAppointmentUseCase.InputValues(appointmentId));
+    @DeleteMapping("{id}")
+    public ResponseEntity<Void> remove(@PathVariable Long id) {
+        removeAppointmentUseCase.execute(new RemoveAppointmentUseCase.InputValues(id));
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 }
