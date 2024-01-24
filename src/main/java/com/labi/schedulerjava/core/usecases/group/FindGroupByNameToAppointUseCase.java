@@ -18,7 +18,7 @@ import java.util.HashSet;
 import java.util.Set;
 
 @Component
-public class FindGroupByNameUseCase extends UseCase<FindGroupByNameUseCase.InputValues, FindGroupByNameUseCase.OutputValues> {
+public class FindGroupByNameToAppointUseCase extends UseCase<FindGroupByNameToAppointUseCase.InputValues, FindGroupByNameToAppointUseCase.OutputValues> {
 
     @Autowired
     private GroupRepository groupRepository;
@@ -50,11 +50,17 @@ public class FindGroupByNameUseCase extends UseCase<FindGroupByNameUseCase.Input
                 .orElseThrow(() -> new BusinessRuleException("Horário não encontrado"));
 
         Set<Volunteer> volunteers = new HashSet<>();
-        group.getVolunteers().stream().forEach(volunteer -> {
-            volunteerMinistryService.validateVolunteerMinistry(volunteer.getId(), input.ministryId);
+        group.getVolunteers().forEach(volunteer -> {
+            if (volunteerMinistryService.findByVolunteerAndMinistry(volunteer.getId(), input.ministryId).isEmpty())
+                return;
 
-            if (!appointmentService.validateAppointment(schedule, volunteer.getId()) && !unavailableDateService.isUnavailableDate(schedule.getStartDate(), schedule.getEndDate(), volunteer.getId()))
-                volunteers.add(volunteer);
+            if (appointmentService.validateAppointment(schedule, volunteer.getId()))
+                return;
+
+            if (unavailableDateService.isUnavailableDate(schedule.getStartDate(), schedule.getEndDate(), volunteer.getId()))
+                return;
+
+            volunteers.add(volunteer);
         });
 
 

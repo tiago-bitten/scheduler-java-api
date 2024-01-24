@@ -3,7 +3,7 @@ package com.labi.schedulerjava.adapters.web;
 import com.labi.schedulerjava.core.usecases.UseCase;
 import com.labi.schedulerjava.core.usecases.group.AssociateVolunteerWithGroupUseCase;
 import com.labi.schedulerjava.core.usecases.group.CreateGroupUseCase;
-import com.labi.schedulerjava.core.usecases.group.FindGroupByNameUseCase;
+import com.labi.schedulerjava.core.usecases.group.FindGroupByNameToAppointUseCase;
 import com.labi.schedulerjava.core.usecases.group.FindGroupUseCase;
 import com.labi.schedulerjava.dtos.AssociateVolunteerWithGroupDto;
 import com.labi.schedulerjava.dtos.CreateGroupDto;
@@ -26,7 +26,7 @@ public class GroupController {
     private FindGroupUseCase findGroupUseCase;
 
     @Autowired
-    private FindGroupByNameUseCase findGroupByNameUseCase;
+    private FindGroupByNameToAppointUseCase findGroupByNameToAppointUseCase;
 
     @PostMapping("/create")
     public ResponseEntity<Void> create(@RequestBody CreateGroupDto dto) {
@@ -53,7 +53,7 @@ public class GroupController {
                                                                 @RequestParam Long ministryId,
                                                                 @RequestParam Long scheduleId) {
         UseCase.OutputValues outputValues =
-                findGroupByNameUseCase.execute(new FindGroupByNameUseCase.InputValues(name, ministryId, scheduleId));
+                findGroupByNameToAppointUseCase.execute(new FindGroupByNameToAppointUseCase.InputValues(name, ministryId, scheduleId));
         return new ResponseEntity<>(outputValues, HttpStatus.OK);
     }
 }
