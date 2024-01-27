@@ -5,6 +5,7 @@ import com.labi.schedulerjava.core.usecases.auth.SignInUseCase;
 import com.labi.schedulerjava.core.usecases.auth.SignUpUseCase;
 import com.labi.schedulerjava.dtos.SignInDto;
 import com.labi.schedulerjava.dtos.SignUpDto;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -24,13 +25,13 @@ public class AuthController {
     private SignInUseCase signInUseCase;
 
     @PostMapping("/signup")
-    public ResponseEntity<Void> signup(@RequestBody SignUpDto dto) {
+    public ResponseEntity<Void> signup(@RequestBody @Valid SignUpDto dto) {
         signUpUseCase.execute(new SignUpUseCase.InputValues(dto));
         return new ResponseEntity<>(HttpStatus.CREATED);
     }
 
     @PostMapping("/signin")
-    public ResponseEntity<UseCase.OutputValues> signin(@RequestBody SignInDto dto) {
+    public ResponseEntity<UseCase.OutputValues> signin(@RequestBody @Valid SignInDto dto) {
         UseCase.OutputValues output = signInUseCase.execute(new SignInUseCase.InputValues(dto));
         return new ResponseEntity<>(output, HttpStatus.OK);
     }

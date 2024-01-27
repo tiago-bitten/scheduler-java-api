@@ -5,6 +5,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.BadCredentialsException;
+import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
@@ -52,5 +53,18 @@ public class GlobalExceptionHandler {
         );
 
         return new ResponseEntity<>(errorMessage, HttpStatus.UNAUTHORIZED);
+    }
+
+    @ExceptionHandler(MethodArgumentNotValidException.class)
+    public ResponseEntity<ErrorMessage> handleMethodArgumentNotValidException(MethodArgumentNotValidException e) {
+        logger.error("Method argument not valid exception {}", e.getMessage());
+
+        ErrorMessage errorMessage = new ErrorMessage(
+                Instant.now(),
+                e.getBindingResult().getFieldError().getDefaultMessage(),
+                HttpStatus.BAD_REQUEST.value()
+        );
+
+        return new ResponseEntity<>(errorMessage, HttpStatus.BAD_REQUEST);
     }
 }
