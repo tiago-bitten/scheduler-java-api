@@ -2,6 +2,7 @@ package com.labi.schedulerjava.adapters.web;
 
 import com.labi.schedulerjava.core.usecases.UseCase;
 import com.labi.schedulerjava.core.usecases.ministry.CreateMinistryUseCase;
+import com.labi.schedulerjava.core.usecases.ministry.FindMinistriesToSignUpUseCase;
 import com.labi.schedulerjava.core.usecases.ministry.FindMinistriesUseCase;
 import com.labi.schedulerjava.dtos.CreateMinistryDto;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,6 +20,9 @@ public class MinistryController {
     @Autowired
     private FindMinistriesUseCase findMinistriesUseCase;
 
+    @Autowired
+    private FindMinistriesToSignUpUseCase findMinistriesToSignUpUseCase;
+
     @PostMapping("/create")
     public ResponseEntity<Void> create(@RequestHeader("Authorization") String authHeader,
                                        @RequestBody CreateMinistryDto dto) {
@@ -30,6 +34,13 @@ public class MinistryController {
     public ResponseEntity<UseCase.OutputValues> findAll(@RequestParam(required = false) Long volunteerId) {
         UseCase.OutputValues outputValues =
                 findMinistriesUseCase.execute(new FindMinistriesUseCase.InputValues(volunteerId));
+        return new ResponseEntity<>(outputValues, HttpStatus.OK);
+    }
+
+    @GetMapping("/signup")
+    public ResponseEntity<UseCase.OutputValues> findAllToSignUp() {
+        UseCase.OutputValues outputValues =
+                findMinistriesToSignUpUseCase.execute(new FindMinistriesToSignUpUseCase.InputValues());
         return new ResponseEntity<>(outputValues, HttpStatus.OK);
     }
 }
