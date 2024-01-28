@@ -11,7 +11,5 @@ public interface VolunteerRepository extends JpaRepository<Volunteer, Long> {
     @Query("SELECT v FROM Volunteer v JOIN VolunteerMinistry vm ON v.id = vm.volunteer.id WHERE vm.ministry.id = ?1 AND vm.isActive = true")
     List<Volunteer> findAll(Long ministryId);
 
-    @Override
-    @Query("SELECT v FROM Volunteer v JOIN VolunteerMinistry vm ON v.id = vm.volunteer.id WHERE vm.isActive = true")
     List<Volunteer> findAll();
 }

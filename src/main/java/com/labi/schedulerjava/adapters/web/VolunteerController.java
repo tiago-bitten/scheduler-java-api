@@ -21,9 +21,10 @@ public class VolunteerController {
     private FindVolunteersUseCase findVolunteersUseCase;
 
     @PostMapping("/create")
-    public ResponseEntity<Void> create(@RequestBody CreateVolunteerDto dto) {
-        createVolunteerUseCase.execute(new CreateVolunteerUseCase.InputValues(dto));
-        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+    public ResponseEntity<UseCase.OutputValues> create(@RequestBody CreateVolunteerDto dto) {
+        UseCase.OutputValues outputValues =
+                createVolunteerUseCase.execute(new CreateVolunteerUseCase.InputValues(dto));
+        return new ResponseEntity<>(outputValues, HttpStatus.CREATED);
     }
 
     @GetMapping
