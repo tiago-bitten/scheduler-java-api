@@ -31,10 +31,10 @@ public class UserController {
     }
 
     @PutMapping("/approve")
-    public ResponseEntity<Void> approve(@RequestParam Long userToApproveId,
-                                        @RequestParam Long userApproverId,
+    public ResponseEntity<Void> approve(@RequestHeader("Authorization") String authHeader,
+                                        @RequestParam Long userToApproveId,
                                         @RequestParam(defaultValue = "false") Boolean isSuperUser) {
-        approveUserUseCase.execute(new ApproveUserUseCase.InputValues(userToApproveId, userApproverId, isSuperUser));
+        approveUserUseCase.execute(new ApproveUserUseCase.InputValues(authHeader, userToApproveId, isSuperUser));
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 

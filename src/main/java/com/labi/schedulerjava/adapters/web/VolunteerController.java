@@ -4,6 +4,7 @@ import com.labi.schedulerjava.core.usecases.UseCase;
 import com.labi.schedulerjava.core.usecases.volunteer.CreateVolunteerUseCase;
 import com.labi.schedulerjava.core.usecases.volunteer.FindVolunteersUseCase;
 import com.labi.schedulerjava.dtos.CreateVolunteerDto;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -21,7 +22,7 @@ public class VolunteerController {
     private FindVolunteersUseCase findVolunteersUseCase;
 
     @PostMapping("/create")
-    public ResponseEntity<UseCase.OutputValues> create(@RequestBody CreateVolunteerDto dto) {
+    public ResponseEntity<UseCase.OutputValues> create(@RequestBody @Valid CreateVolunteerDto dto) {
         UseCase.OutputValues outputValues =
                 createVolunteerUseCase.execute(new CreateVolunteerUseCase.InputValues(dto));
         return new ResponseEntity<>(outputValues, HttpStatus.CREATED);

@@ -24,6 +24,7 @@ public class FindUsersToApproveUseCase extends UseCase<FindUsersToApproveUseCase
                         user.getName(),
                         user.getEmail(),
                         user.getIsApproved(),
+                        user.getIsSuperUser(),
                         user.getCreatedAt(),
                         user.getUserMinistries().stream()
                                 .map(userMinistry -> new ReadMinistryDto(
@@ -42,6 +43,6 @@ public class FindUsersToApproveUseCase extends UseCase<FindUsersToApproveUseCase
 
     @Value
     public static class OutputValues implements UseCase.OutputValues {
-        private List<ReadUserDto> users;
+        List<ReadUserDto> users;
     }
 }

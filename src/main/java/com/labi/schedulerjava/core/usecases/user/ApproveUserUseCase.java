@@ -1,6 +1,7 @@
 package com.labi.schedulerjava.core.usecases.user;
 
 import com.labi.schedulerjava.adapters.persistence.UserRepository;
+import com.labi.schedulerjava.adapters.security.JwtTokenProvider;
 import com.labi.schedulerjava.core.domain.exception.BusinessRuleException;
 import com.labi.schedulerjava.core.domain.model.User;
 import com.labi.schedulerjava.core.domain.service.UserApproveService;
@@ -18,13 +19,14 @@ public class ApproveUserUseCase extends UseCase<ApproveUserUseCase.InputValues, 
     @Autowired
     private UserApproveService userApproveService;
 
+    @Autowired
+    private JwtTokenProvider jwtTokenProvider;
+
     @Override
     public OutputValues execute(InputValues input) {
+        User userApprover = jwtTokenProvider.getUserFromToken(input.authHeader);
         User userToApprove = userRepository.findById(input.userToApproveId)
                 .orElseThrow(() -> new BusinessRuleException("O ID informado " + input.userToApproveId + " não corresponde a um usuário cadastrado"));
-
-        User userApprover = userRepository.findById(input.userApproverId)
-                .orElseThrow(() -> new BusinessRuleException("O ID informado " + input.userApproverId + " não corresponde a um usuário cadastrado"));
 
         if (!userApprover.getIsApproved() && !userApprover.getIsSuperUser())
             throw new BusinessRuleException("O usuário aprovador não está aprovado ou não possui permissão para aprovar usuários");
@@ -43,9 +45,9 @@ public class ApproveUserUseCase extends UseCase<ApproveUserUseCase.InputValues, 
 
     @Value
     public static class InputValues implements UseCase.InputValues {
-        private Long userToApproveId;
-        private Long userApproverId;
-        private Boolean isSuperUser;
+        String authHeader;
+        Long userToApproveId;
+        Boolean isSuperUser;
     }
 
     @Value

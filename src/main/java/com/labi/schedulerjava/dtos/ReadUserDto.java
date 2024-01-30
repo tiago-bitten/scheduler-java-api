@@ -8,6 +8,7 @@ public record ReadUserDto(
         String name,
         String email,
         Boolean isApproved,
+        Boolean isSuperUser,
         Instant createdAt,
         List<ReadMinistryDto> ministries
 ) {

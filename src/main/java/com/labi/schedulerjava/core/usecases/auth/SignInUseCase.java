@@ -5,6 +5,7 @@ import com.labi.schedulerjava.core.domain.exception.UserAccountNotApprovedExcept
 import com.labi.schedulerjava.core.domain.model.User;
 import com.labi.schedulerjava.core.domain.service.UserService;
 import com.labi.schedulerjava.core.usecases.UseCase;
+import com.labi.schedulerjava.dtos.ReadSimpUserDto;
 import com.labi.schedulerjava.dtos.SignInDto;
 import lombok.Value;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -36,7 +37,7 @@ public class SignInUseCase extends UseCase<SignInUseCase.InputValues, SignInUseC
             throw new UserAccountNotApprovedException();
         }
 
-        return new OutputValues(jwtTokenProvider.generateToken(user));
+        return new OutputValues(jwtTokenProvider.generateToken(user), new ReadSimpUserDto(user.getId(), user.getName(), user.getEmail(), user.getIsApproved(), user.getIsSuperUser()));
     }
 
     @Value
@@ -47,5 +48,6 @@ public class SignInUseCase extends UseCase<SignInUseCase.InputValues, SignInUseC
     @Value
     public static class OutputValues implements UseCase.OutputValues {
         String token;
+        ReadSimpUserDto user;
     }
 }
