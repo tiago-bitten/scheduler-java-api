@@ -2,6 +2,7 @@ package com.labi.schedulerjava.core.usecases.volunteer;
 
 import com.labi.schedulerjava.adapters.persistence.VolunteerRepository;
 import com.labi.schedulerjava.core.domain.model.Volunteer;
+import com.labi.schedulerjava.core.domain.model.VolunteerMinistry;
 import com.labi.schedulerjava.core.usecases.UseCase;
 import com.labi.schedulerjava.dtos.ReadMinistryDto;
 import com.labi.schedulerjava.dtos.ReadVolunteerDto;
@@ -19,14 +20,40 @@ public class FindVolunteersUseCase extends UseCase<FindVolunteersUseCase.InputVa
 
     @Override
     public OutputValues execute(InputValues input) {
-        if (input.ministryId == null)
-            return new OutputValues(volunteerRepository.findAll().stream()
-                    .map(this::toDto)
-                    .toList());
+        List<Volunteer> volunteers;
 
-        return new OutputValues(volunteerRepository.findAll(input.ministryId).stream()
-                .map(this::toDto)
-                .toList());
+        if (input.getMinistryId() == null) {
+            volunteers = volunteerRepository.findAll();
+        } else {
+            volunteers = volunteerRepository.findAll(input.getMinistryId());
+        }
+
+        List<ReadVolunteerDto> volunteerDtos = volunteers.stream()
+                .map(this::toDtoWithActiveMinistries)
+                .toList();
+
+        return new OutputValues(volunteerDtos);
+    }
+
+    private ReadVolunteerDto toDtoWithActiveMinistries(Volunteer entity) {
+        List<ReadMinistryDto> activeMinistries = entity.getVolunteerMinistries().stream()
+                .filter(VolunteerMinistry::getIsActive)
+                .map(volunteerMinistry -> new ReadMinistryDto(
+                        volunteerMinistry.getMinistry().getId(),
+                        volunteerMinistry.getMinistry().getName(),
+                        volunteerMinistry.getMinistry().getDescription(),
+                        volunteerMinistry.getMinistry().getColor(),
+                        volunteerMinistry.getMinistry().getTotalVolunteers()
+                )).toList();
+
+        return new ReadVolunteerDto(
+                entity.getId(),
+                entity.getName(),
+                entity.getLastName(),
+                entity.getPhone(),
+                entity.getBirthDate(),
+                activeMinistries
+        );
     }
 
     @Value
@@ -38,22 +65,5 @@ public class FindVolunteersUseCase extends UseCase<FindVolunteersUseCase.InputVa
     public static class OutputValues implements UseCase.OutputValues {
         List<ReadVolunteerDto> volunteers;
     }
-
-    private ReadVolunteerDto toDto(Volunteer entity) {
-        return new ReadVolunteerDto(
-                entity.getId(),
-                entity.getName(),
-                entity.getLastName(),
-                entity.getPhone(),
-                entity.getBirthDate(),
-                entity.getVolunteerMinistries().stream()
-                        .map(volunteerMinistry -> new ReadMinistryDto(
-                                volunteerMinistry.getMinistry().getId(),
-                                volunteerMinistry.getMinistry().getName(),
-                                volunteerMinistry.getMinistry().getDescription(),
-                                volunteerMinistry.getMinistry().getColor(),
-                                volunteerMinistry.getMinistry().getTotalVolunteers()
-                        )).toList()
-        );
-    }
 }
+

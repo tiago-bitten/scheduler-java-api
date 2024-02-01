@@ -21,6 +21,7 @@ public class FindVolunteerMinistryByMinistryIdUseCase extends UseCase<FindVolunt
         List<VolunteerMinistry> volunteerMinistries = volunteerMinistryRepository.findByMinistryId(input.ministryId);
         return new OutputValues(
                 volunteerMinistries.stream()
+                        .filter(VolunteerMinistry::getIsActive)
                         .map(volunteerMinistry -> new ReadSimpVolunteerDto(
                                 volunteerMinistry.getVolunteer().getId(),
                                 volunteerMinistry.getVolunteer().getName(),
