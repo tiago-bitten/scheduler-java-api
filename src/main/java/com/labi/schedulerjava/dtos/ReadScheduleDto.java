@@ -8,6 +8,6 @@ public record ReadScheduleDto(
         LocalDateTime startDate,
         LocalDateTime endDate,
         Integer weekNumber,
-        List<ReadVolunteerMinistry> appointments
+        List<ReadAppointmentsDto> appointments
 ) {
 }

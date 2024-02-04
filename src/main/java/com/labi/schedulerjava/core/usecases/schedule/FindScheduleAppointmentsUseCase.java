@@ -5,10 +5,7 @@ import com.labi.schedulerjava.core.domain.exception.BusinessRuleException;
 import com.labi.schedulerjava.core.domain.model.Appointment;
 import com.labi.schedulerjava.core.domain.model.Schedule;
 import com.labi.schedulerjava.core.usecases.UseCase;
-import com.labi.schedulerjava.dtos.ReadMinistryDto;
-import com.labi.schedulerjava.dtos.ReadScheduleDto;
-import com.labi.schedulerjava.dtos.ReadSimpVolunteerDto;
-import com.labi.schedulerjava.dtos.ReadVolunteerMinistry;
+import com.labi.schedulerjava.dtos.*;
 import lombok.Value;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -37,23 +34,25 @@ public class FindScheduleAppointmentsUseCase extends UseCase<FindScheduleAppoint
                 schedule.getEndDate(),
                 schedule.getWeekNumber(),
                 appointments.stream()
-                        .map(Appointment::getVolunteerMinistry)
-                        .map(volunteerMinistry -> new ReadVolunteerMinistry(
-                                volunteerMinistry.getId(),
-                                volunteerMinistry.getIsActive(),
-                                new ReadSimpVolunteerDto(
-                                        volunteerMinistry.getVolunteer().getId(),
-                                        volunteerMinistry.getVolunteer().getName(),
-                                        volunteerMinistry.getVolunteer().getLastName(),
-                                        volunteerMinistry.getVolunteer().getPhone(),
-                                        volunteerMinistry.getVolunteer().getBirthDate()
-                                ),
-                                new ReadMinistryDto(
-                                        volunteerMinistry.getMinistry().getId(),
-                                        volunteerMinistry.getMinistry().getName(),
-                                        volunteerMinistry.getMinistry().getDescription(),
-                                        volunteerMinistry.getMinistry().getColor(),
-                                        volunteerMinistry.getMinistry().getTotalVolunteers()
+                        .map(appointment -> new ReadAppointmentsDto(
+                                appointment.getId(),
+                                new ReadVolunteerMinistry(
+                                        appointment.getVolunteerMinistry().getId(),
+                                        appointment.getVolunteerMinistry().getIsActive(),
+                                        new ReadSimpVolunteerDto(
+                                                appointment.getVolunteerMinistry().getVolunteer().getId(),
+                                                appointment.getVolunteerMinistry().getVolunteer().getName(),
+                                                appointment.getVolunteerMinistry().getVolunteer().getLastName(),
+                                                appointment.getVolunteerMinistry().getVolunteer().getPhone(),
+                                                appointment.getVolunteerMinistry().getVolunteer().getBirthDate()
+                                        ),
+                                        new ReadMinistryDto(
+                                                appointment.getVolunteerMinistry().getMinistry().getId(),
+                                                appointment.getVolunteerMinistry().getMinistry().getName(),
+                                                appointment.getVolunteerMinistry().getMinistry().getDescription(),
+                                                appointment.getVolunteerMinistry().getMinistry().getColor(),
+                                                appointment.getVolunteerMinistry().getMinistry().getTotalVolunteers()
+                                        )
                                 )
                         )).toList()
         ));
@@ -61,11 +60,11 @@ public class FindScheduleAppointmentsUseCase extends UseCase<FindScheduleAppoint
 
     @Value
     public static class InputValues implements UseCase.InputValues {
-        private Long scheduleId;
+        Long scheduleId;
     }
 
     @Value
     public static class OutputValues implements UseCase.OutputValues {
-        private ReadScheduleDto schedule;
+        ReadScheduleDto schedule;
     }
 }
