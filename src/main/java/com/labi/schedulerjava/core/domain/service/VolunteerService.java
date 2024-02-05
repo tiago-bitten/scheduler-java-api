@@ -16,4 +16,8 @@ public class VolunteerService {
     public Optional<Volunteer> findById(Long id) {
         return volunteerRepository.findById(id);
     }
+
+    public void save(Volunteer volunteer) {
+        volunteerRepository.save(volunteer);
+    }
 }

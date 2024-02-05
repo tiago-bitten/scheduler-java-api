@@ -27,8 +27,12 @@ public class SelfRegistration extends BaseEntity {
     @Column(name = "used_at")
     private Instant usedAt;
 
-
     @OneToOne(mappedBy = "selfRegistration")
     @Column(name = "volunteer_id")
     private Volunteer volunteer;
+
+    public SelfRegistration(UUID link) {
+        this.link = link;
+        this.isActive = true;
+    }
 }
