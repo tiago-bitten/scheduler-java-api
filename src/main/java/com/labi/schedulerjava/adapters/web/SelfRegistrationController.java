@@ -3,6 +3,7 @@ package com.labi.schedulerjava.adapters.web;
 import com.labi.schedulerjava.core.usecases.UseCase;
 import com.labi.schedulerjava.core.usecases.selfregistration.CreateLinkUseCase;
 import com.labi.schedulerjava.core.usecases.selfregistration.CreateSelfRegistrationUseCase;
+import com.labi.schedulerjava.core.usecases.selfregistration.ValidateLinkUseCase;
 import com.labi.schedulerjava.dtos.CreateVolunteerDto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -21,6 +22,9 @@ public class SelfRegistrationController {
     @Autowired
     private CreateLinkUseCase createLinkUseCase;
 
+    @Autowired
+    private ValidateLinkUseCase validateLinkUseCase;
+
     @PostMapping("/create/{link}")
     public ResponseEntity<Void> create(@PathVariable UUID link,
                                        @RequestBody CreateVolunteerDto dto) {
@@ -33,5 +37,11 @@ public class SelfRegistrationController {
         UseCase.OutputValues outputValues =
             createLinkUseCase.execute(new CreateLinkUseCase.InputValues());
         return new ResponseEntity<>(outputValues, HttpStatus.CREATED);
+    }
+
+    @GetMapping("/validate/{link}")
+    public ResponseEntity<Void> validate(@PathVariable UUID link) {
+        validateLinkUseCase.execute(new ValidateLinkUseCase.InputValues(link));
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 }
