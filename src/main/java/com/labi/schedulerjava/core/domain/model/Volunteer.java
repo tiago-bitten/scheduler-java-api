@@ -43,6 +43,10 @@ public class Volunteer extends BaseEntity {
     @ManyToOne(fetch = FetchType.LAZY)
     public Group group;
 
+    @OneToOne
+    @JoinColumn(name = "self_registration_id")
+    private SelfRegistration selfRegistration;
+
     public Volunteer(String name, String lastName, String phone, LocalDate birthDate) {
         this.name = name;
         this.lastName = lastName;
