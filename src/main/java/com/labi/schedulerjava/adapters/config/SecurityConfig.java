@@ -44,7 +44,7 @@ public class SecurityConfig {
                         .requestMatchers(HttpMethod.POST, "/api/v1/auth/signin").permitAll()
                         .requestMatchers(HttpMethod.POST, "/api/v1/auth/signup").permitAll()
                         .requestMatchers(HttpMethod.GET, "/api/v1/ministries/signup").permitAll()
-                        .requestMatchers(HttpMethod.POST, "/api/v1/self-registrations/generate/link").permitAll()
+                        .requestMatchers(HttpMethod.POST, "/api/v1/self-registrations/create/**").permitAll()
                         .anyRequest().authenticated())
                 .addFilterBefore(jwtTokenFilter, UsernamePasswordAuthenticationFilter.class)
                 .exceptionHandling(exception -> exception

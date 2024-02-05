@@ -17,9 +17,7 @@ public class CreateLinkUseCase extends UseCase<CreateLinkUseCase.InputValues, Cr
 
     @Override
     public OutputValues execute(InputValues input) {
-        SelfRegistration selfRegistration = new SelfRegistration();
-        selfRegistration.setLink(java.util.UUID.randomUUID());
-        selfRegistration.setIsActive(true);
+        SelfRegistration selfRegistration = new SelfRegistration(UUID.randomUUID());
         selfRegistrationRepository.save(selfRegistration);
 
         return new OutputValues(selfRegistration.getLink());
