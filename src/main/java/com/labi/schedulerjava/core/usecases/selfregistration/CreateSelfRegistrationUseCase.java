@@ -11,6 +11,7 @@ import lombok.Value;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import java.time.Instant;
 import java.util.UUID;
 
 @Component
@@ -41,6 +42,7 @@ public class CreateSelfRegistrationUseCase extends UseCase<CreateSelfRegistratio
         volunteerService.save(volunteer);
 
         selfRegistration.setIsActive(false);
+        selfRegistration.setUsedAt(Instant.now());
         selfRegistrationRepository.save(selfRegistration);
 
         return new OutputValues();

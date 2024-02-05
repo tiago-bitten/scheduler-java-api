@@ -1,5 +1,7 @@
 package com.labi.schedulerjava.adapters.web;
 
+import com.labi.schedulerjava.core.usecases.UseCase;
+import com.labi.schedulerjava.core.usecases.selfregistration.CreateLinkUseCase;
 import com.labi.schedulerjava.core.usecases.selfregistration.CreateSelfRegistrationUseCase;
 import com.labi.schedulerjava.dtos.CreateVolunteerDto;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,10 +18,20 @@ public class SelfRegistrationController {
     @Autowired
     private CreateSelfRegistrationUseCase createSelfRegistrationUseCase;
 
+    @Autowired
+    private CreateLinkUseCase createLinkUseCase;
+
     @PostMapping("/create/{link}")
     public ResponseEntity<Void> create(@PathVariable UUID link,
                                        @RequestBody CreateVolunteerDto dto) {
         createSelfRegistrationUseCase.execute(new CreateSelfRegistrationUseCase.InputValues(link, dto));
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+    }
+
+    @PostMapping("/generate/link")
+    public ResponseEntity<UseCase.OutputValues> createLink() {
+        UseCase.OutputValues outputValues =
+            createLinkUseCase.execute(new CreateLinkUseCase.InputValues());
+        return new ResponseEntity<>(outputValues, HttpStatus.CREATED);
     }
 }
