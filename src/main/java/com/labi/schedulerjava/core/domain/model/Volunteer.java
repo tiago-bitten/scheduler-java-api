@@ -23,6 +23,9 @@ public class Volunteer extends BaseEntity {
     @Column(name = "last_name")
     private String lastName;
 
+    @Column(name = "email")
+    private String cpf;
+
     @Column(name = "phone")
     private String phone;
 
@@ -48,9 +51,10 @@ public class Volunteer extends BaseEntity {
     @ManyToOne(fetch = FetchType.LAZY)
     public Group group;
 
-    public Volunteer(String name, String lastName, String phone, LocalDate birthDate, VolunteerOrigin origin) {
+    public Volunteer(String name, String lastName, String cpf, String phone, LocalDate birthDate, VolunteerOrigin origin) {
         this.name = name;
         this.lastName = lastName;
+        this.cpf = cpf;
         this.phone = phone;
         this.birthDate = birthDate;
         this.createdAt = Instant.now();
