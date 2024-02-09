@@ -36,6 +36,13 @@ public class VolunteerController {
         return new ResponseEntity<>(outputValues, HttpStatus.CREATED);
     }
 
+    @PostMapping("/auto-create")
+    public ResponseEntity<UseCase.OutputValues> autoCreate(@RequestBody @Valid CreateVolunteerDto dto) {
+        UseCase.OutputValues outputValues =
+                createVolunteerUseCase.execute(new CreateVolunteerUseCase.InputValues(dto));
+        return new ResponseEntity<>(outputValues, HttpStatus.CREATED);
+    }
+
     @GetMapping
     public ResponseEntity<UseCase.OutputValues> findAll(@RequestParam(required = false) Long ministryId) {
         UseCase.OutputValues outputValues =

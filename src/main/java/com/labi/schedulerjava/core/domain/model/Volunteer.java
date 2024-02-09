@@ -1,5 +1,6 @@
 package com.labi.schedulerjava.core.domain.model;
 
+import com.labi.schedulerjava.enums.VolunteerOrigin;
 import jakarta.persistence.*;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -34,6 +35,10 @@ public class Volunteer extends BaseEntity {
     @Column(name = "created_at", nullable = false, updatable = false)
     private Instant createdAt;
 
+    @Column(name = "origin", nullable = false)
+    @Enumerated(EnumType.STRING)
+    private VolunteerOrigin origin;
+
     @OneToMany(mappedBy = "volunteer")
     private List<VolunteerMinistry> volunteerMinistries;
 
@@ -43,15 +48,12 @@ public class Volunteer extends BaseEntity {
     @ManyToOne(fetch = FetchType.LAZY)
     public Group group;
 
-    @OneToOne
-    @JoinColumn(name = "self_registration_id")
-    private SelfRegistration selfRegistration;
-
-    public Volunteer(String name, String lastName, String phone, LocalDate birthDate) {
+    public Volunteer(String name, String lastName, String phone, LocalDate birthDate, VolunteerOrigin origin) {
         this.name = name;
         this.lastName = lastName;
         this.phone = phone;
         this.birthDate = birthDate;
         this.createdAt = Instant.now();
+        this.origin = origin;
     }
 }
