@@ -1,11 +1,9 @@
 package com.labi.schedulerjava.adapters.web;
 
 import com.labi.schedulerjava.core.usecases.UseCase;
-import com.labi.schedulerjava.core.usecases.volunteer.CreateVolunteerUseCase;
-import com.labi.schedulerjava.core.usecases.volunteer.FindVolunteersNotInScheduleUseCase;
-import com.labi.schedulerjava.core.usecases.volunteer.FindVolunteersNotIntMinistryUseCase;
-import com.labi.schedulerjava.core.usecases.volunteer.FindVolunteersUseCase;
+import com.labi.schedulerjava.core.usecases.volunteer.*;
 import com.labi.schedulerjava.dtos.CreateVolunteerDto;
+import com.labi.schedulerjava.dtos.SignInVolunteerDto;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -29,6 +27,12 @@ public class VolunteerController {
     @Autowired
     private FindVolunteersNotInScheduleUseCase findVolunteersNotInScheduleUseCase;
 
+    @Autowired
+    private SignInVolunteerUseCase signInVolunteerUseCase;
+
+    @Autowired
+    private AutoCreateVolunteerUseCase autoCreateVolunteerUseCase;
+
     @PostMapping("/create")
     public ResponseEntity<UseCase.OutputValues> create(@RequestBody @Valid CreateVolunteerDto dto) {
         UseCase.OutputValues outputValues =
@@ -39,7 +43,14 @@ public class VolunteerController {
     @PostMapping("/auto-create")
     public ResponseEntity<UseCase.OutputValues> autoCreate(@RequestBody @Valid CreateVolunteerDto dto) {
         UseCase.OutputValues outputValues =
-                createVolunteerUseCase.execute(new CreateVolunteerUseCase.InputValues(dto));
+                autoCreateVolunteerUseCase.execute(new AutoCreateVolunteerUseCase.InputValues(dto));
+        return new ResponseEntity<>(outputValues, HttpStatus.CREATED);
+    }
+
+    @PostMapping("/sign-in")
+    public ResponseEntity<UseCase.OutputValues> signIn(@RequestBody @Valid SignInVolunteerDto dto) {
+        UseCase.OutputValues outputValues =
+                signInVolunteerUseCase.execute(new SignInVolunteerUseCase.InputValues(dto));
         return new ResponseEntity<>(outputValues, HttpStatus.CREATED);
     }
 
