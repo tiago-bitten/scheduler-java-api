@@ -51,7 +51,7 @@ public class VolunteerController {
     public ResponseEntity<UseCase.OutputValues> signIn(@RequestBody @Valid SignInVolunteerDto dto) {
         UseCase.OutputValues outputValues =
                 signInVolunteerUseCase.execute(new SignInVolunteerUseCase.InputValues(dto));
-        return new ResponseEntity<>(outputValues, HttpStatus.CREATED);
+        return new ResponseEntity<>(outputValues, HttpStatus.OK);
     }
 
     @GetMapping

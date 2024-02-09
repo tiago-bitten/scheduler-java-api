@@ -43,8 +43,10 @@ public class FindScheduleAppointmentsUseCase extends UseCase<FindScheduleAppoint
                                                 appointment.getVolunteerMinistry().getVolunteer().getId(),
                                                 appointment.getVolunteerMinistry().getVolunteer().getName(),
                                                 appointment.getVolunteerMinistry().getVolunteer().getLastName(),
+                                                appointment.getVolunteerMinistry().getVolunteer().getCpf(),
                                                 appointment.getVolunteerMinistry().getVolunteer().getPhone(),
-                                                appointment.getVolunteerMinistry().getVolunteer().getBirthDate()
+                                                appointment.getVolunteerMinistry().getVolunteer().getBirthDate(),
+                                                appointment.getVolunteerMinistry().getVolunteer().getOrigin()
                                         ),
                                         new ReadMinistryDto(
                                                 appointment.getVolunteerMinistry().getMinistry().getId(),

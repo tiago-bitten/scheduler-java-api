@@ -39,8 +39,10 @@ public class FindVolunteersNotIntMinistryUseCase extends UseCase<FindVolunteersN
                                 volunteer.getId(),
                                 volunteer.getName(),
                                 volunteer.getLastName(),
+                                volunteer.getCpf(),
                                 volunteer.getPhone(),
-                                volunteer.getBirthDate()
+                                volunteer.getBirthDate(),
+                                volunteer.getOrigin()
                         ))
                         .toList()
         );

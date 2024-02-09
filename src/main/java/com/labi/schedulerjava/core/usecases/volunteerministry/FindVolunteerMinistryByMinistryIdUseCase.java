@@ -26,8 +26,10 @@ public class FindVolunteerMinistryByMinistryIdUseCase extends UseCase<FindVolunt
                                 volunteerMinistry.getVolunteer().getId(),
                                 volunteerMinistry.getVolunteer().getName(),
                                 volunteerMinistry.getVolunteer().getLastName(),
+                                volunteerMinistry.getVolunteer().getCpf(),
                                 volunteerMinistry.getVolunteer().getPhone(),
-                                volunteerMinistry.getVolunteer().getBirthDate()
+                                volunteerMinistry.getVolunteer().getBirthDate(),
+                                volunteerMinistry.getVolunteer().getOrigin()
                         ))
                         .toList()
         );
