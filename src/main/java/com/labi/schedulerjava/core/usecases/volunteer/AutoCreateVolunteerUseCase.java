@@ -11,14 +11,14 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 @Component
-public class CreateVolunteerUseCase extends UseCase<CreateVolunteerUseCase.InputValues, CreateVolunteerUseCase.OutputValues> {
+public class AutoCreateVolunteerUseCase extends UseCase<AutoCreateVolunteerUseCase.InputValues, AutoCreateVolunteerUseCase.OutputValues> {
 
     @Autowired
     private VolunteerRepository volunteerRepository;
 
     @Override
     public OutputValues execute(InputValues input) {
-        Volunteer volunteer = new Volunteer(input.dto.name(), input.dto.lastName(), input.dto.phone(), input.dto.birthDate(), VolunteerOrigin.USER_REGISTERED);
+        Volunteer volunteer = new Volunteer(input.dto.name(), input.dto.lastName(), input.dto.phone(), input.dto.birthDate(), VolunteerOrigin.SELF_REGISTERED);
         volunteerRepository.save(volunteer);
 
         return new OutputValues(new ReadSimpVolunteerDto(volunteer.getId(), volunteer.getName(), volunteer.getLastName(), volunteer.getPhone(), volunteer.getBirthDate()));
