@@ -18,10 +18,10 @@ public class CreateVolunteerUseCase extends UseCase<CreateVolunteerUseCase.Input
 
     @Override
     public OutputValues execute(InputValues input) {
-        Volunteer volunteer = new Volunteer(input.dto.name(), input.dto.lastName(), input.dto.phone(), input.dto.birthDate(), VolunteerOrigin.USER_REGISTERED);
+        Volunteer volunteer = new Volunteer(input.dto.name(), input.dto.lastName(), input.dto.cpf(), input.dto.phone(), input.dto.birthDate(), VolunteerOrigin.USER_REGISTERED);
         volunteerRepository.save(volunteer);
 
-        return new OutputValues(new ReadSimpVolunteerDto(volunteer.getId(), volunteer.getName(), volunteer.getLastName(), volunteer.getPhone(), volunteer.getBirthDate()));
+        return new OutputValues(new ReadSimpVolunteerDto(volunteer.getId(), volunteer.getName(), volunteer.getLastName(), volunteer.getCpf(), volunteer.getPhone(), volunteer.getBirthDate(), volunteer.getOrigin()));
     }
 
     @Value
