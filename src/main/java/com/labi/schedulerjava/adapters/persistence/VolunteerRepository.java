@@ -4,7 +4,9 @@ import com.labi.schedulerjava.core.domain.model.Volunteer;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 
+import java.time.LocalDate;
 import java.util.List;
+import java.util.Optional;
 
 public interface VolunteerRepository extends JpaRepository<Volunteer, Long> {
 
@@ -12,4 +14,7 @@ public interface VolunteerRepository extends JpaRepository<Volunteer, Long> {
     List<Volunteer> findAll(Long ministryId);
 
     List<Volunteer> findAll();
+
+    @Query("SELECT v FROM Volunteer v WHERE v.cpf = ?1 AND v.birthDate = ?2")
+    Optional<Volunteer> signInVolunteer(String cpf, LocalDate birthDate);
 }
