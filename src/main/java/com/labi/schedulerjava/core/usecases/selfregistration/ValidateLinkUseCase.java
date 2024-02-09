@@ -22,7 +22,7 @@ public class ValidateLinkUseCase extends UseCase<ValidateLinkUseCase.InputValues
                 .orElseThrow(() -> new BusinessRuleException("Link não encontrado"));
 
         if (!selfRegistration.getIsActive()) {
-            throw new BusinessRuleException(selfRegistration.getVolunteer().getName() + " usou o link para se cadastrar");
+            throw new BusinessRuleException(selfRegistration.getVolunteer().getName() + " já se cadastrou com o link");
         }
 
         return new OutputValues();

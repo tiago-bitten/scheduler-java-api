@@ -7,6 +7,7 @@ import com.labi.schedulerjava.core.domain.model.Volunteer;
 import com.labi.schedulerjava.core.domain.service.VolunteerService;
 import com.labi.schedulerjava.core.usecases.UseCase;
 import com.labi.schedulerjava.dtos.CreateVolunteerDto;
+import com.labi.schedulerjava.dtos.ReadSimpVolunteerDto;
 import lombok.Value;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -45,7 +46,7 @@ public class CreateSelfRegistrationUseCase extends UseCase<CreateSelfRegistratio
         selfRegistration.setUsedAt(Instant.now());
         selfRegistrationRepository.save(selfRegistration);
 
-        return new OutputValues();
+        return new OutputValues(new ReadSimpVolunteerDto(volunteer.getId(), volunteer.getName(), volunteer.getLastName(), volunteer.getPhone(), volunteer.getBirthDate()));
     }
 
     @Value
@@ -56,5 +57,6 @@ public class CreateSelfRegistrationUseCase extends UseCase<CreateSelfRegistratio
 
     @Value
     public static class OutputValues implements UseCase.OutputValues {
+        ReadSimpVolunteerDto volunteer;
     }
 }

@@ -46,6 +46,7 @@ public class SecurityConfig {
                         .requestMatchers(HttpMethod.GET, "/api/v1/ministries/signup").permitAll()
                         .requestMatchers(HttpMethod.POST, "/api/v1/self-registrations/create/**").permitAll()
                         .requestMatchers(HttpMethod.GET, "/api/v1/self-registrations/validate/**").permitAll()
+                        .requestMatchers(HttpMethod.POST, "/api/v1/unavailable-dates/create").permitAll()
                         .anyRequest().authenticated())
                 .addFilterBefore(jwtTokenFilter, UsernamePasswordAuthenticationFilter.class)
                 .exceptionHandling(exception -> exception

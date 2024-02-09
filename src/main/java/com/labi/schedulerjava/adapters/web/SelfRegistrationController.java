@@ -26,10 +26,11 @@ public class SelfRegistrationController {
     private ValidateLinkUseCase validateLinkUseCase;
 
     @PostMapping("/create/{link}")
-    public ResponseEntity<Void> create(@PathVariable UUID link,
-                                       @RequestBody CreateVolunteerDto dto) {
-        createSelfRegistrationUseCase.execute(new CreateSelfRegistrationUseCase.InputValues(link, dto));
-        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+    public ResponseEntity<UseCase.OutputValues> create(@PathVariable UUID link,
+                                                       @RequestBody CreateVolunteerDto dto) {
+        UseCase.OutputValues outputValues =
+            createSelfRegistrationUseCase.execute(new CreateSelfRegistrationUseCase.InputValues(link, dto));
+        return new ResponseEntity<>(outputValues, HttpStatus.CREATED);
     }
 
     @PostMapping("/generate/link")
