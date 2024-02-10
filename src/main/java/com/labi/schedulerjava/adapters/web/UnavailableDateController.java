@@ -28,14 +28,14 @@ public class UnavailableDateController {
     private FindUnavailableDatesByAccessKeyUseCase findUnavailableDatesByAccessKeyUseCase;
 
     @PostMapping("/create")
-    public ResponseEntity<Void> register(@RequestBody CreateUnavailableDateDto dto,
+    public ResponseEntity<Void> create(@RequestBody CreateUnavailableDateDto dto,
                                          @RequestParam Long volunteerId) {
         createUnavailableDateUseCase.execute(new CreateUnavailableDateUseCase.InputValues(dto, volunteerId));
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 
     @PostMapping("/create/{accessKey}")
-    public ResponseEntity<Void> register(@RequestBody CreateUnavailableDateDto dto,
+    public ResponseEntity<Void> createByAccessKey(@RequestBody CreateUnavailableDateDto dto,
                                          @PathVariable String accessKey) {
         createUnavailableDateByAccessKeyUseCase.execute(new CreateUnavailableDateByAccessKeyUseCase.InputValues(dto, accessKey));
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
@@ -48,8 +48,8 @@ public class UnavailableDateController {
         return new ResponseEntity<>(outputValues, HttpStatus.OK);
     }
 
-    @GetMapping("/{accessKey}")
-    public ResponseEntity<UseCase.OutputValues> findAll(@PathVariable String accessKey) {
+    @GetMapping("/access-key/{accessKey}")
+    public ResponseEntity<UseCase.OutputValues> findByAccessKey(@PathVariable String accessKey) {
         UseCase.OutputValues outputValues =
                 findUnavailableDatesByAccessKeyUseCase.execute(new FindUnavailableDatesByAccessKeyUseCase.InputValues(accessKey));
         return new ResponseEntity<>(outputValues, HttpStatus.OK);

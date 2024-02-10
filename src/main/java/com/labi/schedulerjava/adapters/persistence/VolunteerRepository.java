@@ -19,5 +19,7 @@ public interface VolunteerRepository extends JpaRepository<Volunteer, Long> {
     @Query("SELECT v FROM Volunteer v WHERE v.cpf = ?1 AND v.birthDate = ?2")
     Optional<Volunteer> signInVolunteer(String cpf, LocalDate birthDate);
 
+    Optional<Volunteer> findByCpf(String cpf);
+
     Optional<Volunteer> findByAccessKey(UUID accessKey);
 }

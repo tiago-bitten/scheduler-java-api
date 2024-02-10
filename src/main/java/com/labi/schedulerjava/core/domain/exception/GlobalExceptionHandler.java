@@ -80,4 +80,17 @@ public class GlobalExceptionHandler {
 
         return new ResponseEntity<>(errorMessage, HttpStatus.BAD_REQUEST);
     }
+
+    @ExceptionHandler(SignInVolunteerException.class)
+    public ResponseEntity<ErrorMessage> handleSignInVolunteerException(SignInVolunteerException e) {
+        logger.error("Sign in volunteer exception {}", e.getMessage());
+
+        ErrorMessage errorMessage = new ErrorMessage(
+                Instant.now(),
+                e.getMessage(),
+                HttpStatus.BAD_REQUEST.value()
+        );
+
+        return new ResponseEntity<>(errorMessage, HttpStatus.BAD_REQUEST);
+    }
 }

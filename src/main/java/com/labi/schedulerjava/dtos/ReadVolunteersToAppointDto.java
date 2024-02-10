@@ -4,7 +4,7 @@ import java.time.LocalDate;
 
 public record ReadVolunteersToAppointDto(
         Long id,
-        Boolean isAvailable,
+        Boolean isUnavailable,
         String name,
         String lastName,
         String cpf,

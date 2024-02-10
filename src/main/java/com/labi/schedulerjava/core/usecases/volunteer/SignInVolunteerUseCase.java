@@ -2,6 +2,7 @@ package com.labi.schedulerjava.core.usecases.volunteer;
 
 import com.labi.schedulerjava.adapters.persistence.VolunteerRepository;
 import com.labi.schedulerjava.core.domain.exception.BusinessRuleException;
+import com.labi.schedulerjava.core.domain.exception.SignInVolunteerException;
 import com.labi.schedulerjava.core.domain.model.Volunteer;
 import com.labi.schedulerjava.core.usecases.UseCase;
 import com.labi.schedulerjava.dtos.ReadSimpVolunteerDto;
@@ -25,6 +26,11 @@ public class SignInVolunteerUseCase extends UseCase<SignInVolunteerUseCase.Input
         if (volunteer.isPresent()) {
             return new OutputValues(new ReadSimpVolunteerDto(volunteer.get().getId(), volunteer.get().getAccessKey(), volunteer.get().getName(), volunteer.get().getLastName(), volunteer.get().getCpf(), volunteer.get().getPhone(), volunteer.get().getBirthDate(), volunteer.get().getOrigin()));
         }
+
+        volunteerRepository.findByCpf(input.dto.cpf()).ifPresent(v -> {
+            throw new SignInVolunteerException();
+        });
+
         throw new BusinessRuleException("Force to create a volunteer");
     }
 
