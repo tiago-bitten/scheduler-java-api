@@ -37,6 +37,7 @@ public class FindVolunteersNotIntMinistryUseCase extends UseCase<FindVolunteersN
                 volunteersNotInMinistry.stream()
                         .map(volunteer -> new ReadSimpVolunteerDto(
                                 volunteer.getId(),
+                                volunteer.getAccessKey(),
                                 volunteer.getName(),
                                 volunteer.getLastName(),
                                 volunteer.getCpf(),

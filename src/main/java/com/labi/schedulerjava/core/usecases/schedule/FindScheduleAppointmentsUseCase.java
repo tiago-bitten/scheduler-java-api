@@ -41,6 +41,7 @@ public class FindScheduleAppointmentsUseCase extends UseCase<FindScheduleAppoint
                                         appointment.getVolunteerMinistry().getIsActive(),
                                         new ReadSimpVolunteerDto(
                                                 appointment.getVolunteerMinistry().getVolunteer().getId(),
+                                                appointment.getVolunteerMinistry().getVolunteer().getAccessKey(),
                                                 appointment.getVolunteerMinistry().getVolunteer().getName(),
                                                 appointment.getVolunteerMinistry().getVolunteer().getLastName(),
                                                 appointment.getVolunteerMinistry().getVolunteer().getCpf(),

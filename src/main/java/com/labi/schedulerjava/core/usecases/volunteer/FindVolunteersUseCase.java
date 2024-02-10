@@ -48,6 +48,7 @@ public class FindVolunteersUseCase extends UseCase<FindVolunteersUseCase.InputVa
 
         return new ReadVolunteerDto(
                 entity.getId(),
+                entity.getAccessKey(),
                 entity.getName(),
                 entity.getLastName(),
                 entity.getPhone(),

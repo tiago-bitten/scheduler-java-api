@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;
+import java.util.UUID;
 
 @Service
 public class VolunteerService {
@@ -19,5 +20,9 @@ public class VolunteerService {
 
     public void save(Volunteer volunteer) {
         volunteerRepository.save(volunteer);
+    }
+
+    public Optional<Volunteer> findByAccessKey(UUID accessKey) {
+        return volunteerRepository.findByAccessKey(accessKey);
     }
 }

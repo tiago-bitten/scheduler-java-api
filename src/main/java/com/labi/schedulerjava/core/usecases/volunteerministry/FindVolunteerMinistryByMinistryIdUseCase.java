@@ -24,6 +24,7 @@ public class FindVolunteerMinistryByMinistryIdUseCase extends UseCase<FindVolunt
                         .filter(VolunteerMinistry::getIsActive)
                         .map(volunteerMinistry -> new ReadSimpVolunteerDto(
                                 volunteerMinistry.getVolunteer().getId(),
+                                volunteerMinistry.getVolunteer().getAccessKey(),
                                 volunteerMinistry.getVolunteer().getName(),
                                 volunteerMinistry.getVolunteer().getLastName(),
                                 volunteerMinistry.getVolunteer().getCpf(),

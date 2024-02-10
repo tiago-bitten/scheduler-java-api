@@ -21,7 +21,7 @@ public class AutoCreateVolunteerUseCase extends UseCase<AutoCreateVolunteerUseCa
         Volunteer volunteer = new Volunteer(input.dto.name(), input.dto.lastName(), input.dto.cpf(), input.dto.phone(), input.dto.birthDate(), VolunteerOrigin.SELF_REGISTERED);
         volunteerRepository.save(volunteer);
 
-        return new OutputValues(new ReadSimpVolunteerDto(volunteer.getId(), volunteer.getName(), volunteer.getLastName(), volunteer.getCpf(), volunteer.getPhone(), volunteer.getBirthDate(), volunteer.getOrigin()));
+        return new OutputValues(new ReadSimpVolunteerDto(volunteer.getId(), volunteer.getAccessKey(), volunteer.getName(), volunteer.getLastName(), volunteer.getCpf(), volunteer.getPhone(), volunteer.getBirthDate(), volunteer.getOrigin()));
     }
 
     @Value

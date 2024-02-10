@@ -89,6 +89,7 @@ public class FindGroupByNameToAppointUseCase extends UseCase<FindGroupByNameToAp
     private ReadVolunteerDto toDto(Volunteer entity) {
         return new ReadVolunteerDto(
                 entity.getId(),
+                entity.getAccessKey(),
                 entity.getName(),
                 entity.getLastName(),
                 entity.getPhone(),

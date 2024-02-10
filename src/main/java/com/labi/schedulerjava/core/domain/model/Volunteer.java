@@ -9,6 +9,7 @@ import lombok.NoArgsConstructor;
 import java.time.Instant;
 import java.time.LocalDate;
 import java.util.List;
+import java.util.UUID;
 
 @Data
 @NoArgsConstructor
@@ -16,6 +17,9 @@ import java.util.List;
 @Entity
 @Table(name = "volunteers")
 public class Volunteer extends BaseEntity {
+
+    @Column(name = "access_key", nullable = false, updatable = false)
+    private UUID accessKey;
 
     @Column(name = "name", nullable = false)
     private String name;
@@ -52,6 +56,7 @@ public class Volunteer extends BaseEntity {
     public Group group;
 
     public Volunteer(String name, String lastName, String cpf, String phone, LocalDate birthDate, VolunteerOrigin origin) {
+        this.accessKey = UUID.randomUUID();
         this.name = name;
         this.lastName = lastName;
         this.cpf = cpf;

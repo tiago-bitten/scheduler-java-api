@@ -7,6 +7,7 @@ import org.springframework.data.jpa.repository.Query;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
+import java.util.UUID;
 
 public interface VolunteerRepository extends JpaRepository<Volunteer, Long> {
 
@@ -17,4 +18,6 @@ public interface VolunteerRepository extends JpaRepository<Volunteer, Long> {
 
     @Query("SELECT v FROM Volunteer v WHERE v.cpf = ?1 AND v.birthDate = ?2")
     Optional<Volunteer> signInVolunteer(String cpf, LocalDate birthDate);
+
+    Optional<Volunteer> findByAccessKey(UUID accessKey);
 }

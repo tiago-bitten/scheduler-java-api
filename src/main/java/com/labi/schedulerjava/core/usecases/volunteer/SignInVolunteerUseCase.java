@@ -23,7 +23,7 @@ public class SignInVolunteerUseCase extends UseCase<SignInVolunteerUseCase.Input
         Optional<Volunteer> volunteer = volunteerRepository.signInVolunteer(input.dto.cpf(), input.dto.birthDate());
 
         if (volunteer.isPresent()) {
-            return new OutputValues(new ReadSimpVolunteerDto(volunteer.get().getId(), volunteer.get().getName(), volunteer.get().getLastName(), volunteer.get().getCpf(), volunteer.get().getPhone(), volunteer.get().getBirthDate(), volunteer.get().getOrigin()));
+            return new OutputValues(new ReadSimpVolunteerDto(volunteer.get().getId(), volunteer.get().getAccessKey(), volunteer.get().getName(), volunteer.get().getLastName(), volunteer.get().getCpf(), volunteer.get().getPhone(), volunteer.get().getBirthDate(), volunteer.get().getOrigin()));
         }
         throw new BusinessRuleException("Force to create a volunteer");
     }

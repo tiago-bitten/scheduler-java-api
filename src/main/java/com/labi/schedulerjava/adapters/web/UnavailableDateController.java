@@ -1,7 +1,9 @@
 package com.labi.schedulerjava.adapters.web;
 
 import com.labi.schedulerjava.core.usecases.UseCase;
+import com.labi.schedulerjava.core.usecases.unavailabledate.CreateUnavailableDateByAccessKeyUseCase;
 import com.labi.schedulerjava.core.usecases.unavailabledate.CreateUnavailableDateUseCase;
+import com.labi.schedulerjava.core.usecases.unavailabledate.FindUnavailableDatesByAccessKeyUseCase;
 import com.labi.schedulerjava.core.usecases.unavailabledate.FindUnavailableDatesByVolunteerUseCase;
 import com.labi.schedulerjava.dtos.CreateUnavailableDateDto;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,6 +21,12 @@ public class UnavailableDateController {
     @Autowired
     private FindUnavailableDatesByVolunteerUseCase findUnavailableDatesByVolunteerUseCase;
 
+    @Autowired
+    private CreateUnavailableDateByAccessKeyUseCase createUnavailableDateByAccessKeyUseCase;
+
+    @Autowired
+    private FindUnavailableDatesByAccessKeyUseCase findUnavailableDatesByAccessKeyUseCase;
+
     @PostMapping("/create")
     public ResponseEntity<Void> register(@RequestBody CreateUnavailableDateDto dto,
                                          @RequestParam Long volunteerId) {
@@ -26,10 +34,24 @@ public class UnavailableDateController {
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 
+    @PostMapping("/create/{accessKey}")
+    public ResponseEntity<Void> register(@RequestBody CreateUnavailableDateDto dto,
+                                         @PathVariable String accessKey) {
+        createUnavailableDateByAccessKeyUseCase.execute(new CreateUnavailableDateByAccessKeyUseCase.InputValues(dto, accessKey));
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+    }
+
     @GetMapping("/{volunteerId}")
     public ResponseEntity<UseCase.OutputValues> findAll(@PathVariable Long volunteerId) {
         UseCase.OutputValues outputValues =
                 findUnavailableDatesByVolunteerUseCase.execute(new FindUnavailableDatesByVolunteerUseCase.InputValues(volunteerId));
+        return new ResponseEntity<>(outputValues, HttpStatus.OK);
+    }
+
+    @GetMapping("/{accessKey}")
+    public ResponseEntity<UseCase.OutputValues> findAll(@PathVariable String accessKey) {
+        UseCase.OutputValues outputValues =
+                findUnavailableDatesByAccessKeyUseCase.execute(new FindUnavailableDatesByAccessKeyUseCase.InputValues(accessKey));
         return new ResponseEntity<>(outputValues, HttpStatus.OK);
     }
 }
