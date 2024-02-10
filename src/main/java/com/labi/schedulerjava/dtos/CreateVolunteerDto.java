@@ -1,6 +1,7 @@
 package com.labi.schedulerjava.dtos;
 
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 
 import java.time.LocalDate;
 
@@ -14,7 +15,7 @@ public record CreateVolunteerDto(
         String cpf,
         String phone,
 
-        @NotBlank(message = "A data de nascimento do voluntário é obrigatória")
+        @NotNull(message = "A data de nascimento do voluntário é obrigatória")
         LocalDate birthDate
 ) {
 }

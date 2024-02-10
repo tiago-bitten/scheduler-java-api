@@ -16,6 +16,19 @@ public class GlobalExceptionHandler {
 
     private final Logger logger = LoggerFactory.getLogger(GlobalExceptionHandler.class);
 
+    @ExceptionHandler(Exception.class)
+    public ResponseEntity<ErrorMessage> handleException(Exception e) {
+        logger.error("Internal server error {}", e.getMessage());
+
+        ErrorMessage errorMessage = new ErrorMessage(
+                Instant.now(),
+                e.getMessage(),
+                HttpStatus.INTERNAL_SERVER_ERROR.value()
+        );
+
+        return new ResponseEntity<>(errorMessage, HttpStatus.INTERNAL_SERVER_ERROR);
+    }
+
     @ExceptionHandler(BusinessRuleException.class)
     public ResponseEntity<ErrorMessage> handleBusinessRuleException(BusinessRuleException e) {
         logger.error("Business rule exception {}", e.getMessage());
