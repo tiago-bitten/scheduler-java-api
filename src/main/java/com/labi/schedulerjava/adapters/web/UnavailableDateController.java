@@ -2,6 +2,7 @@ package com.labi.schedulerjava.adapters.web;
 
 import com.labi.schedulerjava.core.usecases.UseCase;
 import com.labi.schedulerjava.core.usecases.unavailabledate.CreateUnavailableDateUseCase;
+import com.labi.schedulerjava.core.usecases.unavailabledate.FindUnavailableDatesByVolunteerUseCase;
 import com.labi.schedulerjava.dtos.CreateUnavailableDateDto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -15,6 +16,9 @@ public class UnavailableDateController {
     @Autowired
     CreateUnavailableDateUseCase createUnavailableDateUseCase;
 
+    @Autowired
+    private FindUnavailableDatesByVolunteerUseCase findUnavailableDatesByVolunteerUseCase;
+
     @PostMapping("/create")
     public ResponseEntity<Void> register(@RequestBody CreateUnavailableDateDto dto,
                                          @RequestParam Long volunteerId) {
@@ -24,6 +28,8 @@ public class UnavailableDateController {
 
     @GetMapping("/{volunteerId}")
     public ResponseEntity<UseCase.OutputValues> findAll(@PathVariable Long volunteerId) {
-        return new ResponseEntity<>(HttpStatus.OK);
+        UseCase.OutputValues outputValues =
+                findUnavailableDatesByVolunteerUseCase.execute(new FindUnavailableDatesByVolunteerUseCase.InputValues(volunteerId));
+        return new ResponseEntity<>(outputValues, HttpStatus.OK);
     }
 }
