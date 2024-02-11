@@ -22,7 +22,11 @@ public class DeleteVolunteerUseCase extends UseCase<DeleteVolunteerUseCase.Input
         Volunteer volunteer = volunteerRepository.findById(input.id)
                 .orElseThrow(() -> new BusinessRuleException("O ID " + input.id + " não corresponde a um voluntário cadastrado"));
 
-        volunteer.getVolunteerMinistries().forEach(vm -> vm.getMinistry().setTotalVolunteers(vm.getMinistry().getTotalVolunteers() - 1));
+        volunteer.getVolunteerMinistries().forEach(vm -> {
+            boolean isActive = vm.getIsActive();
+            if (isActive)
+                vm.getMinistry().setTotalVolunteers(vm.getMinistry().getTotalVolunteers() - 1);
+        });
 
         volunteerRepository.delete(volunteer);
 
