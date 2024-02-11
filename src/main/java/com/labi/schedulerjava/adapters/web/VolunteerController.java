@@ -33,6 +33,9 @@ public class VolunteerController {
     @Autowired
     private AutoCreateVolunteerUseCase autoCreateVolunteerUseCase;
 
+    @Autowired
+    private DeleteVolunteerUseCase deleteVolunteerUseCase;
+
     @PostMapping("/create")
     public ResponseEntity<UseCase.OutputValues> create(@RequestBody @Valid CreateVolunteerDto dto,
                                                        @RequestHeader("Authorization") String authHeader){
@@ -78,9 +81,8 @@ public class VolunteerController {
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<UseCase.OutputValues> delete(@PathVariable Long id) {
-        UseCase.OutputValues outputValues =
-                findVolunteersUseCase.execute(new FindVolunteersUseCase.InputValues(id));
-        return new ResponseEntity<>(outputValues, HttpStatus.OK);
+    public ResponseEntity<Void> delete(@PathVariable Long id) {
+                deleteVolunteerUseCase.execute(new DeleteVolunteerUseCase.InputValues(id));
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 }
