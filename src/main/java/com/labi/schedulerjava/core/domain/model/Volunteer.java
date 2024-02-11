@@ -55,6 +55,9 @@ public class Volunteer extends BaseEntity {
     @ManyToOne(fetch = FetchType.LAZY)
     public Group group;
 
+    @OneToMany(mappedBy = "volunteer")
+    private List<VolunteerLog> volunteerLogs;
+
     public Volunteer(String name, String lastName, String cpf, String phone, LocalDate birthDate, VolunteerOrigin origin) {
         this.accessKey = UUID.randomUUID();
         this.name = name;

@@ -34,9 +34,10 @@ public class VolunteerController {
     private AutoCreateVolunteerUseCase autoCreateVolunteerUseCase;
 
     @PostMapping("/create")
-    public ResponseEntity<UseCase.OutputValues> create(@RequestBody @Valid CreateVolunteerDto dto) {
+    public ResponseEntity<UseCase.OutputValues> create(@RequestBody @Valid CreateVolunteerDto dto,
+                                                       @RequestHeader("Authorization") String authHeader){
         UseCase.OutputValues outputValues =
-                createVolunteerUseCase.execute(new CreateVolunteerUseCase.InputValues(dto));
+                createVolunteerUseCase.execute(new CreateVolunteerUseCase.InputValues(dto, authHeader));
         return new ResponseEntity<>(outputValues, HttpStatus.CREATED);
     }
 
@@ -73,6 +74,13 @@ public class VolunteerController {
                                                                             @PathVariable Long ministryId) {
         UseCase.OutputValues outputValues =
                 findVolunteersNotInScheduleUseCase.execute(new FindVolunteersNotInScheduleUseCase.InputValues(scheduleId, ministryId));
+        return new ResponseEntity<>(outputValues, HttpStatus.OK);
+    }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<UseCase.OutputValues> delete(@PathVariable Long id) {
+        UseCase.OutputValues outputValues =
+                findVolunteersUseCase.execute(new FindVolunteersUseCase.InputValues(id));
         return new ResponseEntity<>(outputValues, HttpStatus.OK);
     }
 }

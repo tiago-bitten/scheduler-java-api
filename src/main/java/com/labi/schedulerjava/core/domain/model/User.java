@@ -43,6 +43,9 @@ public class User extends BaseEntity {
     @OneToMany(mappedBy = "approver")
     private List<UserApprove> approvers;
 
+    @OneToMany(mappedBy = "changedBy")
+    private List<VolunteerLog> volunteerLogs;
+
     public User(String name, String email, String password) {
         this.name = name;
         this.email = email;
