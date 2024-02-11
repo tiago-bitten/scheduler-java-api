@@ -39,23 +39,20 @@ public class Volunteer extends BaseEntity {
     @Column(name = "profile_image_url")
     public String profileImageURL;
 
-    @Column(name = "created_at", nullable = false, updatable = false)
-    private Instant createdAt;
-
     @Column(name = "origin", nullable = false)
     @Enumerated(EnumType.STRING)
     private VolunteerOrigin origin;
 
-    @OneToMany(mappedBy = "volunteer")
+    @OneToMany(mappedBy = "volunteer", fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
     private List<VolunteerMinistry> volunteerMinistries;
 
-    @OneToMany(mappedBy = "volunteer")
+    @OneToMany(mappedBy = "volunteer", fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
     private List<UnavailableDate> unavailableDates;
 
     @ManyToOne(fetch = FetchType.LAZY)
     public Group group;
 
-    @OneToMany(mappedBy = "volunteer")
+    @OneToMany(mappedBy = "volunteer", fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
     private List<VolunteerLog> volunteerLogs;
 
     public Volunteer(String name, String lastName, String cpf, String phone, LocalDate birthDate, VolunteerOrigin origin) {
@@ -65,7 +62,6 @@ public class Volunteer extends BaseEntity {
         this.cpf = cpf;
         this.phone = phone;
         this.birthDate = birthDate;
-        this.createdAt = Instant.now();
         this.origin = origin;
     }
 }
