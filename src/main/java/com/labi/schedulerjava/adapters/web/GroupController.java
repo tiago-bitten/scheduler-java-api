@@ -31,6 +31,9 @@ public class GroupController {
     @Autowired
     private FindAllGroupUseCase findAllGroupUseCase;
 
+    @Autowired
+    private DeleteGroupUseCase deleteGroupUseCase;
+
     @PostMapping("/create")
     public ResponseEntity<UseCase.OutputValues> create(@RequestBody CreateGroupDto dto) {
         UseCase.OutputValues outputValues =
@@ -72,6 +75,12 @@ public class GroupController {
     public ResponseEntity<Void> disassociate(@PathVariable Long groupId,
                                              @RequestParam Long volunteerId) {
         disassociateVolunteerGroupUseCase.execute(new DisassociateVolunteerGroupUseCase.InputValues(groupId, volunteerId));
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+    }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> delete(@PathVariable Long id) {
+        deleteGroupUseCase.execute(new DeleteGroupUseCase.InputValues(id));
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 }

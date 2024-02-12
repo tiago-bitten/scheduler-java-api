@@ -24,7 +24,7 @@ public class Group extends BaseEntity {
     @Column(name = "updated_at", nullable = false)
     private Instant updatedAt;
 
-    @OneToMany(mappedBy = "group")
+    @OneToMany(mappedBy = "group", fetch = FetchType.LAZY)
     private List<Volunteer> volunteers;
 
     public Group(String name) {
