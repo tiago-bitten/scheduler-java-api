@@ -22,4 +22,7 @@ public interface VolunteerRepository extends JpaRepository<Volunteer, Long> {
     Optional<Volunteer> findByCpf(String cpf);
 
     Optional<Volunteer> findByAccessKey(UUID accessKey);
+
+    @Query("SELECT v FROM Volunteer v WHERE v.group.id = ?1")
+    List<Volunteer> findAllByGroup(Long groupId);
 }

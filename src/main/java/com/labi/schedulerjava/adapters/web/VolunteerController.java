@@ -39,6 +39,9 @@ public class VolunteerController {
     @Autowired
     private FindVolunteersNotInGroupUseCase findVolunteersNotInGroupUseCase;
 
+    @Autowired
+    private FindVolunteersByGroupUseCase findVolunteersByGroupUseCase;
+
     @PostMapping("/create")
     public ResponseEntity<UseCase.OutputValues> create(@RequestBody @Valid CreateVolunteerDto dto,
                                                        @RequestHeader("Authorization") String authHeader){
@@ -93,6 +96,13 @@ public class VolunteerController {
     public ResponseEntity<UseCase.OutputValues> findVolunteersNotInGroup() {
         UseCase.OutputValues outputValues =
                 findVolunteersNotInGroupUseCase.execute(new FindVolunteersNotInGroupUseCase.InputValues());
+        return new ResponseEntity<>(outputValues, HttpStatus.OK);
+    }
+
+    @GetMapping("/group/{groupId}")
+    public ResponseEntity<UseCase.OutputValues> findVolunteersNotInGroup(@PathVariable Long groupId) {
+        UseCase.OutputValues outputValues =
+                findVolunteersByGroupUseCase.execute(new FindVolunteersByGroupUseCase.InputValues(groupId));
         return new ResponseEntity<>(outputValues, HttpStatus.OK);
     }
 }

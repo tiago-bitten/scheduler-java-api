@@ -1,7 +1,8 @@
 package com.labi.schedulerjava.core.usecases.volunteer;
 
 import com.labi.schedulerjava.adapters.persistence.VolunteerRepository;
-import com.labi.schedulerjava.core.domain.model.Volunteer;
+import com.labi.schedulerjava.core.domain.exception.BusinessRuleException;
+import com.labi.schedulerjava.core.domain.model.Group;
 import com.labi.schedulerjava.core.domain.service.GroupService;
 import com.labi.schedulerjava.core.usecases.UseCase;
 import com.labi.schedulerjava.dtos.ReadMinistryDto;
@@ -9,11 +10,12 @@ import com.labi.schedulerjava.dtos.ReadVolunteerDto;
 import lombok.Value;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import org.w3c.dom.stylesheets.LinkStyle;
 
 import java.util.List;
 
 @Component
-public class FindVolunteersNotInGroupUseCase extends UseCase<FindVolunteersNotInGroupUseCase.InputValues, FindVolunteersNotInGroupUseCase.OutputValues> {
+public class FindVolunteersByGroupUseCase extends UseCase<FindVolunteersByGroupUseCase.InputValues, FindVolunteersByGroupUseCase.OutputValues> {
 
     @Autowired
     private VolunteerRepository volunteerRepository;
@@ -23,13 +25,11 @@ public class FindVolunteersNotInGroupUseCase extends UseCase<FindVolunteersNotIn
 
     @Override
     public OutputValues execute(InputValues input) {
-        List<Volunteer> volunteers = volunteerRepository.findAll();
-        List<Volunteer> volunteersNotInGroup = volunteers.stream()
-                .filter(volunteer -> volunteer.getGroup() == null)
-                .toList();
+        Group group = groupService.findById(input.groupId)
+                .orElseThrow(() -> new BusinessRuleException("O ID " + input.groupId + " não corresponde a nenhum grupo"));
 
         return new OutputValues(
-                volunteersNotInGroup.stream()
+                volunteerRepository.findAllByGroup(group.getId()).stream()
                         .map(volunteer -> new ReadVolunteerDto(
                                 volunteer.getId(),
                                 volunteer.getAccessKey(),
@@ -53,6 +53,7 @@ public class FindVolunteersNotInGroupUseCase extends UseCase<FindVolunteersNotIn
 
     @Value
     public static class InputValues implements UseCase.InputValues {
+        Long groupId;
     }
 
     @Value
