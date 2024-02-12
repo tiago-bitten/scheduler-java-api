@@ -5,6 +5,7 @@ import com.labi.schedulerjava.core.domain.exception.BusinessRuleException;
 import com.labi.schedulerjava.core.domain.model.Group;
 import com.labi.schedulerjava.core.usecases.UseCase;
 import com.labi.schedulerjava.dtos.CreateGroupDto;
+import com.labi.schedulerjava.dtos.ReadSimpGroupDto;
 import lombok.Value;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -23,7 +24,7 @@ public class CreateGroupUseCase extends UseCase<CreateGroupUseCase.InputValues, 
         Group group = new Group(input.dto.name());
         groupRepository.save(group);
 
-        return new OutputValues();
+        return new OutputValues(new ReadSimpGroupDto(group.getId(), group.getName()));
     }
 
     @Value
@@ -33,5 +34,6 @@ public class CreateGroupUseCase extends UseCase<CreateGroupUseCase.InputValues, 
 
     @Value
     public static class OutputValues implements UseCase.OutputValues {
+        ReadSimpGroupDto group;
     }
 }

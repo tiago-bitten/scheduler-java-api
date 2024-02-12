@@ -29,15 +29,16 @@ public class GroupController {
     private FindAllGroupUseCase findAllGroupUseCase;
 
     @PostMapping("/create")
-    public ResponseEntity<Void> create(@RequestBody CreateGroupDto dto) {
-        createGroupUseCase.execute(new CreateGroupUseCase.InputValues(dto));
-        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+    public ResponseEntity<UseCase.OutputValues> create(@RequestBody CreateGroupDto dto) {
+        UseCase.OutputValues outputValues =
+                createGroupUseCase.execute(new CreateGroupUseCase.InputValues(dto));
+        return new ResponseEntity<>(outputValues, HttpStatus.CREATED);
     }
 
-    @PostMapping("/associate")
-    public ResponseEntity<Void> associate(@RequestBody AssociateVolunteerWithGroupDto dto,
-                                          @RequestParam Long groupId) {
-        associateVolunteerWithGroupUseCase.execute(new AssociateVolunteerWithGroupUseCase.InputValues(groupId, dto));
+    @PostMapping("/{groupId}/associate")
+    public ResponseEntity<Void> associate(@PathVariable Long groupId,
+                                          @RequestParam Long volunteerId) {
+        associateVolunteerWithGroupUseCase.execute(new AssociateVolunteerWithGroupUseCase.InputValues(groupId, volunteerId));
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 

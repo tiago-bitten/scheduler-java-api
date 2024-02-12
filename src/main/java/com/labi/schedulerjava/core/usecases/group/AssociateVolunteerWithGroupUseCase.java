@@ -27,15 +27,16 @@ public class AssociateVolunteerWithGroupUseCase extends UseCase<AssociateVolunte
     @Override
     public OutputValues execute(InputValues input) {
         Group group = groupRepository.findById(input.groupId)
-                .orElseThrow(() -> new BusinessRuleException("Grupo não encontrado"));
+                .orElseThrow(() -> new BusinessRuleException("O Id " + input.groupId + " não corresponde a um grupo cadastrado"));
 
-        for (Long volunteerId : input.dto.volunteersId()) {
-            Optional<Volunteer> existsVolunteer = volunteerService.findById(volunteerId);
-            if (existsVolunteer.isPresent()) {
-                group.addVolunteer(existsVolunteer.get());
-                groupRepository.save(group);
-            }
-        }
+        Volunteer volunteer = volunteerService.findById(input.volunteerId)
+                .orElseThrow(() -> new BusinessRuleException("O ID " + input.volunteerId + " não corresponde a um voluntário cadastrado"));
+
+        if (group.getVolunteers().contains(volunteer))
+            throw new BusinessRuleException("O voluntário já está associado a este grupo");
+
+        group.addVolunteer(volunteer);
+        groupRepository.save(group);
 
         return new OutputValues();
     }
@@ -43,7 +44,7 @@ public class AssociateVolunteerWithGroupUseCase extends UseCase<AssociateVolunte
     @Value
     public static class InputValues implements UseCase.InputValues {
         Long groupId;
-        AssociateVolunteerWithGroupDto dto;
+        Long volunteerId;
     }
 
     @Value
