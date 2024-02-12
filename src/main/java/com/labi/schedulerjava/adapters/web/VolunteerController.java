@@ -36,6 +36,9 @@ public class VolunteerController {
     @Autowired
     private DeleteVolunteerUseCase deleteVolunteerUseCase;
 
+    @Autowired
+    private FindVolunteersNotInGroupUseCase findVolunteersNotInGroupUseCase;
+
     @PostMapping("/create")
     public ResponseEntity<UseCase.OutputValues> create(@RequestBody @Valid CreateVolunteerDto dto,
                                                        @RequestHeader("Authorization") String authHeader){
@@ -84,5 +87,12 @@ public class VolunteerController {
     public ResponseEntity<Void> delete(@PathVariable Long id) {
                 deleteVolunteerUseCase.execute(new DeleteVolunteerUseCase.InputValues(id));
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+    }
+
+    @GetMapping("/not-in-group")
+    public ResponseEntity<UseCase.OutputValues> findVolunteersNotInGroup() {
+        UseCase.OutputValues outputValues =
+                findVolunteersNotInGroupUseCase.execute(new FindVolunteersNotInGroupUseCase.InputValues());
+        return new ResponseEntity<>(outputValues, HttpStatus.OK);
     }
 }
