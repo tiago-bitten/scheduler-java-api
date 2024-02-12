@@ -24,7 +24,7 @@ public class Group extends BaseEntity {
     @Column(name = "updated_at", nullable = false)
     private Instant updatedAt;
 
-    @OneToMany(mappedBy = "group", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(mappedBy = "group")
     private List<Volunteer> volunteers;
 
     public Group(String name) {
@@ -36,5 +36,10 @@ public class Group extends BaseEntity {
     public void addVolunteer(Volunteer volunteer) {
         this.volunteers.add(volunteer);
         volunteer.setGroup(this);
+    }
+
+    public void removeVolunteer(Volunteer volunteer) {
+        this.volunteers.remove(volunteer);
+        volunteer.setGroup(null);
     }
 }

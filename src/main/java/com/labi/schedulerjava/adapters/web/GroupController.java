@@ -20,6 +20,9 @@ public class GroupController {
     private AssociateVolunteerWithGroupUseCase associateVolunteerWithGroupUseCase;
 
     @Autowired
+    private DisassociateVolunteerGroupUseCase disassociateVolunteerGroupUseCase;
+
+    @Autowired
     private FindGroupUseCase findGroupUseCase;
 
     @Autowired
@@ -63,5 +66,12 @@ public class GroupController {
         UseCase.OutputValues outputValues =
                 findGroupByNameToAppointUseCase.execute(new FindGroupByNameToAppointUseCase.InputValues(name, ministryId, scheduleId));
         return new ResponseEntity<>(outputValues, HttpStatus.OK);
+    }
+
+    @PutMapping("/{groupId}/disassociate")
+    public ResponseEntity<Void> disassociate(@PathVariable Long groupId,
+                                             @RequestParam Long volunteerId) {
+        disassociateVolunteerGroupUseCase.execute(new DisassociateVolunteerGroupUseCase.InputValues(groupId, volunteerId));
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 }
