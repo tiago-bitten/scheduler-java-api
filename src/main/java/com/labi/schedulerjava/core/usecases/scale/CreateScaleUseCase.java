@@ -87,6 +87,7 @@ public class CreateScaleUseCase extends UseCase<CreateScaleUseCase.InputValues, 
         }
 
         Scale scale = new Scale(input.maxVolunteers, schedule, user);
+        scaleRepository.save(scale);
 
         return new OutputValues(new ReadScaleDto(
                 scale.getId(),
