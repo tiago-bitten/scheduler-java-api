@@ -5,6 +5,7 @@ import com.labi.schedulerjava.core.domain.model.Volunteer;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -24,5 +25,13 @@ public class VolunteerService {
 
     public Optional<Volunteer> findByAccessKey(UUID accessKey) {
         return volunteerRepository.findByAccessKey(accessKey);
+    }
+
+    public List<Volunteer> findAll() {
+        return volunteerRepository.findAll();
+    }
+
+    public List<Volunteer> findAll(Long ministryId) {
+        return volunteerRepository.findAll(ministryId);
     }
 }

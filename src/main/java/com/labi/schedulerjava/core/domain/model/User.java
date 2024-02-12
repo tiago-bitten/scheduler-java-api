@@ -46,6 +46,12 @@ public class User extends BaseEntity {
     @OneToMany(mappedBy = "changedBy")
     private List<VolunteerLog> volunteerLogs;
 
+    @OneToMany(mappedBy = "appointedBy")
+    private List<Appointment> appointments;
+
+    @OneToMany(mappedBy = "generatedBy")
+    private List<Scale> scales;
+
     public User(String name, String email, String password) {
         this.name = name;
         this.email = email;
