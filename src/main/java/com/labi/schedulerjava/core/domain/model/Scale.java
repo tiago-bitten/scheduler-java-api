@@ -25,13 +25,18 @@ public class Scale extends BaseEntity {
     private Schedule schedule;
 
     @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "ministry_id", nullable = false)
+    private Ministry ministry;
+
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "generated_by_id", nullable = false)
     private User generatedBy;
 
-    public Scale(Long maxVolunteers, Schedule schedule, User generatedBy) {
+    public Scale(Long maxVolunteers, Schedule schedule, Ministry ministry, User generatedBy) {
         this.maxVolunteers = maxVolunteers;
         this.generatedAt = Instant.now();
         this.schedule = schedule;
+        this.ministry = ministry;
         this.generatedBy = generatedBy;
     }
 }

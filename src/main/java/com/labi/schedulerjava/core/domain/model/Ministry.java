@@ -36,6 +36,9 @@ public class Ministry extends BaseEntity {
     @OneToMany(mappedBy = "ministry", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<UserMinistry> userMinistries;
 
+    @OneToMany(mappedBy = "ministry", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Scale> scales;
+
     public Ministry(String name, String description, String color) {
         this.name = name;
         this.description = description;

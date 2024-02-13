@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.OptionalInt;
 
 @Service
 public class VolunteerMinistryService {
@@ -31,6 +32,14 @@ public class VolunteerMinistryService {
             throw new BusinessRuleException("Vinculo voluntário e ministério não encontrado");
 
         return volunteerMinistry;
+    }
+
+    public Boolean isVolunteerInMinistry(Long volunteerId, Long ministryId) {
+        Optional<VolunteerMinistry> volunteerMinistry = findByVolunteerAndMinistry(volunteerId, ministryId);
+        if (volunteerMinistry.isEmpty())
+            return false;
+
+        return volunteerMinistry.get().getIsActive();
     }
 
     public Optional<VolunteerMinistry> findByVolunteerAndMinistry(Volunteer volunteer, Ministry ministry) {
