@@ -66,11 +66,22 @@ public class SchedulerJavaApplication {
 		Volunteer volunteer8 = new Volunteer("Ana", "Pereira", "78901234567", "47993322110", LocalDate.parse("1996-06-20"), VolunteerOrigin.USER_REGISTERED);
 		Volunteer volunteer9 = new Volunteer("Pedro", "Ribeiro", "89012345678", "47992211009", LocalDate.parse("1994-01-15"), VolunteerOrigin.USER_REGISTERED);
 		Volunteer volunteer10 = new Volunteer("Paula", "Ferreira", "90123456789", "47991100998", LocalDate.parse("1999-04-30"), VolunteerOrigin.USER_REGISTERED);
+		Volunteer volunteer11 = new Volunteer("Miguel", "Santana", "01234567890", "47990099887", LocalDate.parse("1997-08-15"), VolunteerOrigin.USER_REGISTERED);
+		Volunteer volunteer12 = new Volunteer("Larissa", "Oliveira", "12345678901", "47998877665", LocalDate.parse("1993-12-30"), VolunteerOrigin.USER_REGISTERED);
+		Volunteer volunteer13 = new Volunteer("Rafael", "Pereira", "23456789012", "47997766554", LocalDate.parse("1991-05-15"), VolunteerOrigin.USER_REGISTERED);
+		Volunteer volunteer14 = new Volunteer("Gabriela", "Silva", "34567890123", "47996655443", LocalDate.parse("1995-09-10"), VolunteerOrigin.USER_REGISTERED);
+		Volunteer volunteer15 = new Volunteer("Fernando", "Santos", "45678901234", "47995544332", LocalDate.parse("2001-12-25"), VolunteerOrigin.USER_REGISTERED);
+		Volunteer volunteer16 = new Volunteer("Isabela", "Oliveira", "56789012345", "47994433221", LocalDate.parse("1989-03-05"), VolunteerOrigin.USER_REGISTERED);
+		Volunteer volunteer17 = new Volunteer("Ricardo", "Pereira", "67890123456", "47993322110", LocalDate.parse("1992-06-20"), VolunteerOrigin.USER_REGISTERED);
+		Volunteer volunteer18 = new Volunteer("Larissa", "Ribeiro", "78901234567", "47992211009", LocalDate.parse("1998-01-15"), VolunteerOrigin.USER_REGISTERED);
+		Volunteer volunteer19 = new Volunteer("Rafael", "Ferreira", "89012345678", "47991100998", LocalDate.parse("1993-04-30"), VolunteerOrigin.USER_REGISTERED);
+		Volunteer volunteer20 = new Volunteer("Gabriela", "Santana", "90123456789", "47990099887", LocalDate.parse("1994-08-15"), VolunteerOrigin.USER_REGISTERED);
 
-		volunteerRepository.saveAll(List.of(volunteer1, volunteer2, volunteer3, volunteer4, volunteer5, volunteer6, volunteer7, volunteer8, volunteer9, volunteer10));
+		volunteerRepository.saveAll(List.of(volunteer1, volunteer2, volunteer3, volunteer4, volunteer5, volunteer6, volunteer7, volunteer8, volunteer9, volunteer10, volunteer11, volunteer12, volunteer13, volunteer14, volunteer15, volunteer16, volunteer17, volunteer18, volunteer19, volunteer20));
+
 
 		List<Ministry> ministries = List.of(ministry, ministry2, ministry3, ministry4, ministry5, ministry6);
-		List<Volunteer> volunteers = List.of(volunteer1, volunteer2, volunteer3, volunteer4, volunteer5, volunteer6, volunteer7, volunteer8, volunteer9, volunteer10);
+		List<Volunteer> volunteers = volunteerRepository.findAll();
 
 		List<VolunteerMinistry> volunteerMinistries = new ArrayList<>();
 		Random random = new Random();
