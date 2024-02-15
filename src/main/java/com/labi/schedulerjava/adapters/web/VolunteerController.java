@@ -65,9 +65,11 @@ public class VolunteerController {
     }
 
     @GetMapping
-    public ResponseEntity<UseCase.OutputValues> findAll(@RequestParam(required = false) Long ministryId) {
+    public ResponseEntity<UseCase.OutputValues> findAll(@RequestParam(required = false) String volunteerName,
+                                                        @RequestParam(required = false) String ministryName,
+                                                        @RequestParam(defaultValue = "false") Boolean isLinkedToAnyMinistry) {
         UseCase.OutputValues outputValues =
-                findVolunteersUseCase.execute(new FindVolunteersUseCase.InputValues(ministryId));
+                findVolunteersUseCase.execute(new FindVolunteersUseCase.InputValues(volunteerName, ministryName, isLinkedToAnyMinistry));
         return new ResponseEntity<>(outputValues, HttpStatus.OK);
     }
 

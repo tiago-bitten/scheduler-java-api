@@ -28,7 +28,7 @@ public class VolunteerSpecification {
     public static Specification<Volunteer> isLinkedToAnyMinistry() {
         return (root, query, criteriaBuilder) -> {
             Join<Volunteer, VolunteerMinistry> volunteerMinistryJoin = root.join("volunteerMinistries", JoinType.INNER);
-            return criteriaBuilder.isNotNull(volunteerMinistryJoin.get("id"));
+            return criteriaBuilder.isTrue(volunteerMinistryJoin.get("isActive"));
         };
     }
 }

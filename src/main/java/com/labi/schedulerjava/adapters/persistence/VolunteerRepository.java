@@ -2,6 +2,7 @@ package com.labi.schedulerjava.adapters.persistence;
 
 import com.labi.schedulerjava.core.domain.model.Volunteer;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import org.springframework.data.jpa.repository.Query;
 
 import java.time.LocalDate;
@@ -9,7 +10,7 @@ import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
-public interface VolunteerRepository extends JpaRepository<Volunteer, Long> {
+public interface VolunteerRepository extends JpaRepository<Volunteer, Long>, JpaSpecificationExecutor<Volunteer> {
 
     @Query("SELECT v FROM Volunteer v JOIN VolunteerMinistry vm ON v.id = vm.volunteer.id WHERE vm.ministry.id = ?1 AND vm.isActive = true")
     List<Volunteer> findAll(Long ministryId);
