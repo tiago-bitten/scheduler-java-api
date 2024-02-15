@@ -24,4 +24,11 @@ public class VolunteerSpecification {
             return criteriaBuilder.like(criteriaBuilder.lower(ministryJoin.get("name")), "%" + ministry.toLowerCase() + "%");
         };
     }
+
+    public static Specification<Volunteer> isLinkedToAnyMinistry() {
+        return (root, query, criteriaBuilder) -> {
+            Join<Volunteer, VolunteerMinistry> volunteerMinistryJoin = root.join("volunteerMinistries", JoinType.INNER);
+            return criteriaBuilder.isNotNull(volunteerMinistryJoin.get("id"));
+        };
+    }
 }
