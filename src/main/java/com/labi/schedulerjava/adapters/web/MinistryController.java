@@ -36,9 +36,10 @@ public class MinistryController {
     }
 
     @GetMapping
-    public ResponseEntity<UseCase.OutputValues> findAll(@RequestParam(required = false) Long volunteerId) {
+    public ResponseEntity<UseCase.OutputValues> findAll(@RequestParam(required = false) String ministryName,
+                                                        @RequestParam(required = false) String volunteerName) {
         UseCase.OutputValues outputValues =
-                findMinistriesUseCase.execute(new FindMinistriesUseCase.InputValues(volunteerId));
+                findMinistriesUseCase.execute(new FindMinistriesUseCase.InputValues(ministryName, volunteerName));
         return new ResponseEntity<>(outputValues, HttpStatus.OK);
     }
 
