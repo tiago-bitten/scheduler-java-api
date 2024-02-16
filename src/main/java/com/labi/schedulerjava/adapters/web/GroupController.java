@@ -49,9 +49,10 @@ public class GroupController {
     }
 
     @GetMapping
-    public ResponseEntity<UseCase.OutputValues> findAll() {
+    public ResponseEntity<UseCase.OutputValues> findAll(@RequestParam(required = false) String groupName,
+                                                        @RequestParam(required = false) String volunteerName) {
         UseCase.OutputValues outputValues =
-                findAllGroupUseCase.execute(new FindAllGroupUseCase.InputValues());
+                findAllGroupUseCase.execute(new FindAllGroupUseCase.InputValues(groupName, volunteerName));
         return new ResponseEntity<>(outputValues, HttpStatus.OK);
     }
 
