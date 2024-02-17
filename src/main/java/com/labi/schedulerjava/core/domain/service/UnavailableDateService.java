@@ -19,7 +19,7 @@ public class UnavailableDateService {
     @Autowired
     private VolunteerService volunteerService;
 
-    public Boolean isUnavailableDate(LocalDateTime startDate, LocalDateTime endDate, Long volunteerId) {
+    public boolean isUnavailableDate(LocalDateTime startDate, LocalDateTime endDate, Long volunteerId) {
         Volunteer volunteer = volunteerService.findById(volunteerId)
                 .orElseThrow(() -> new BusinessRuleException("O ID informado " + volunteerId + " não corresponde a um voluntário cadastrado"));
 
@@ -32,5 +32,4 @@ public class UnavailableDateService {
         }
         return false;
     }
-
 }

@@ -3,6 +3,7 @@ package com.labi.schedulerjava.core.domain.service;
 import com.labi.schedulerjava.adapters.persistence.VolunteerRepository;
 import com.labi.schedulerjava.core.domain.model.Volunteer;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -31,7 +32,7 @@ public class VolunteerService {
         return volunteerRepository.findAll();
     }
 
-    public List<Volunteer> findAll(Long ministryId) {
-        return volunteerRepository.findAll(ministryId);
+    public List<Volunteer> findAll(Specification<Volunteer> spec) {
+        return volunteerRepository.findAll(spec);
     }
 }

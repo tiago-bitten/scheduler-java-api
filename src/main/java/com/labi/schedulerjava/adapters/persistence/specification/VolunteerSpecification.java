@@ -5,6 +5,8 @@ import com.labi.schedulerjava.core.domain.model.Volunteer;
 import com.labi.schedulerjava.core.domain.model.VolunteerMinistry;
 import jakarta.persistence.criteria.Join;
 import jakarta.persistence.criteria.JoinType;
+import jakarta.persistence.criteria.Root;
+import jakarta.persistence.criteria.Subquery;
 import org.springframework.data.jpa.domain.Specification;
 
 public class VolunteerSpecification {
@@ -21,7 +23,10 @@ public class VolunteerSpecification {
             if (ministry == null || ministry.isEmpty()) return criteriaBuilder.conjunction();
             Join<Volunteer, VolunteerMinistry> volunteerMinistryJoin = root.join("volunteerMinistries", JoinType.INNER);
             Join<VolunteerMinistry, Ministry> ministryJoin = volunteerMinistryJoin.join("ministry", JoinType.INNER);
-            return criteriaBuilder.like(criteriaBuilder.lower(ministryJoin.get("name")), "%" + ministry.toLowerCase() + "%");
+            return criteriaBuilder.and(
+                    criteriaBuilder.like(criteriaBuilder.lower(ministryJoin.get("name")), "%" + ministry.toLowerCase() + "%"),
+                    criteriaBuilder.isTrue(volunteerMinistryJoin.get("isActive"))
+            );
         };
     }
 

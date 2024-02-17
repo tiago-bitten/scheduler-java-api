@@ -39,14 +39,29 @@ public class CreateScaleUseCase extends UseCase<CreateScaleUseCase.InputValues, 
     @Autowired
     private VolunteerMinistryService volunteerMinistryService;
 
+    @Autowired
+    private ScaleService scaleService;
+
+    @Autowired
+    private UserMinistryService userMinistryService;
+
     @Override
     public OutputValues execute(InputValues input) {
         User user = jwtTokenProvider.getUserFromToken(input.getAuthHeader());
-        Schedule schedule = scheduleService.findById(input.getScheduleId())
-                .orElseThrow(() -> new BusinessRuleException("O ID " + input.getScheduleId() + " não corresponde a uma agenda cadastrada"));
 
-        Ministry ministry = ministryService.findById(input.getMinistryId())
-                .orElseThrow(() -> new BusinessRuleException("O ID " + input.getMinistryId() + " não corresponde a um ministério cadastrado"));
+        Schedule schedule = scheduleService.findById(input.getScheduleId())
+                .orElseThrow(() -> new BusinessRuleException("O ID " + input.getScheduleId() + " não corresponde a um horário cadastrado"));
+
+        if (scaleService.validateMaxVolunteersSize(input.dto.ministryIdMaxVolunteers()))
+            throw new BusinessRuleException("O número máximo de voluntários deve ser maior que 0");
+
+        List<Ministry> ministries = scaleService.validateMinistries(input.dto.ministryIdMaxVolunteers());
+        ministries.forEach(ministry -> {
+            if (!userMinistryService.existsUserMinistryRelation(user.getId(), ministry.getId()))
+                throw new BusinessRuleException("O usuário não tem permissão para criar escalas para o ministério " + ministry.getName());
+        });
+
+
 
         return new OutputValues();
     }
