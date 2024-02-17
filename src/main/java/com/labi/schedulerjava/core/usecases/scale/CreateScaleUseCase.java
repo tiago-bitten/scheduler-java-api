@@ -61,9 +61,15 @@ public class CreateScaleUseCase extends UseCase<CreateScaleUseCase.InputValues, 
                 throw new BusinessRuleException("O usuário não tem permissão para criar escalas para o ministério " + ministry.getName());
         });
 
+        Map<Volunteer, Ministry> scales = new HashMap<>();
 
+        ministries.forEach(ministry -> {
+            Long maxVolunteers = input.dto.ministryIdMaxVolunteers().get(ministry.getId());
+            List<Volunteer> volunteers = scaleService.createIndividualScale(ministry, schedule, maxVolunteers);
+            scales.putAll(volunteers.stream().collect(Collectors.toMap(volunteer -> volunteer, volunteer -> ministry)));
+        });
 
-        return new OutputValues();
+        return new OutputValues(scales);
     }
 
     @Value
@@ -75,6 +81,6 @@ public class CreateScaleUseCase extends UseCase<CreateScaleUseCase.InputValues, 
 
     @Value
     public static class OutputValues implements UseCase.OutputValues {
-        //List<ReadSimpVolunteerDto> volunteers;
+        Map<Volunteer, Ministry> scales;
     }
 }
