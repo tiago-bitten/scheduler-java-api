@@ -67,6 +67,9 @@ public class CreateScaleUseCase extends UseCase<CreateScaleUseCase.InputValues, 
             Long maxVolunteers = input.dto.ministryIdMaxVolunteers().get(ministry.getId());
             List<Volunteer> volunteers = scaleService.createIndividualScale(ministry, schedule, maxVolunteers);
             scales.put(ministry.getName(), volunteers.stream().map(Volunteer::getName).collect(Collectors.joining(", ")));
+
+            Scale scale = new Scale(maxVolunteers, schedule, ministry, user);
+            scaleRepository.save(scale);
         });
 
         return new OutputValues(scales);
