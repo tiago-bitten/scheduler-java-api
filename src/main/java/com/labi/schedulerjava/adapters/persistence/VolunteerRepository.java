@@ -12,6 +12,9 @@ import java.util.UUID;
 
 public interface VolunteerRepository extends JpaRepository<Volunteer, Long>, JpaSpecificationExecutor<Volunteer> {
 
+    @Query("SELECT v FROM Volunteer v JOIN VolunteerMinistry vm ON v.id = vm.volunteer.id WHERE vm.ministry.id = ?1 AND vm.isActive = true")
+    List<Volunteer> findAll(Long ministryId);
+
     List<Volunteer> findAll();
 
     @Query("SELECT v FROM Volunteer v WHERE v.cpf = ?1 AND v.birthDate = ?2")

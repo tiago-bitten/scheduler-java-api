@@ -52,7 +52,7 @@ public class CreateScaleUseCase extends UseCase<CreateScaleUseCase.InputValues, 
         Schedule schedule = scheduleService.findById(input.getScheduleId())
                 .orElseThrow(() -> new BusinessRuleException("O ID " + input.getScheduleId() + " não corresponde a um horário cadastrado"));
 
-        if (scaleService.validateMaxVolunteersSize(input.dto.ministryIdMaxVolunteers()))
+        if (!scaleService.validateMaxVolunteersSize(input.dto.ministryIdMaxVolunteers()))
             throw new BusinessRuleException("O número máximo de voluntários deve ser maior que 0");
 
         List<Ministry> ministries = scaleService.validateMinistries(input.dto.ministryIdMaxVolunteers());
@@ -61,12 +61,12 @@ public class CreateScaleUseCase extends UseCase<CreateScaleUseCase.InputValues, 
                 throw new BusinessRuleException("O usuário não tem permissão para criar escalas para o ministério " + ministry.getName());
         });
 
-        Map<Volunteer, Ministry> scales = new HashMap<>();
+        Map<String, String> scales = new HashMap<>();
 
         ministries.forEach(ministry -> {
             Long maxVolunteers = input.dto.ministryIdMaxVolunteers().get(ministry.getId());
             List<Volunteer> volunteers = scaleService.createIndividualScale(ministry, schedule, maxVolunteers);
-            scales.putAll(volunteers.stream().collect(Collectors.toMap(volunteer -> volunteer, volunteer -> ministry)));
+            scales.put(ministry.getName(), volunteers.stream().map(Volunteer::getName).collect(Collectors.joining(", ")));
         });
 
         return new OutputValues(scales);
@@ -81,6 +81,6 @@ public class CreateScaleUseCase extends UseCase<CreateScaleUseCase.InputValues, 
 
     @Value
     public static class OutputValues implements UseCase.OutputValues {
-        Map<Volunteer, Ministry> scales;
+        Map<String, String> scales;
     }
 }

@@ -8,9 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 @Service
 public class ScaleService {
@@ -56,28 +54,25 @@ public class ScaleService {
         List<Volunteer> volunteers = volunteerService.findAll(volunteerSpec);
 
         int remaining = maxVolunteers.intValue();
-
         List<Volunteer> selectedVolunteers = new ArrayList<>();
+        Set<Long> processedGroupIds = new HashSet<>();
 
         while (remaining > 0 && !volunteers.isEmpty()) {
             Volunteer volunteer = selectRandomVolunteer(volunteers);
 
-            if (volunteer.getGroup() != null) {
+            if (volunteer.getGroup() != null && !processedGroupIds.contains(volunteer.getGroup().getId())) {
                 List<Volunteer> volunteersGroup = validateGroup(volunteer, ministry, schedule, remaining);
                 if (volunteersGroup != null) {
                     selectedVolunteers.addAll(volunteersGroup);
-                    volunteers.removeAll(volunteersGroup);
                     remaining -= volunteersGroup.size();
-                } else {
-                    volunteers.remove(volunteer);
+                    processedGroupIds.add(volunteer.getGroup().getId());
                 }
-            } else if (!unavailableDateService.isUnavailableDate(schedule.getStartDate(), schedule.getEndDate(), volunteer.getId())) {
+            } else if (volunteer.getGroup() == null && !unavailableDateService.isUnavailableDate(schedule.getStartDate(), schedule.getEndDate(), volunteer.getId())) {
                 selectedVolunteers.add(volunteer);
-                volunteers.remove(volunteer);
                 remaining--;
-            } else {
-                volunteers.remove(volunteer);
             }
+
+            volunteers.remove(volunteer);
         }
 
         return selectedVolunteers;
