@@ -82,9 +82,10 @@ public class VolunteerController {
 
     @GetMapping("/not-in-schedule/{scheduleId}/ministry/{ministryId}")
     public ResponseEntity<UseCase.OutputValues> findVolunteersNotInSchedule(@PathVariable Long scheduleId,
-                                                                            @PathVariable Long ministryId) {
+                                                                            @PathVariable Long ministryId,
+                                                                            @RequestParam(required = false) String volunteerName) {
         UseCase.OutputValues outputValues =
-                findVolunteersNotInScheduleUseCase.execute(new FindVolunteersNotInScheduleUseCase.InputValues(scheduleId, ministryId));
+                findVolunteersNotInScheduleUseCase.execute(new FindVolunteersNotInScheduleUseCase.InputValues(scheduleId, ministryId, volunteerName));
         return new ResponseEntity<>(outputValues, HttpStatus.OK);
     }
 

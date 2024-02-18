@@ -30,6 +30,17 @@ public class VolunteerSpecification {
         };
     }
 
+    public static Specification<Volunteer> hasMinistryId(Long ministryId) {
+        return (root, query, criteriaBuilder) -> {
+            if (ministryId == null) return criteriaBuilder.conjunction();
+            Join<Volunteer, VolunteerMinistry> volunteerMinistryJoin = root.join("volunteerMinistries", JoinType.INNER);
+            return criteriaBuilder.and(
+                    criteriaBuilder.equal(volunteerMinistryJoin.get("ministry").get("id"), ministryId),
+                    criteriaBuilder.isTrue(volunteerMinistryJoin.get("isActive"))
+            );
+        };
+    }
+
     public static Specification<Volunteer> isLinkedToAnyMinistry() {
         return (root, query, criteriaBuilder) -> {
             Join<Volunteer, VolunteerMinistry> volunteerMinistryJoin = root.join("volunteerMinistries", JoinType.INNER);

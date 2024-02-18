@@ -1,6 +1,7 @@
 package com.labi.schedulerjava.core.usecases.volunteer;
 
 import com.labi.schedulerjava.adapters.persistence.VolunteerRepository;
+import com.labi.schedulerjava.adapters.persistence.specification.VolunteerSpecification;
 import com.labi.schedulerjava.core.domain.exception.BusinessRuleException;
 import com.labi.schedulerjava.core.domain.model.Schedule;
 import com.labi.schedulerjava.core.domain.model.Volunteer;
@@ -31,7 +32,8 @@ public class FindVolunteersNotInScheduleUseCase extends UseCase<FindVolunteersNo
 
     @Override
     public OutputValues execute(InputValues input) {
-        List<Volunteer> volunteers = volunteerRepository.findAll(input.ministryId);
+        List<Volunteer> volunteers = volunteerRepository.findAll(VolunteerSpecification.hasMinistryId(input.ministryId)
+                .and(VolunteerSpecification.hasName(input.volunteerName)));
         Schedule schedule = scheduleService.findById(input.scheduleId)
                 .orElseThrow(() -> new BusinessRuleException("O ID informado " + input.scheduleId + " não corresponde a um horário cadastrado"));
 
@@ -53,6 +55,7 @@ public class FindVolunteersNotInScheduleUseCase extends UseCase<FindVolunteersNo
     public static class InputValues implements UseCase.InputValues {
         Long scheduleId;
         Long ministryId;
+        String volunteerName;
     }
 
     @Value
