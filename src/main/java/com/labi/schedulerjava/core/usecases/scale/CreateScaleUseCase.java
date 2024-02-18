@@ -61,18 +61,21 @@ public class CreateScaleUseCase extends UseCase<CreateScaleUseCase.InputValues, 
                 throw new BusinessRuleException("O usuário não tem permissão para criar escalas para o ministério " + ministry.getName());
         });
 
-        Map<String, String> scales = new HashMap<>();
+        List<ReadScaleDto> dto = new ArrayList<>();
 
         ministries.forEach(ministry -> {
             Long maxVolunteers = input.dto.ministryIdMaxVolunteers().get(ministry.getId());
             List<Volunteer> volunteers = scaleService.createIndividualScale(ministry, schedule, maxVolunteers);
-            scales.put(ministry.getName(), volunteers.stream().map(Volunteer::getName).collect(Collectors.joining(", ")));
 
             Scale scale = new Scale(maxVolunteers, schedule, ministry, user);
             scaleRepository.save(scale);
+
+            dto.addAll(volunteers.stream()
+                    .map(volunteer -> toDto(volunteer, scale))
+                    .toList());
         });
 
-        return new OutputValues(scales);
+        return new OutputValues(dto);
     }
 
     @Value
@@ -84,6 +87,30 @@ public class CreateScaleUseCase extends UseCase<CreateScaleUseCase.InputValues, 
 
     @Value
     public static class OutputValues implements UseCase.OutputValues {
-        Map<String, String> scales;
+        List<ReadScaleDto> scale;
+    }
+
+    private ReadScaleDto toDto(Volunteer volunteer, Scale scale) {
+        return new ReadScaleDto(
+                scale.getId(),
+                scale.getMaxVolunteers(),
+                new ReadSimpVolunteerDto(
+                        volunteer.getId(),
+                        volunteer.getAccessKey(),
+                        volunteer.getName(),
+                        volunteer.getLastName(),
+                        volunteer.getCpf(),
+                        volunteer.getPhone(),
+                        volunteer.getBirthDate(),
+                        volunteer.getOrigin()
+                ),
+                new ReadMinistryDto(
+                        scale.getMinistry().getId(),
+                        scale.getMinistry().getName(),
+                        scale.getMinistry().getDescription(),
+                        scale.getMinistry().getColor(),
+                        scale.getMinistry().getTotalVolunteers()
+                )
+        );
     }
 }
