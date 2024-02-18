@@ -264,14 +264,11 @@ public class SchedulerJavaApplication {
 				if (!assignedMinistries.contains(randomMinistry)) {
 					assignedMinistries.add(randomMinistry);
 					volunteerMinistries.add(new VolunteerMinistry(volunteer, randomMinistry));
-					randomMinistry.setTotalVolunteers(randomMinistry.getTotalVolunteers() + 1);
-					ministryRepository.save(randomMinistry);
 				} else {
 					i--;
 				}
 			}
 		}
-
 		volunteerMinistryRepository.saveAll(volunteerMinistries);
 
 		return null;
