@@ -31,6 +31,9 @@ public class ScaleService {
     @Autowired
     private UnavailableDateService unavailableDateService;
 
+    @Autowired
+    private AppointmentService appointmentService;
+
     public List<Ministry> validateMinistries(Map<Long, Long> ministriesIdMaxVolunteers) {
         List<Ministry> ministries = new ArrayList<>();
         ministriesIdMaxVolunteers.forEach((id, max) -> {
@@ -59,6 +62,9 @@ public class ScaleService {
 
         while (remaining > 0 && !volunteers.isEmpty()) {
             Volunteer volunteer = selectRandomVolunteer(volunteers);
+
+            if (appointmentService.validateAppointment(schedule, volunteer.getId()))
+                volunteers.remove(volunteer);
 
             if (volunteer.getGroup() != null && !processedGroupIds.contains(volunteer.getGroup().getId())) {
                 List<Volunteer> volunteersGroup = validateGroup(volunteer, ministry, schedule, remaining);
