@@ -196,6 +196,37 @@ public class SchedulerJavaApplication {
 		Volunteer volunteer138 = new Volunteer("Hugo", "Henrique", "89101234567", "47915220099", LocalDate.parse("1997-04-20"), VolunteerOrigin.USER_REGISTERED);
 		Volunteer volunteer139 = new Volunteer("Ivana", "Iglesias", "90112345678", "47914119988", LocalDate.parse("1998-05-25"), VolunteerOrigin.USER_REGISTERED);
 		Volunteer volunteer140 = new Volunteer("Joana", "Jardim", "01234567890", "47913008877", LocalDate.parse("1999-06-30"), VolunteerOrigin.USER_REGISTERED);
+		Volunteer volunteer141 = new Volunteer("Kauê", "Kapp", "12345678911", "47912997766", LocalDate.parse("2000-07-15"), VolunteerOrigin.USER_REGISTERED);
+		Volunteer volunteer142 = new Volunteer("Lívia", "Lopes", "23456789112", "47911886655", LocalDate.parse("2001-08-20"), VolunteerOrigin.USER_REGISTERED);
+		Volunteer volunteer143 = new Volunteer("Marcos", "Moura", "34567891013", "47910775544", LocalDate.parse("2002-09-25"), VolunteerOrigin.USER_REGISTERED);
+		Volunteer volunteer144 = new Volunteer("Nadia", "Nunes", "45678910124", "47909664433", LocalDate.parse("2003-10-30"), VolunteerOrigin.USER_REGISTERED);
+		Volunteer volunteer145 = new Volunteer("Otavio", "Oliveira", "56789101235", "47908553322", LocalDate.parse("2004-11-05"), VolunteerOrigin.USER_REGISTERED);
+		Volunteer volunteer146 = new Volunteer("Patricia", "Pinto", "67891012346", "47907442211", LocalDate.parse("2005-12-10"), VolunteerOrigin.USER_REGISTERED);
+		Volunteer volunteer147 = new Volunteer("Quirino", "Queiroz", "78910123457", "47906331100", LocalDate.parse("2006-01-15"), VolunteerOrigin.USER_REGISTERED);
+		Volunteer volunteer148 = new Volunteer("Ricardo", "Ramos", "89101234568", "47905220099", LocalDate.parse("2007-02-20"), VolunteerOrigin.USER_REGISTERED);
+		Volunteer volunteer149 = new Volunteer("Sandra", "Silva", "90112345679", "47904119988", LocalDate.parse("2008-03-25"), VolunteerOrigin.USER_REGISTERED);
+		Volunteer volunteer150 = new Volunteer("Tatiana", "Torres", "01234567891", "47903008877", LocalDate.parse("2009-04-30"), VolunteerOrigin.USER_REGISTERED);
+		Volunteer volunteer151 = new Volunteer("Umberto", "Uchoa", "12345678912", "47902997766", LocalDate.parse("2010-05-15"), VolunteerOrigin.USER_REGISTERED);
+		Volunteer volunteer152 = new Volunteer("Viviane", "Vaz", "23456789113", "47901886655", LocalDate.parse("2011-06-20"), VolunteerOrigin.USER_REGISTERED);
+		Volunteer volunteer153 = new Volunteer("Wesley", "Wanderley", "34567891014", "47900775544", LocalDate.parse("2012-07-25"), VolunteerOrigin.USER_REGISTERED);
+		Volunteer volunteer154 = new Volunteer("Xuxa", "Xavier", "45678910125", "47899664433", LocalDate.parse("2013-08-30"), VolunteerOrigin.USER_REGISTERED);
+		Volunteer volunteer155 = new Volunteer("Yuri", "Yamamoto", "56789101236", "47898553322", LocalDate.parse("2014-09-05"), VolunteerOrigin.USER_REGISTERED);
+		Volunteer volunteer156 = new Volunteer("Zilda", "Zanin", "67891012347", "47897442211", LocalDate.parse("2015-10-10"), VolunteerOrigin.USER_REGISTERED);
+		Volunteer volunteer157 = new Volunteer("Aline", "Alencar", "78910123458", "47896331100", LocalDate.parse("2016-11-15"), VolunteerOrigin.USER_REGISTERED);
+		Volunteer volunteer158 = new Volunteer("Breno", "Barreto", "89101234569", "47895220099", LocalDate.parse("2017-12-20"), VolunteerOrigin.USER_REGISTERED);
+		Volunteer volunteer159 = new Volunteer("Cecília", "Campos", "90112345680", "47894119988", LocalDate.parse("2018-01-25"), VolunteerOrigin.USER_REGISTERED);
+		Volunteer volunteer160 = new Volunteer("Davi", "Dias", "01234567892", "47893008877", LocalDate.parse("2019-02-28"), VolunteerOrigin.USER_REGISTERED);
+		Volunteer volunteer161 = new Volunteer("Ester", "Esteves", "12345678913", "47892997766", LocalDate.parse("2020-03-15"), VolunteerOrigin.USER_REGISTERED);
+		Volunteer volunteer162 = new Volunteer("Fábio", "Fernandes", "23456789114", "47891886655", LocalDate.parse("2021-04-20"), VolunteerOrigin.USER_REGISTERED);
+		Volunteer volunteer163 = new Volunteer("Graziela", "Gomes", "34567891015", "47890775544", LocalDate.parse("2022-05-25"), VolunteerOrigin.USER_REGISTERED);
+		Volunteer volunteer164 = new Volunteer("Hélio", "Henrique", "45678910126", "47889664433", LocalDate.parse("2023-06-30"), VolunteerOrigin.USER_REGISTERED);
+		Volunteer volunteer165 = new Volunteer("Iris", "Izidoro", "56789101237", "47888553322", LocalDate.parse("2024-07-15"), VolunteerOrigin.USER_REGISTERED);
+		Volunteer volunteer166 = new Volunteer("Jorge", "Junior", "67891012348", "47887442211", LocalDate.parse("2025-08-20"), VolunteerOrigin.USER_REGISTERED);
+		Volunteer volunteer167 = new Volunteer("Karla", "Kuwabara", "78910123459", "47886331100", LocalDate.parse("2026-09-25"), VolunteerOrigin.USER_REGISTERED);
+		Volunteer volunteer168 = new Volunteer("Leonardo", "Lima", "89101234570", "47885220099", LocalDate.parse("2027-10-30"), VolunteerOrigin.USER_REGISTERED);
+		Volunteer volunteer169 = new Volunteer("Mônica", "Machado", "90112345681", "47884119988", LocalDate.parse("2028-11-15"), VolunteerOrigin.USER_REGISTERED);
+		Volunteer volunteer170 = new Volunteer("Nelson", "Nogueira", "01234567893", "47883008877", LocalDate.parse("2029-12-20"), VolunteerOrigin.USER_REGISTERED);
+
 
 		volunteerRepository.saveAll(List.of(
 				volunteer1, volunteer2, volunteer3, volunteer4, volunteer5, volunteer6, volunteer7, volunteer8, volunteer9, volunteer10,
@@ -211,7 +242,10 @@ public class SchedulerJavaApplication {
 				volunteer101, volunteer102, volunteer103, volunteer104, volunteer105, volunteer106, volunteer107, volunteer108, volunteer109, volunteer110,
 				volunteer111, volunteer112, volunteer113, volunteer114, volunteer115, volunteer116, volunteer117, volunteer118, volunteer119, volunteer120,
 				volunteer121, volunteer122, volunteer123, volunteer124, volunteer125, volunteer126, volunteer127, volunteer128, volunteer129, volunteer130,
-				volunteer131, volunteer132, volunteer133, volunteer134, volunteer135, volunteer136, volunteer137, volunteer138, volunteer139, volunteer140
+				volunteer131, volunteer132, volunteer133, volunteer134, volunteer135, volunteer136, volunteer137, volunteer138, volunteer139, volunteer140,
+				volunteer141, volunteer142, volunteer143, volunteer144, volunteer145, volunteer146, volunteer147, volunteer148, volunteer149, volunteer150,
+				volunteer151, volunteer152, volunteer153, volunteer154, volunteer155, volunteer156, volunteer157, volunteer158, volunteer159, volunteer160,
+				volunteer161, volunteer162, volunteer163, volunteer164, volunteer165, volunteer166, volunteer167, volunteer168, volunteer169, volunteer170
 		));
 
 		List<Ministry> ministries = List.of(ministry, ministry2, ministry3, ministry4, ministry5, ministry6);
@@ -221,7 +255,7 @@ public class SchedulerJavaApplication {
 		Random random = new Random();
 
 		for (Volunteer volunteer : volunteers) {
-			int numMinistriesForVolunteer = random.nextInt(5);
+			int numMinistriesForVolunteer = random.nextInt(3);
 
 			List<Ministry> assignedMinistries = new ArrayList<>();
 			for (int i = 0; i < numMinistriesForVolunteer; i++) {
@@ -231,6 +265,7 @@ public class SchedulerJavaApplication {
 					assignedMinistries.add(randomMinistry);
 					volunteerMinistries.add(new VolunteerMinistry(volunteer, randomMinistry));
 					randomMinistry.setTotalVolunteers(randomMinistry.getTotalVolunteers() + 1);
+					ministryRepository.save(randomMinistry);
 				} else {
 					i--;
 				}
