@@ -1,5 +1,6 @@
 package com.labi.schedulerjava.core.usecases.volunteer;
 
+import ch.qos.logback.core.rolling.helper.IntegerTokenConverter;
 import com.labi.schedulerjava.adapters.persistence.VolunteerRepository;
 import com.labi.schedulerjava.adapters.persistence.specification.VolunteerSpecification;
 import com.labi.schedulerjava.core.domain.model.Volunteer;
@@ -9,6 +10,9 @@ import com.labi.schedulerjava.dtos.ReadMinistryDto;
 import com.labi.schedulerjava.dtos.ReadVolunteerDto;
 import lombok.Value;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Component;
 
@@ -36,11 +40,30 @@ public class FindVolunteersUseCase extends UseCase<FindVolunteersUseCase.InputVa
             spec = spec.and(VolunteerSpecification.hasMinistry(input.getMinistryName()));
         }
 
-        List<Volunteer> volunteers = volunteerRepository.findAll(spec);
+        Pageable pageable = PageRequest.of(input.page, input.size);
+        Page<Volunteer> volunteersPage = volunteerRepository.findAll(spec, pageable);
 
-        return new OutputValues(volunteers.stream()
+        List<ReadVolunteerDto> volunteers = volunteersPage.stream()
                 .map(this::toDtoWithActiveMinistries)
-                .toList());
+                .toList();
+
+        return new OutputValues(volunteers, volunteersPage.getTotalPages(), volunteersPage.getTotalElements());
+    }
+
+    @Value
+    public static class InputValues implements UseCase.InputValues {
+        String volunteerName;
+        String ministryName;
+        Boolean isLinkedToAnyMinistry;
+        Integer page;
+        Integer size;
+    }
+
+    @Value
+    public static class OutputValues implements UseCase.OutputValues {
+        List<ReadVolunteerDto> volunteers;
+        int totalPages;
+        long totalElements;
     }
 
     private ReadVolunteerDto toDtoWithActiveMinistries(Volunteer entity) {
@@ -63,18 +86,6 @@ public class FindVolunteersUseCase extends UseCase<FindVolunteersUseCase.InputVa
                 entity.getBirthDate(),
                 activeMinistries
         );
-    }
-
-    @Value
-    public static class InputValues implements UseCase.InputValues {
-        String volunteerName;
-        String ministryName;
-        Boolean isLinkedToAnyMinistry;
-    }
-
-    @Value
-    public static class OutputValues implements UseCase.OutputValues {
-        List<ReadVolunteerDto> volunteers;
     }
 }
 
