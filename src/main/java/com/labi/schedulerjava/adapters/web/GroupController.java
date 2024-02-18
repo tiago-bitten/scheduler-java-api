@@ -4,6 +4,7 @@ import com.labi.schedulerjava.core.usecases.UseCase;
 import com.labi.schedulerjava.core.usecases.group.*;
 import com.labi.schedulerjava.dtos.AssociateVolunteerWithGroupDto;
 import com.labi.schedulerjava.dtos.CreateGroupDto;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -35,7 +36,7 @@ public class GroupController {
     private DeleteGroupUseCase deleteGroupUseCase;
 
     @PostMapping("/create")
-    public ResponseEntity<UseCase.OutputValues> create(@RequestBody CreateGroupDto dto) {
+    public ResponseEntity<UseCase.OutputValues> create(@RequestBody @Valid CreateGroupDto dto) {
         UseCase.OutputValues outputValues =
                 createGroupUseCase.execute(new CreateGroupUseCase.InputValues(dto));
         return new ResponseEntity<>(outputValues, HttpStatus.CREATED);
