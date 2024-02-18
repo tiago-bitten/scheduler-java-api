@@ -22,13 +22,8 @@ public class FindAllGroupUseCase extends UseCase<FindAllGroupUseCase.InputValues
 
     @Override
     public OutputValues execute(InputValues input) {
-        Specification<Group> spec = Specification.where(null);
-
-        if (input.groupName != null)
-            spec = spec.and(GroupSpecification.hasName(input.groupName));
-
-        if (input.volunteerName != null)
-            spec = spec.and(GroupSpecification.hasVolunteer(input.volunteerName));
+        Specification<Group> spec = Specification.where(GroupSpecification.hasName(input.getGroupName()))
+                .and(GroupSpecification.hasVolunteer(input.getVolunteerName()));
 
         List<Group> groups = groupRepository.findAll(spec);
 

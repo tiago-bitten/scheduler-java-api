@@ -6,6 +6,8 @@ import jakarta.persistence.criteria.Join;
 import jakarta.persistence.criteria.JoinType;
 import org.springframework.data.jpa.domain.Specification;
 
+import java.util.Scanner;
+
 public class GroupSpecification {
 
     public static Specification<Group> hasName(String groupName) {
