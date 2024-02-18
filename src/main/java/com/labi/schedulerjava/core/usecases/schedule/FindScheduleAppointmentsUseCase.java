@@ -1,13 +1,16 @@
 package com.labi.schedulerjava.core.usecases.schedule;
 
 import com.labi.schedulerjava.adapters.persistence.ScheduleRepository;
+import com.labi.schedulerjava.adapters.persistence.specification.AppointmentSpecification;
 import com.labi.schedulerjava.core.domain.exception.BusinessRuleException;
 import com.labi.schedulerjava.core.domain.model.Appointment;
 import com.labi.schedulerjava.core.domain.model.Schedule;
+import com.labi.schedulerjava.core.domain.service.AppointmentService;
 import com.labi.schedulerjava.core.usecases.UseCase;
 import com.labi.schedulerjava.dtos.*;
 import lombok.Value;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
@@ -18,6 +21,9 @@ public class FindScheduleAppointmentsUseCase extends UseCase<FindScheduleAppoint
     @Autowired
     private ScheduleRepository scheduleRepository;
 
+    @Autowired
+    private AppointmentService appointmentService;
+
     @Override
     public OutputValues execute(InputValues input) {
         Schedule schedule = scheduleRepository.findById(input.scheduleId)
@@ -25,7 +31,10 @@ public class FindScheduleAppointmentsUseCase extends UseCase<FindScheduleAppoint
 
         if (!schedule.getIsActive()) throw new BusinessRuleException("Agenda não está ativa");
 
-        List<Appointment> appointments = schedule.getAppointments();
+        Specification<Appointment> spec = Specification.where(AppointmentSpecification.hasSchedule(input.scheduleId))
+                .and(AppointmentSpecification.hasVolunteer(input.volunteerName));
+
+        List<Appointment> appointments = appointmentService.findAll(spec);
 
         return new OutputValues(
                 new ReadScheduleDto(
@@ -64,6 +73,7 @@ public class FindScheduleAppointmentsUseCase extends UseCase<FindScheduleAppoint
     @Value
     public static class InputValues implements UseCase.InputValues {
         Long scheduleId;
+        String volunteerName;
     }
 
     @Value

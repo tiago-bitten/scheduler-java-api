@@ -49,9 +49,10 @@ public class ScheduleController {
     }
 
     @GetMapping("/appointments")
-    public ResponseEntity<UseCase.OutputValues> findScheduleAppointments(@RequestParam Long scheduleId) {
+    public ResponseEntity<UseCase.OutputValues> findScheduleAppointments(@RequestParam Long scheduleId,
+                                                                         @RequestParam(required = false) String volunteerName) {
         UseCase.OutputValues outputValues =
-                findScheduleAppointmentsUseCase.execute(new FindScheduleAppointmentsUseCase.InputValues(scheduleId));
+                findScheduleAppointmentsUseCase.execute(new FindScheduleAppointmentsUseCase.InputValues(scheduleId, volunteerName));
         return new ResponseEntity<>(outputValues, HttpStatus.OK);
     }
 
