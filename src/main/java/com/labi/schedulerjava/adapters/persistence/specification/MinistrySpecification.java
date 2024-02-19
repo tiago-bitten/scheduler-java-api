@@ -17,11 +17,14 @@ public class MinistrySpecification {
     }
 
     public static Specification<Ministry> hasVolunteer(String volunteerName) {
-        return (root, query, CriteriaBuilder) -> {
-            if (volunteerName == null || volunteerName.isEmpty()) return CriteriaBuilder.conjunction();
+        return (root, query, criteriaBuilder) -> {
+            if (volunteerName == null || volunteerName.isEmpty()) return criteriaBuilder.conjunction();
             Join<Ministry, VolunteerMinistry> volunteerMinistryJoin = root.join("volunteerMinistries", JoinType.INNER);
             Join<VolunteerMinistry, Volunteer> volunteerJoin = volunteerMinistryJoin.join("volunteer", JoinType.INNER);
-            return CriteriaBuilder.like(CriteriaBuilder.lower(volunteerJoin.get("name")), "%" + volunteerName.toLowerCase() + "%");
+            return criteriaBuilder.and(
+                    criteriaBuilder.like(criteriaBuilder.lower(volunteerJoin.get("name")), "%" + volunteerName.toLowerCase() + "%"),
+                    criteriaBuilder.isTrue(volunteerMinistryJoin.get("isActive"))
+            );
         };
     }
 }
