@@ -64,7 +64,6 @@ public class ScaleService {
             Volunteer volunteer = selectRandomVolunteer(volunteers);
 
             if (appointmentService.validateAppointment(schedule, volunteer.getId())) {
-                volunteers.remove(volunteer);
                 continue;
             }
 
@@ -79,8 +78,6 @@ public class ScaleService {
                 selectedVolunteers.add(volunteer);
                 remaining--;
             }
-
-            volunteers.remove(volunteer);
         }
 
         return selectedVolunteers;
