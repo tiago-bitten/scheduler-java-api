@@ -63,8 +63,10 @@ public class ScaleService {
         while (remaining > 0 && !volunteers.isEmpty()) {
             Volunteer volunteer = selectRandomVolunteer(volunteers);
 
-            if (appointmentService.validateAppointment(schedule, volunteer.getId()))
+            if (appointmentService.validateAppointment(schedule, volunteer.getId())) {
                 volunteers.remove(volunteer);
+                continue;
+            }
 
             if (volunteer.getGroup() != null && !processedGroupIds.contains(volunteer.getGroup().getId())) {
                 List<Volunteer> volunteersGroup = validateGroup(volunteer, ministry, schedule, remaining);
