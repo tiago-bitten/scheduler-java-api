@@ -7,6 +7,7 @@ import com.labi.schedulerjava.core.domain.model.Ministry;
 import com.labi.schedulerjava.core.domain.model.User;
 import com.labi.schedulerjava.core.domain.model.UserMinistry;
 import com.labi.schedulerjava.core.domain.service.MinistryService;
+import com.labi.schedulerjava.core.domain.service.UserService;
 import com.labi.schedulerjava.core.usecases.UseCase;
 import lombok.Value;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,11 +21,13 @@ public class AssociateUserMinistryUseCase extends UseCase<AssociateUserMinistryU
     private MinistryService ministryService;
 
     @Autowired
-    private JwtTokenProvider jwtTokenProvider;
+    private UserService userService;
 
     @Override
     public OutputValues execute(InputValues input) {
-        User user = jwtTokenProvider.getUserFromToken(input.authHeader);
+        User user = userService.findById(input.userId)
+                .orElseThrow(() -> new BusinessRuleException("O ID " + input.userId + " não corresponde a um usuário cadastrado"));
+
         Ministry ministry = ministryService.findById(input.ministryId)
                 .orElseThrow(() -> new BusinessRuleException("O ID " + input.ministryId + " não corresponde a um ministério cadastrado"));
 
@@ -36,7 +39,7 @@ public class AssociateUserMinistryUseCase extends UseCase<AssociateUserMinistryU
 
     @Value
     public static class InputValues implements UseCase.InputValues {
-        String authHeader;
+        Long userId;
         Long ministryId;
     }
 

@@ -15,9 +15,9 @@ public class UserMinistryController {
     private AssociateUserMinistryUseCase associateUserMinistryUseCase;
 
     @PostMapping("/associate")
-    public ResponseEntity<UseCase.OutputValues> associate(@RequestHeader("Authorization") String authHeader,
+    public ResponseEntity<UseCase.OutputValues> associate(@RequestParam Long userId,
                                                           @RequestParam Long ministryId) {
-        associateUserMinistryUseCase.execute(new AssociateUserMinistryUseCase.InputValues(authHeader, ministryId));
+        associateUserMinistryUseCase.execute(new AssociateUserMinistryUseCase.InputValues(userId, ministryId));
         return new ResponseEntity<>(HttpStatus.CREATED);
     }
 }
