@@ -11,7 +11,9 @@ import com.labi.schedulerjava.core.domain.service.UserService;
 import com.labi.schedulerjava.core.usecases.UseCase;
 import lombok.Value;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
+@Component
 public class AssociateUserMinistryUseCase extends UseCase<AssociateUserMinistryUseCase.InputValues, AssociateUserMinistryUseCase.OutputValues> {
 
     @Autowired

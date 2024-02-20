@@ -25,9 +25,10 @@ public class AuthController {
     private SignInUseCase signInUseCase;
 
     @PostMapping("/signup")
-    public ResponseEntity<Void> signup(@RequestBody @Valid SignUpDto dto) {
-        signUpUseCase.execute(new SignUpUseCase.InputValues(dto));
-        return new ResponseEntity<>(HttpStatus.CREATED);
+    public ResponseEntity<UseCase.OutputValues> signup(@RequestBody @Valid SignUpDto dto) {
+        UseCase.OutputValues outputValues =
+                signUpUseCase.execute(new SignUpUseCase.InputValues(dto));
+        return new ResponseEntity<>(outputValues, HttpStatus.CREATED);
     }
 
     @PostMapping("/signin")
