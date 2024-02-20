@@ -14,7 +14,5 @@ public record SignUpDto(
 
         @NotBlank(message = "A senha é obrigatória")
         String password,
-
-        List<Long> ministries
 ) {
 }

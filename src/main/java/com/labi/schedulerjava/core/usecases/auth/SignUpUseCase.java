@@ -3,13 +3,17 @@ package com.labi.schedulerjava.core.usecases.auth;
 import com.labi.schedulerjava.adapters.persistence.UserRepository;
 import com.labi.schedulerjava.core.domain.exception.BusinessRuleException;
 import com.labi.schedulerjava.core.domain.model.User;
+import com.labi.schedulerjava.core.domain.service.MinistryService;
 import com.labi.schedulerjava.core.domain.service.UserMinistryService;
 import com.labi.schedulerjava.core.usecases.UseCase;
+import com.labi.schedulerjava.dtos.ReadUserDto;
 import com.labi.schedulerjava.dtos.SignUpDto;
 import lombok.Value;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
+
+import java.util.List;
 
 @Component
 public class SignUpUseCase extends UseCase<SignUpUseCase.InputValues, SignUpUseCase.OutputValues> {
@@ -28,14 +32,11 @@ public class SignUpUseCase extends UseCase<SignUpUseCase.InputValues, SignUpUseC
         if (userRepository.findByEmail(input.dto.email()).isPresent())
             throw new BusinessRuleException("Este e-mail já está cadastrado");
 
-        userMinistryService.validateMinistries(input.dto.ministries());
-
         User user = new User(input.dto.name(), input.dto.email(), input.dto.password());
         user.setPassword(passwordEncoder.encode(user.getPassword()));
         userRepository.save(user);
-        userMinistryService.associate(user, input.dto.ministries());
 
-        return new OutputValues();
+        return new OutputValues(toDto(user));
     }
 
     @Value
@@ -45,5 +46,18 @@ public class SignUpUseCase extends UseCase<SignUpUseCase.InputValues, SignUpUseC
 
     @Value
     public static class OutputValues implements UseCase.OutputValues {
+        ReadUserDto user;
+    }
+
+    private ReadUserDto toDto(User user) {
+        return new ReadUserDto(
+                user.getId(),
+                user.getName(),
+                user.getEmail(),
+                user.getIsApproved(),
+                user.getIsSuperUser(),
+                user.getCreatedAt(),
+                List.of()
+        );
     }
 }
