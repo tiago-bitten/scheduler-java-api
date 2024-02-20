@@ -13,6 +13,6 @@ public record SignUpDto(
         String email,
 
         @NotBlank(message = "A senha é obrigatória")
-        String password,
+        String password
 ) {
 }
