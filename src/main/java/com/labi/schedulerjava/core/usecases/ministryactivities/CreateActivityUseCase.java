@@ -7,6 +7,7 @@ import com.labi.schedulerjava.core.domain.model.MinistryActivities;
 import com.labi.schedulerjava.core.domain.service.MinistryService;
 import com.labi.schedulerjava.core.usecases.UseCase;
 import com.labi.schedulerjava.dtos.ActivityRequest;
+import com.labi.schedulerjava.dtos.ActivityResponse;
 import lombok.Value;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -32,7 +33,7 @@ public class CreateActivityUseCase extends UseCase<CreateActivityUseCase.InputVa
 
         ministryActivitiesRepository.save(ministryActivities);
 
-        return new OutputValues();
+        return new OutputValues(toDto(ministryActivities));
     }
 
     @Value
@@ -43,5 +44,10 @@ public class CreateActivityUseCase extends UseCase<CreateActivityUseCase.InputVa
 
     @Value
     public static class OutputValues implements UseCase.OutputValues {
+        ActivityResponse activity;
+    }
+
+    private ActivityResponse toDto(MinistryActivities ma) {
+        return new ActivityResponse(ma.getId(), ma.getName(), ma.getTotalVolunteers());
     }
 }
