@@ -5,6 +5,8 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 
+import java.time.Instant;
+
 @Data
 @NoArgsConstructor
 @EqualsAndHashCode(callSuper = true)
@@ -19,5 +21,14 @@ public class VolunteerActivity extends BaseEntity {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "ministry_activities_id", nullable = false)
     private MinistryActivities ministryActivities;
+
+    @Column(name = "assigned_at", nullable = false)
+    private Instant assignedAt;
+
+    public VolunteerActivity(Volunteer volunteer, MinistryActivities ministryActivities) {
+        this.volunteer = volunteer;
+        this.ministryActivities = ministryActivities;
+        this.assignedAt = Instant.now();
+    }
 }
 
