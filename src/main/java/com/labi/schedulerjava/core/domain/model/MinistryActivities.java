@@ -5,6 +5,8 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 
+import java.util.List;
+
 @Data
 @NoArgsConstructor
 @EqualsAndHashCode(callSuper = true)
@@ -21,6 +23,9 @@ public class MinistryActivities extends BaseEntity {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "ministry_id", nullable = false)
     private Ministry ministry;
+
+    @OneToMany(mappedBy = "ministryActivities", fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<VolunteerActivity> volunteerActivities;
 
     public MinistryActivities(String name, Long totalVolunteers, Ministry ministry) {
         this.name = name;
