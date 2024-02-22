@@ -39,7 +39,7 @@ public class CreateMinistryUseCase extends UseCase<CreateMinistryUseCase.InputVa
         User user = jwtTokenProvider.getUserFromToken(input.authHeader);
         userMinistryService.associate(user, List.of(ministry.getId()));
 
-        return new OutputValues();
+        return new OutputValues(toDto(ministry));
     }
 
     @Value
@@ -50,5 +50,10 @@ public class CreateMinistryUseCase extends UseCase<CreateMinistryUseCase.InputVa
 
     @Value
     public static class OutputValues implements UseCase.OutputValues {
+        ReadMinistryDto dto;
+    }
+
+    private ReadMinistryDto toDto(Ministry ministry) {
+        return new ReadMinistryDto(ministry.getId(), ministry.getName(), ministry.getDescription(), ministry.getColor(), ministry.getTotalVolunteers());
     }
 }
