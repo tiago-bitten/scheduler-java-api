@@ -67,7 +67,6 @@ public class CreateAppointmentUseCase extends UseCase<CreateAppointmentUseCase.I
         Long volunteerId;
         Long ministryId;
         Long activityId;
-        Long totalVolunteers;
         String authHeader;
     }
 

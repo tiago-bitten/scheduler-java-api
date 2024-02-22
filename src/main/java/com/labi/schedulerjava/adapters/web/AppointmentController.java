@@ -22,10 +22,9 @@ public class AppointmentController {
                                         @RequestParam Long scheduleId,
                                         @RequestParam Long volunteerId,
                                         @RequestParam Long ministryId,
-                                        @RequestParam Long activityId,
-                                        @RequestParam(required = false) Long totalVolunteers) {
+                                        @RequestParam Long activityId) {
         appointmentUseCase.execute(new CreateAppointmentUseCase.InputValues(scheduleId, volunteerId, ministryId,
-                activityId, totalVolunteers, authHeader));
+                activityId, authHeader));
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 
