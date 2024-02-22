@@ -11,25 +11,25 @@ import java.util.List;
 @NoArgsConstructor
 @EqualsAndHashCode(callSuper = true)
 @Entity
-@Table(name = "ministry_activities")
-public class MinistryActivities extends BaseEntity {
+@Table(name = "activities")
+public class Activity extends BaseEntity {
 
     @Column(name = "name")
     private String name;
 
-    @Column(name = "total_volunteers")
-    private Long totalVolunteers;
+    @Column(name = "default_total_volunteers")
+    private Long defaultTotalVolunteers;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "ministry_id", nullable = false)
     private Ministry ministry;
 
-    @OneToMany(mappedBy = "ministryActivities", fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(mappedBy = "activity", fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
     private List<VolunteerActivity> volunteerActivities;
 
-    public MinistryActivities(String name, Long totalVolunteers, Ministry ministry) {
+    public Activity(String name, Long defaultTotalVolunteers, Ministry ministry) {
         this.name = name;
-        this.totalVolunteers = totalVolunteers;
+        this.defaultTotalVolunteers = defaultTotalVolunteers;
         this.ministry = ministry;
     }
 }

@@ -2,7 +2,7 @@ package com.labi.schedulerjava.core.usecases.volunteeractivity;
 
 import com.labi.schedulerjava.adapters.persistence.VolunteerActivityRepository;
 import com.labi.schedulerjava.core.domain.exception.BusinessRuleException;
-import com.labi.schedulerjava.core.domain.model.MinistryActivities;
+import com.labi.schedulerjava.core.domain.model.Activity;
 import com.labi.schedulerjava.core.domain.model.Volunteer;
 import com.labi.schedulerjava.core.domain.model.VolunteerActivity;
 import com.labi.schedulerjava.core.domain.service.MinistryActivityService;
@@ -29,10 +29,10 @@ public class AssignVolunteerActivityUseCase extends UseCase<AssignVolunteerActiv
         Volunteer volunteer = volunteerService.findById(input.volunteerId)
                 .orElseThrow(() -> new BusinessRuleException("O ID " + input.volunteerId + " não corresponde a um voluntário cadastrado"));
 
-        MinistryActivities ministryActivities = ministryActivityService.findById(input.activityId)
+        Activity activity = ministryActivityService.findById(input.activityId)
                 .orElseThrow(() -> new BusinessRuleException("O ID " + input.activityId + " não corresponde a uma atividade cadastrada"));
 
-        VolunteerActivity volunteerActivity = new VolunteerActivity(volunteer, ministryActivities);
+        VolunteerActivity volunteerActivity = new VolunteerActivity(volunteer, activity);
         volunteerActivityRepository.save(volunteerActivity);
 
         return new OutputValues();

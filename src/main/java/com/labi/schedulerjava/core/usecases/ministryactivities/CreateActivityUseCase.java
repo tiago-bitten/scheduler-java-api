@@ -3,7 +3,7 @@ package com.labi.schedulerjava.core.usecases.ministryactivities;
 import com.labi.schedulerjava.adapters.persistence.MinistryActivitiesRepository;
 import com.labi.schedulerjava.core.domain.exception.BusinessRuleException;
 import com.labi.schedulerjava.core.domain.model.Ministry;
-import com.labi.schedulerjava.core.domain.model.MinistryActivities;
+import com.labi.schedulerjava.core.domain.model.Activity;
 import com.labi.schedulerjava.core.domain.service.MinistryService;
 import com.labi.schedulerjava.core.usecases.UseCase;
 import com.labi.schedulerjava.dtos.ActivityRequest;
@@ -29,11 +29,11 @@ public class CreateActivityUseCase extends UseCase<CreateActivityUseCase.InputVa
         if (input.request.totalVolunteers() < 1)
             throw new BusinessRuleException("O total de voluntários deve ser maior que 0");
 
-        MinistryActivities ministryActivities = new MinistryActivities(input.request.name(), input.request.totalVolunteers(), ministry);
+        Activity activity = new Activity(input.request.name(), input.request.totalVolunteers(), ministry);
 
-        ministryActivitiesRepository.save(ministryActivities);
+        ministryActivitiesRepository.save(activity);
 
-        return new OutputValues(toDto(ministryActivities));
+        return new OutputValues(toDto(activity));
     }
 
     @Value
@@ -47,7 +47,7 @@ public class CreateActivityUseCase extends UseCase<CreateActivityUseCase.InputVa
         ActivityResponse activity;
     }
 
-    private ActivityResponse toDto(MinistryActivities ma) {
-        return new ActivityResponse(ma.getId(), ma.getName(), ma.getTotalVolunteers());
+    private ActivityResponse toDto(Activity ma) {
+        return new ActivityResponse(ma.getId(), ma.getName(), ma.getDefaultTotalVolunteers());
     }
 }

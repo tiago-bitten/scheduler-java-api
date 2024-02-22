@@ -19,15 +19,15 @@ public class VolunteerActivity extends BaseEntity {
     private Volunteer volunteer;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "ministry_activities_id", nullable = false)
-    private MinistryActivities ministryActivities;
+    @JoinColumn(name = "activity_id", nullable = false)
+    private Activity activity;
 
     @Column(name = "assigned_at", nullable = false)
     private Instant assignedAt;
 
-    public VolunteerActivity(Volunteer volunteer, MinistryActivities ministryActivities) {
+    public VolunteerActivity(Volunteer volunteer, Activity activity) {
         this.volunteer = volunteer;
-        this.ministryActivities = ministryActivities;
+        this.activity = activity;
         this.assignedAt = Instant.now();
     }
 }

@@ -40,7 +40,7 @@ public class Ministry extends BaseEntity {
     private List<Scale> scales;
 
     @OneToMany(mappedBy = "ministry", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<MinistryActivities> ministryActivities;
+    private List<Activity> activities;
 
     public Ministry(String name, String description, String color) {
         this.name = name;
