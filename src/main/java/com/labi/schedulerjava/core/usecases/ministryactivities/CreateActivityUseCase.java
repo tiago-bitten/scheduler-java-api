@@ -1,6 +1,6 @@
 package com.labi.schedulerjava.core.usecases.ministryactivities;
 
-import com.labi.schedulerjava.adapters.persistence.MinistryActivitiesRepository;
+import com.labi.schedulerjava.adapters.persistence.ActivityRepository;
 import com.labi.schedulerjava.core.domain.exception.BusinessRuleException;
 import com.labi.schedulerjava.core.domain.model.Ministry;
 import com.labi.schedulerjava.core.domain.model.Activity;
@@ -16,7 +16,7 @@ import org.springframework.stereotype.Component;
 public class CreateActivityUseCase extends UseCase<CreateActivityUseCase.InputValues, CreateActivityUseCase.OutputValues> {
 
     @Autowired
-    private MinistryActivitiesRepository ministryActivitiesRepository;
+    private ActivityRepository activityRepository;
 
     @Autowired
     private MinistryService ministryService;
@@ -31,7 +31,7 @@ public class CreateActivityUseCase extends UseCase<CreateActivityUseCase.InputVa
 
         Activity activity = new Activity(input.request.name(), input.request.totalVolunteers(), ministry);
 
-        ministryActivitiesRepository.save(activity);
+        activityRepository.save(activity);
 
         return new OutputValues(toDto(activity));
     }

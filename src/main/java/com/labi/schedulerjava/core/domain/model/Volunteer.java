@@ -55,9 +55,6 @@ public class Volunteer extends BaseEntity {
     @OneToMany(mappedBy = "volunteer", fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
     private List<VolunteerLog> volunteerLogs;
 
-    @OneToMany(mappedBy = "volunteer", fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<VolunteerActivity> volunteerActivities;
-
     public Volunteer(String name, String lastName, String cpf, String phone, LocalDate birthDate, VolunteerOrigin origin) {
         this.accessKey = UUID.randomUUID();
         this.name = name;

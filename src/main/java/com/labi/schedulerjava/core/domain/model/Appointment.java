@@ -23,8 +23,8 @@ public class Appointment extends BaseEntity {
     private VolunteerMinistry volunteerMinistry;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "volunteer_activity_id")
-    private VolunteerActivity volunteerActivity;
+    @JoinColumn(name = "activity_id")
+    private Activity activity;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "appointed_by_id")
@@ -33,9 +33,10 @@ public class Appointment extends BaseEntity {
     @Column(name = "appointed_at", nullable = false)
     private Instant appointedAt;
 
-    public Appointment(Schedule schedule, VolunteerMinistry volunteerMinistry, User appointedBy) {
+    public Appointment(Schedule schedule, VolunteerMinistry volunteerMinistry, Activity activity, User appointedBy) {
         this.schedule = schedule;
         this.volunteerMinistry = volunteerMinistry;
+        this.activity = activity;
         this.appointedBy = appointedBy;
         this.appointedAt = Instant.now();
     }

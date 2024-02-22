@@ -21,8 +21,11 @@ public class AppointmentController {
     public ResponseEntity<Void> appoint(@RequestHeader("Authorization") String authHeader,
                                         @RequestParam Long scheduleId,
                                         @RequestParam Long volunteerId,
-                                        @RequestParam Long ministryId) {
-        appointmentUseCase.execute(new CreateAppointmentUseCase.InputValues(scheduleId, volunteerId, ministryId, authHeader));
+                                        @RequestParam Long ministryId,
+                                        @RequestParam Long activityId,
+                                        @RequestParam(required = false) Long totalVolunteers) {
+        appointmentUseCase.execute(new CreateAppointmentUseCase.InputValues(scheduleId, volunteerId, ministryId,
+                activityId, totalVolunteers, authHeader));
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 

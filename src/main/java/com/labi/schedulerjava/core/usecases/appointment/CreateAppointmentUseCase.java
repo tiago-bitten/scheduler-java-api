@@ -3,10 +3,7 @@ package com.labi.schedulerjava.core.usecases.appointment;
 import com.labi.schedulerjava.adapters.persistence.AppointmentRepository;
 import com.labi.schedulerjava.adapters.security.JwtTokenProvider;
 import com.labi.schedulerjava.core.domain.exception.BusinessRuleException;
-import com.labi.schedulerjava.core.domain.model.Appointment;
-import com.labi.schedulerjava.core.domain.model.Schedule;
-import com.labi.schedulerjava.core.domain.model.User;
-import com.labi.schedulerjava.core.domain.model.VolunteerMinistry;
+import com.labi.schedulerjava.core.domain.model.*;
 import com.labi.schedulerjava.core.domain.service.*;
 import com.labi.schedulerjava.core.usecases.UseCase;
 import lombok.Value;
@@ -37,6 +34,10 @@ public class CreateAppointmentUseCase extends UseCase<CreateAppointmentUseCase.I
     @Autowired
     private JwtTokenProvider jwtTokenProvider;
 
+    @Autowired
+    private ActivityService activityService;
+
+
     @Override
     public OutputValues execute(InputValues input) {
         User user = jwtTokenProvider.getUserFromToken(input.authHeader);
@@ -45,6 +46,8 @@ public class CreateAppointmentUseCase extends UseCase<CreateAppointmentUseCase.I
 
         Schedule schedule = scheduleService.validateSchedule(input.getScheduleId());
         VolunteerMinistry volunteerMinistry = volunteerMinistryService.validateVolunteerMinistry(input.volunteerId, input.ministryId);
+        Activity activity = activityService.findById(input.activityId)
+                .orElseThrow(() -> new BusinessRuleException("O ID " + input.activityId + " não corresponde a nenhuma atividade cadastrada"));
 
         if (appointmentService.validateAppointment(schedule, input.volunteerId))
             throw new BusinessRuleException("Voluntário já agendado neste horário");
@@ -52,7 +55,7 @@ public class CreateAppointmentUseCase extends UseCase<CreateAppointmentUseCase.I
         if (unavailableDateService.isUnavailableDate(schedule.getStartDate(), schedule.getEndDate(), input.volunteerId))
             throw new BusinessRuleException("Voluntário não pode ser agendado nesta data");
 
-        Appointment appointment = new Appointment(schedule, volunteerMinistry, user);
+        Appointment appointment = new Appointment(schedule, volunteerMinistry, activity, user);
         appointmentRepository.save(appointment);
 
         return new OutputValues();
@@ -63,6 +66,8 @@ public class CreateAppointmentUseCase extends UseCase<CreateAppointmentUseCase.I
         Long scheduleId;
         Long volunteerId;
         Long ministryId;
+        Long activityId;
+        Long totalVolunteers;
         String authHeader;
     }
 
