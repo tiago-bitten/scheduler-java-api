@@ -6,6 +6,7 @@ import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 
 import java.time.Instant;
+import java.util.List;
 
 @Data
 @NoArgsConstructor
@@ -24,6 +25,9 @@ public class VolunteerActivity extends BaseEntity {
 
     @Column(name = "assigned_at", nullable = false)
     private Instant assignedAt;
+
+    @OneToMany(mappedBy = "volunteerActivity", fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Appointment> appointments;
 
     public VolunteerActivity(Volunteer volunteer, Activity activity) {
         this.volunteer = volunteer;

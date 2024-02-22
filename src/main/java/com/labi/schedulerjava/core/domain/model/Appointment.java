@@ -23,6 +23,10 @@ public class Appointment extends BaseEntity {
     private VolunteerMinistry volunteerMinistry;
 
     @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "volunteer_activity_id")
+    private VolunteerActivity volunteerActivity;
+
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "appointed_by_id")
     private User appointedBy;
 
