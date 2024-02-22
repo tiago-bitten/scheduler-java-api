@@ -50,7 +50,7 @@ public class CreateMinistryUseCase extends UseCase<CreateMinistryUseCase.InputVa
 
     @Value
     public static class OutputValues implements UseCase.OutputValues {
-        ReadMinistryDto dto;
+        ReadMinistryDto ministry;
     }
 
     private ReadMinistryDto toDto(Ministry ministry) {
