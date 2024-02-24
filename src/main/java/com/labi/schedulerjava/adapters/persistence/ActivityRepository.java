@@ -7,4 +7,5 @@ import java.util.List;
 
 public interface ActivityRepository extends JpaRepository<Activity, Long> {
     List<Activity> findAllByMinistryId(Long ministryId);
+    boolean existsByIdAndMinistryId(Long activityId, Long ministryId);
 }

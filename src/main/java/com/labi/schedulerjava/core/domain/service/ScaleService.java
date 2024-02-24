@@ -34,29 +34,15 @@ public class ScaleService {
     @Autowired
     private AppointmentService appointmentService;
 
-    public List<Ministry> validateMinistries(Map<Long, Long> ministriesIdMaxVolunteers) {
-        List<Ministry> ministries = new ArrayList<>();
-        ministriesIdMaxVolunteers.forEach((id, max) -> {
-            Ministry ministry = ministryService.findById(id)
-                    .orElseThrow(() -> new BusinessRuleException("O ID " + id + " não corresponde a um ministério cadastrado"));
-            ministries.add(ministry);
-        });
-
-        if (ministries.isEmpty())
-            throw new BusinessRuleException("Nenhum ministério foi encontrado");
-
-        return ministries;
+    public boolean checkVolunteersSize(Map<Long, Long> activityIdVolunteers) {
+        return activityIdVolunteers.values().stream().allMatch(max -> max > 0);
     }
 
-    public boolean validateMaxVolunteersSize(Map<Long, Long> ministriesIdMaxVolunteers) {
-        return ministriesIdMaxVolunteers.values().stream().allMatch(max -> max > 0);
-    }
-
-    public List<Volunteer> createIndividualScale(Ministry ministry, Schedule schedule, Long maxVolunteers) {
+    public List<Volunteer> createIndividualScale(Ministry ministry, Activity activity, Schedule schedule, Long numberOfVolunteers) {
         Specification<Volunteer> volunteerSpec = Specification.where(VolunteerSpecification.hasMinistry(ministry.getName()));
         List<Volunteer> volunteers = volunteerService.findAll(volunteerSpec);
 
-        int remaining = maxVolunteers.intValue();
+        int remaining = numberOfVolunteers.intValue();
         List<Volunteer> selectedVolunteers = new ArrayList<>();
         Set<Long> processedGroupIds = new HashSet<>();
 

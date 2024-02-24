@@ -18,9 +18,10 @@ public class ScaleController {
     @PostMapping("/create")
     public ResponseEntity<UseCase.OutputValues> create(@RequestHeader("Authorization") String authHeader,
                                                        @RequestParam Long scheduleId,
+                                                       @RequestParam Long ministryId,
                                                        @RequestBody CreateScaleDto dto) {
         UseCase.OutputValues outputValues =
-            createScaleUseCase.execute(new CreateScaleUseCase.InputValues(scheduleId, authHeader, dto));
+            createScaleUseCase.execute(new CreateScaleUseCase.InputValues(authHeader, scheduleId, ministryId, dto));
         return new ResponseEntity<>(outputValues, HttpStatus.CREATED);
     }
 }

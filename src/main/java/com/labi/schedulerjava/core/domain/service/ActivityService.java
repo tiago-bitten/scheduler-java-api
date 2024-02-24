@@ -16,4 +16,8 @@ public class ActivityService {
     public Optional<Activity> findById(Long id) {
         return activityRepository.findById(id);
     }
+
+    public boolean validateActivities(Long activityId, Long ministryId) {
+        return activityRepository.existsByIdAndMinistryId(activityId, ministryId);
+    }
 }
