@@ -27,6 +27,9 @@ public class Activity extends BaseEntity {
     @OneToMany(mappedBy = "activity", fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Appointment> appointments;
 
+    @OneToMany(mappedBy = "activity", fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Scale> scales;
+
     public Activity(String name, Long defaultTotalVolunteers, Ministry ministry) {
         this.name = name;
         this.defaultTotalVolunteers = defaultTotalVolunteers;

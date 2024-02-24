@@ -38,7 +38,7 @@ public class ScaleService {
         return activityIdVolunteers.values().stream().allMatch(max -> max > 0);
     }
 
-    public List<Volunteer> createIndividualScale(Ministry ministry, Activity activity, Schedule schedule, Long numberOfVolunteers) {
+    public List<Volunteer> createIndividualScale(Ministry ministry, Schedule schedule, Long numberOfVolunteers) {
         Specification<Volunteer> volunteerSpec = Specification.where(VolunteerSpecification.hasMinistry(ministry.getName()));
         List<Volunteer> volunteers = volunteerService.findAll(volunteerSpec);
 

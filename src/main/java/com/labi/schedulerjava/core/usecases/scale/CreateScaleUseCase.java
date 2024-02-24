@@ -11,7 +11,6 @@ import lombok.Value;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import java.time.LocalDateTime;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -69,8 +68,21 @@ public class CreateScaleUseCase extends UseCase<CreateScaleUseCase.InputValues, 
         if (!scaleService.checkVolunteersSize(input.dto.activityIdVolunteers()))
             throw new BusinessRuleException("Informe no minimo um voluntário para cada atividade");
 
+        List<ScaleResponse> scales = new ArrayList<>();
 
-        return new OutputValues(dto);
+        input.dto.activityIdVolunteers().forEach((activityId, numberOfVolunteers) -> {
+            Activity activity = activityService.findById(activityId).get();
+            List<Volunteer> volunteers = scaleService.createIndividualScale(ministry, schedule, numberOfVolunteers);
+
+            Scale scale = new Scale(numberOfVolunteers, schedule, ministry, activity, user);
+            scaleRepository.save(scale);
+
+            scales.addAll(volunteers.stream()
+                    .map(volunteer -> toDto(volunteer, ministry, activity, numberOfVolunteers, scale))
+                    .toList());
+        });
+
+        return new OutputValues(scales);
     }
 
     @Value
@@ -83,13 +95,14 @@ public class CreateScaleUseCase extends UseCase<CreateScaleUseCase.InputValues, 
 
     @Value
     public static class OutputValues implements UseCase.OutputValues {
-        List<ReadScaleDto> scale;
+        List<ScaleResponse> scales;
     }
 
-    private ReadScaleDto toDto(Volunteer volunteer, Scale scale) {
-        return new ReadScaleDto(
+    private ScaleResponse toDto(Volunteer volunteer, Ministry ministry, Activity activity,
+                                Long numberOfVolunteers, Scale scale) {
+        return new ScaleResponse(
                 scale.getId(),
-                scale.getMaxVolunteers(),
+                numberOfVolunteers,
                 new ReadSimpVolunteerDto(
                         volunteer.getId(),
                         volunteer.getAccessKey(),
@@ -101,11 +114,16 @@ public class CreateScaleUseCase extends UseCase<CreateScaleUseCase.InputValues, 
                         volunteer.getOrigin()
                 ),
                 new ReadMinistryDto(
-                        scale.getMinistry().getId(),
-                        scale.getMinistry().getName(),
-                        scale.getMinistry().getDescription(),
-                        scale.getMinistry().getColor(),
-                        scale.getMinistry().getTotalVolunteers()
+                        ministry.getId(),
+                        ministry.getName(),
+                        ministry.getDescription(),
+                        ministry.getColor(),
+                        ministry.getTotalVolunteers()
+                ),
+                new ActivityResponse(
+                        activity.getId(),
+                        activity.getName(),
+                        activity.getDefaultTotalVolunteers()
                 )
         );
     }
