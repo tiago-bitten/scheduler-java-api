@@ -1,13 +1,7 @@
 package com.labi.schedulerjava;
 
-import com.labi.schedulerjava.adapters.persistence.MinistryRepository;
-import com.labi.schedulerjava.adapters.persistence.UserRepository;
-import com.labi.schedulerjava.adapters.persistence.VolunteerMinistryRepository;
-import com.labi.schedulerjava.adapters.persistence.VolunteerRepository;
-import com.labi.schedulerjava.core.domain.model.Ministry;
-import com.labi.schedulerjava.core.domain.model.User;
-import com.labi.schedulerjava.core.domain.model.Volunteer;
-import com.labi.schedulerjava.core.domain.model.VolunteerMinistry;
+import com.labi.schedulerjava.adapters.persistence.*;
+import com.labi.schedulerjava.core.domain.model.*;
 import com.labi.schedulerjava.core.domain.service.UserMinistryService;
 import com.labi.schedulerjava.enums.VolunteerOrigin;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,6 +24,9 @@ public class SchedulerJavaApplication {
 
 	@Autowired
 	private MinistryRepository ministryRepository;
+
+	@Autowired
+	private ActivityRepository activityRepository;
 
 	@Autowired
 	private UserRepository userRepository;
@@ -55,6 +52,16 @@ public class SchedulerJavaApplication {
 		Ministry ministry5 = new Ministry("CRIANÇAS", "Crianças principal", "#BB1386");
 		Ministry ministry6 = new Ministry("ADOLESCENTES", "Adolescentes principal", "#5C8CDE");
 		ministryRepository.saveAll(List.of(ministry, ministry2, ministry3, ministry4, ministry5, ministry6));
+
+		Activity activity = new Activity("Vinho", 10L, ministry);
+		Activity activity2 = new Activity("Soprano", 10L, ministry2);
+		Activity activity3 = new Activity("Ballet", 10L, ministry3);
+		Activity activity4 = new Activity("Comédia", 10L, ministry4);
+		Activity activity5 = new Activity("Historinha das crianças", 10L, ministry5);
+		Activity activity6 = new Activity("Lembrancinhas", 10L, ministry5);
+		Activity activity7 = new Activity("Pintura", 10L, ministry5);
+		Activity activity8 = new Activity("Lição", 10L, ministry6);
+		activityRepository.saveAll(List.of(activity, activity2, activity3, activity4, activity5, activity6, activity7, activity8));
 
 		Volunteer volunteer1 = new Volunteer("Tiago", "Silveira", "11642426954", "48998533335", LocalDate.parse("2003-02-26"), VolunteerOrigin.USER_REGISTERED);
 		Volunteer volunteer2 = new Volunteer("Mariana", "Costa", "12345678901", "47999223344", LocalDate.parse("1995-07-19"), VolunteerOrigin.USER_REGISTERED);
