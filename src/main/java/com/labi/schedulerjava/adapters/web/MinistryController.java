@@ -58,4 +58,11 @@ public class MinistryController {
         editMinistryUseCase.execute(new EditMinistryUseCase.InputValues(dto, id, authHeader));
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
+
+    @DeleteMapping("/delete/{id}")
+    public ResponseEntity<Void> delete(@RequestHeader("Authorization") String authHeader,
+                                       @PathVariable Long id) {
+        // deleteMinistryUseCase.execute(new DeleteMinistryUseCase.InputValues(id, authHeader));
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+    }
 }
