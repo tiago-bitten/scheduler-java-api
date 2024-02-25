@@ -1,10 +1,7 @@
 package com.labi.schedulerjava.adapters.web;
 
 import com.labi.schedulerjava.core.usecases.UseCase;
-import com.labi.schedulerjava.core.usecases.ministry.CreateMinistryUseCase;
-import com.labi.schedulerjava.core.usecases.ministry.EditMinistryUseCase;
-import com.labi.schedulerjava.core.usecases.ministry.FindMinistriesToSignUpUseCase;
-import com.labi.schedulerjava.core.usecases.ministry.FindMinistriesUseCase;
+import com.labi.schedulerjava.core.usecases.ministry.*;
 import com.labi.schedulerjava.dtos.CreateMinistryDto;
 import com.labi.schedulerjava.dtos.EditMinistryDto;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,6 +24,9 @@ public class MinistryController {
 
     @Autowired
     private EditMinistryUseCase editMinistryUseCase;
+
+    @Autowired
+    private DeleteMinistryUseCase deleteMinistryUseCase;
 
     @PostMapping("/create")
     public ResponseEntity<UseCase.OutputValues> create(@RequestHeader("Authorization") String authHeader,
@@ -62,7 +62,7 @@ public class MinistryController {
     @DeleteMapping("/delete/{id}")
     public ResponseEntity<Void> delete(@RequestHeader("Authorization") String authHeader,
                                        @PathVariable Long id) {
-        // deleteMinistryUseCase.execute(new DeleteMinistryUseCase.InputValues(id, authHeader));
+        deleteMinistryUseCase.execute(new DeleteMinistryUseCase.InputValues(id, authHeader));
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 }
