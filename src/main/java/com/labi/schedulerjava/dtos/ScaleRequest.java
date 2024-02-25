@@ -2,7 +2,7 @@ package com.labi.schedulerjava.dtos;
 
 import java.util.Map;
 
-public record CreateScaleDto(
+public record ScaleRequest(
         Map<Long, Long> activityIdVolunteers
 ) {
 }

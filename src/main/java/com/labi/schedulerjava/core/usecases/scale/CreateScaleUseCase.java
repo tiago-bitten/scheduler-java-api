@@ -12,7 +12,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.util.*;
-import java.util.stream.Collectors;
 
 @Component
 public class CreateScaleUseCase extends UseCase<CreateScaleUseCase.InputValues, CreateScaleUseCase.OutputValues> {
@@ -90,7 +89,7 @@ public class CreateScaleUseCase extends UseCase<CreateScaleUseCase.InputValues, 
         String authHeader;
         Long scheduleId;
         Long ministryId;
-        CreateScaleDto dto;
+        ScaleRequest dto;
     }
 
     @Value
