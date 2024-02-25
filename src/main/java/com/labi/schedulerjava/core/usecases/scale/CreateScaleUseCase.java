@@ -68,10 +68,11 @@ public class CreateScaleUseCase extends UseCase<CreateScaleUseCase.InputValues, 
             throw new BusinessRuleException("Informe no minimo um voluntário para cada atividade");
 
         List<ScaleResponse> scales = new ArrayList<>();
+        List<Volunteer> scaledVolunteers = new ArrayList<>();
 
         input.dto.activityIdVolunteers().forEach((activityId, numberOfVolunteers) -> {
             Activity activity = activityService.findById(activityId).get();
-            List<Volunteer> volunteers = scaleService.createIndividualScale(ministry, schedule, numberOfVolunteers);
+            List<Volunteer> volunteers = scaleService.createIndividualScale(ministry, schedule, numberOfVolunteers, scaledVolunteers);
 
             Scale scale = new Scale(numberOfVolunteers, schedule, ministry, activity, user);
             scaleRepository.save(scale);

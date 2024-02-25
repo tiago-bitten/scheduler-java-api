@@ -61,7 +61,12 @@ public class SchedulerJavaApplication {
 		Activity activity6 = new Activity("Lembrancinhas", 6L, ministry5);
 		Activity activity7 = new Activity("Pintura", 4L, ministry5);
 		Activity activity8 = new Activity("Lição", 3L, ministry6);
-		activityRepository.saveAll(List.of(activity, activity2, activity3, activity4, activity5, activity6, activity7, activity8));
+		Activity activity9 = new Activity("Culto", 5L, ministry);
+		Activity activity10 = new Activity("Grave", 5L, ministry2);
+		Activity activity11 = new Activity("Jazz", 5L, ministry3);
+		Activity activity12 = new Activity("Drama", 5L, ministry4);
+		Activity activity14 = new Activity("Lembrancinhas", 5L, ministry6);
+		activityRepository.saveAll(List.of(activity, activity2, activity3, activity4, activity5, activity6, activity7, activity8, activity9, activity10, activity11, activity12, activity14));
 
 		Volunteer volunteer1 = new Volunteer("Tiago", "Silveira", "11642426954", "48998533335", LocalDate.parse("2003-02-26"), VolunteerOrigin.USER_REGISTERED);
 		Volunteer volunteer2 = new Volunteer("Mariana", "Costa", "12345678901", "47999223344", LocalDate.parse("1995-07-19"), VolunteerOrigin.USER_REGISTERED);

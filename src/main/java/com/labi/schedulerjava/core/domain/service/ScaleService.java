@@ -38,9 +38,11 @@ public class ScaleService {
         return activityIdVolunteers.values().stream().allMatch(max -> max > 0);
     }
 
-    public List<Volunteer> createIndividualScale(Ministry ministry, Schedule schedule, Long numberOfVolunteers) {
+    public List<Volunteer> createIndividualScale(Ministry ministry, Schedule schedule,
+                                                 Long numberOfVolunteers, List<Volunteer> scaledVolunteers) {
         Specification<Volunteer> volunteerSpec = Specification.where(VolunteerSpecification.hasMinistry(ministry.getName()));
         List<Volunteer> volunteers = volunteerService.findAll(volunteerSpec);
+        volunteers.removeAll(scaledVolunteers);
 
         int remaining = numberOfVolunteers.intValue();
         List<Volunteer> selectedVolunteers = new ArrayList<>();
@@ -59,10 +61,12 @@ public class ScaleService {
                     selectedVolunteers.addAll(volunteersGroup);
                     remaining -= volunteersGroup.size();
                     processedGroupIds.add(volunteer.getGroup().getId());
+                    scaledVolunteers.addAll(volunteersGroup);
                 }
             } else if (volunteer.getGroup() == null && !unavailableDateService.isUnavailableDate(schedule.getStartDate(), schedule.getEndDate(), volunteer.getId())) {
                 selectedVolunteers.add(volunteer);
                 remaining--;
+                scaledVolunteers.add(volunteer);
             }
         }
 
@@ -90,6 +94,9 @@ public class ScaleService {
                 return null;
 
             if (unavailableDateService.isUnavailableDate(schedule.getStartDate(), schedule.getEndDate(), v.getId()))
+                return null;
+
+            if (appointmentService.validateAppointment(schedule, v.getId()))
                 return null;
         }
         return volunteersGroup;
