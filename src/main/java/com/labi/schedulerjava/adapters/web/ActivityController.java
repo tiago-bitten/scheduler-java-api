@@ -2,6 +2,7 @@ package com.labi.schedulerjava.adapters.web;
 
 import com.labi.schedulerjava.core.usecases.UseCase;
 import com.labi.schedulerjava.core.usecases.activity.CreateActivityUseCase;
+import com.labi.schedulerjava.core.usecases.activity.DeleteActivityUseCase;
 import com.labi.schedulerjava.core.usecases.activity.FindAllActivitiesByMinistry;
 import com.labi.schedulerjava.core.usecases.activity.UpdateActivityUseCase;
 import com.labi.schedulerjava.dtos.ActivityRequest;
@@ -24,6 +25,9 @@ public class ActivityController {
 
     @Autowired
     private UpdateActivityUseCase updateActivityUseCase;
+
+    @Autowired
+    private DeleteActivityUseCase deleteActivityUseCase;
 
     @PostMapping("/create")
     public ResponseEntity<UseCase.OutputValues> create(@RequestBody @Valid ActivityRequest request,
@@ -48,5 +52,12 @@ public class ActivityController {
                 updateActivityUseCase.execute(new UpdateActivityUseCase.InputValues(authHeader, id, request));
 
         return new ResponseEntity<>(outputValues, HttpStatus.OK);
+    }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> delete(@RequestHeader("Authorization") String authHeader,
+                                       @PathVariable Long id) {
+        deleteActivityUseCase.execute(new DeleteActivityUseCase.InputValues(authHeader, id));
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 }

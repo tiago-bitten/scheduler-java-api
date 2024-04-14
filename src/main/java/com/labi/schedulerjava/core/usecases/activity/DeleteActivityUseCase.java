@@ -7,15 +7,12 @@ import com.labi.schedulerjava.core.domain.model.Activity;
 import com.labi.schedulerjava.core.domain.model.User;
 import com.labi.schedulerjava.core.domain.service.UserMinistryService;
 import com.labi.schedulerjava.core.usecases.UseCase;
-import com.labi.schedulerjava.dtos.ActivityRequest;
-import com.labi.schedulerjava.dtos.ActivityResponse;
-import com.labi.schedulerjava.dtos.UpdateActivityRequest;
 import lombok.Value;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 @Component
-public class UpdateActivityUseCase extends UseCase<UpdateActivityUseCase.InputValues, UpdateActivityUseCase.OutputValues> {
+public class DeleteActivityUseCase extends UseCase<DeleteActivityUseCase.InputValues, DeleteActivityUseCase.OutputValues> {
 
     @Autowired
     private ActivityRepository activityRepository;
@@ -32,29 +29,25 @@ public class UpdateActivityUseCase extends UseCase<UpdateActivityUseCase.InputVa
         Activity activity = activityRepository.findById(input.id)
                 .orElseThrow(() -> new BusinessRuleException("O ID " + input.id + " não corresponde a nenhuma atividade cadastrada"));
 
-        if (!activity.getIsActive())
-            throw new BusinessRuleException("Esta atividade está desativada");
-
         if (!userMinistryService.existsUserMinistryRelation(user.getId(), activity.getMinistry().getId()))
-            throw new BusinessRuleException("O usuário não tem permissão para atualizar esta atividade");
+            throw new BusinessRuleException("O usuário não tem permissão para deletar esta atividade");
 
-        activity.setName(input.request.name());
-        activity.setDefaultTotalVolunteers(input.request.defaultTotalVolunteers());
+        if (!activity.getIsActive())
+            throw new BusinessRuleException("Esta atividade já está desativada");
 
+        activity.setIsActive(false);
         activityRepository.save(activity);
 
-        return new OutputValues(new ActivityResponse(activity.getId(), activity.getName(), activity.getDefaultTotalVolunteers()));
+        return new OutputValues();
     }
 
     @Value
     public static class InputValues implements UseCase.InputValues {
         String authHeader;
         Long id;
-        UpdateActivityRequest request;
     }
 
     @Value
     public static class OutputValues implements UseCase.OutputValues {
-        ActivityResponse response;
     }
 }

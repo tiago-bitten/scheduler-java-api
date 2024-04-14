@@ -28,7 +28,7 @@ public class FindAllActivitiesByMinistry extends UseCase<FindAllActivitiesByMini
         Ministry ministry = ministryService.findById(input.ministryId)
                 .orElseThrow(() -> new BusinessRuleException("O ID " + input.ministryId + " não corresponde a nenhum ministério cadastrado"));
 
-        List<Activity> activities = activityRepository.findAllByMinistryId(ministry.getId());
+        List<Activity> activities = activityRepository.findAllByMinistryIdAndIsActiveTrue(ministry.getId());
 
         return new OutputValues(activities.stream().map(this::toDto).toList());
     }

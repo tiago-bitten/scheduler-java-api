@@ -20,6 +20,9 @@ public class Activity extends BaseEntity {
     @Column(name = "default_total_volunteers")
     private Long defaultTotalVolunteers;
 
+    @Column(name = "is_active")
+    private Boolean isActive;
+
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "ministry_id", nullable = false)
     private Ministry ministry;
@@ -34,5 +37,10 @@ public class Activity extends BaseEntity {
         this.name = name;
         this.defaultTotalVolunteers = defaultTotalVolunteers;
         this.ministry = ministry;
+    }
+
+    @PrePersist
+    public void prePersist() {
+        this.isActive = true;
     }
 }
