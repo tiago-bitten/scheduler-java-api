@@ -36,6 +36,7 @@ public class DeleteActivityUseCase extends UseCase<DeleteActivityUseCase.InputVa
             throw new BusinessRuleException("Esta atividade já está desativada");
 
         activity.setIsActive(false);
+        activity.setName(activity.getName() + " (DELETED)");
         activityRepository.save(activity);
 
         return new OutputValues();

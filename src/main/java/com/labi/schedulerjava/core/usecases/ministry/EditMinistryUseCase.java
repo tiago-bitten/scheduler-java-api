@@ -35,7 +35,7 @@ public class EditMinistryUseCase extends UseCase<EditMinistryUseCase.InputValues
             throw new BusinessRuleException("Você não tem permissão para editar este ministério");
 
         if (input.dto.name() != null)
-            ministry.setName(input.dto.name());
+            ministry.setName(input.dto.name().toUpperCase());
 
         if (input.dto.description() != null)
             ministry.setDescription(input.dto.description());

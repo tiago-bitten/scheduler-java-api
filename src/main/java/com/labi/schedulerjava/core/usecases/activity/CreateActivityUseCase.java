@@ -29,6 +29,11 @@ public class CreateActivityUseCase extends UseCase<CreateActivityUseCase.InputVa
         if (input.request.totalVolunteers() < 1)
             throw new BusinessRuleException("O total de voluntários deve ser maior que 0");
 
+        activityRepository.findByNameAndMinistryIdAndIsActiveTrue(input.request.name(), ministry.getId())
+                .ifPresent(activity -> {
+                    throw new BusinessRuleException("Já existe uma atividade com o nome " + input.request.name() + " para o ministério " + ministry.getName());
+                });
+
         Activity activity = new Activity(input.request.name(), input.request.totalVolunteers(), ministry);
 
         activityRepository.save(activity);
