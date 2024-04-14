@@ -1,9 +1,6 @@
 package com.labi.schedulerjava.core.domain.model;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.OneToMany;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 import lombok.*;
 
 import java.time.Instant;
@@ -52,12 +49,24 @@ public class User extends BaseEntity {
     @OneToMany(mappedBy = "generatedBy")
     private List<Scale> scales;
 
+    @OneToMany(mappedBy = "user")
+    private List<Schedule> schedules;
+
     public User(String name, String email, String password) {
         this.name = name;
         this.email = email;
         this.password = password;
-        this.isApproved = false;
-        this.isSuperUser = false;
+    }
+
+    @PrePersist
+    public void prePersist() {
         this.createdAt = Instant.now();
+        if (this.name.equals("Admin")) {
+            this.isSuperUser = true;
+            this.isApproved = true;
+        } else {
+            this.isSuperUser = false;
+            this.isApproved = false;
+        }
     }
 }

@@ -43,6 +43,7 @@ public class SchedulerJavaApplication {
 	@Autowired
 	private VolunteerMinistryRepository volunteerMinistryRepository;
 
+
 	@Bean
 	public Object createMinistry() {
 		Ministry ministry = new Ministry("CEIA", "Ceia principal", "#494949");

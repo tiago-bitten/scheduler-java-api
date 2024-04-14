@@ -41,7 +41,6 @@ public class FindScheduleAppointmentsUseCase extends UseCase<FindScheduleAppoint
                 schedule.getId(),
                 schedule.getStartDate(),
                 schedule.getEndDate(),
-                schedule.getWeekNumber(),
                 appointments.stream()
                         .map(appointment -> new ReadAppointmentsDto(
                                 appointment.getId(),

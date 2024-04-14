@@ -7,6 +7,5 @@ public record ReadSimpScheduleDto(
         String name,
         LocalDateTime startDate,
         LocalDateTime endDate,
-        Integer weekNumber,
         Boolean isActive
 ) { }

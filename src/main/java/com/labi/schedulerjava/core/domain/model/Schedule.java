@@ -28,14 +28,15 @@ public class Schedule extends BaseEntity {
     @Column(name = "end_date")
     private LocalDateTime endDate;
 
-    @Column(name = "week_number")
-    private Integer weekNumber;
-
     @Column(name = "is_active", nullable = false)
     private Boolean isActive;
 
     @Column(name = "created_at", nullable = false, updatable = false)
     private Instant createdAt;
+
+    @ManyToOne
+    @JoinColumn(name = "user_id")
+    private User user;
 
     @OneToMany(mappedBy = "schedule", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Appointment> appointments;
@@ -43,13 +44,17 @@ public class Schedule extends BaseEntity {
     @OneToMany(mappedBy = "schedule", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Scale> scales;
 
-    public Schedule(String name, String description, LocalDateTime startDate, LocalDateTime endDate, Integer weekNumber) {
+    public Schedule(String name, String description, LocalDateTime startDate, LocalDateTime endDate, User user) {
         this.name = name;
         this.description = description;
         this.startDate = startDate;
         this.endDate = endDate;
-        this.weekNumber = weekNumber;
-        this.isActive = true;
+        this.user = user;
+    }
+
+    @PrePersist
+    public void prePersist() {
         this.createdAt = Instant.now();
+        this.isActive = true;
     }
 }

@@ -28,7 +28,6 @@ public class FindSchedulesUseCase extends UseCase<FindSchedulesUseCase.InputValu
                         schedule.getName(),
                         schedule.getStartDate(),
                         schedule.getEndDate(),
-                        schedule.getWeekNumber(),
                         schedule.getIsActive()
                 )).toList());
     }

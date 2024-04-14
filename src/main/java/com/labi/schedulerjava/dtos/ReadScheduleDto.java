@@ -7,7 +7,6 @@ public record ReadScheduleDto(
         Long id,
         LocalDateTime startDate,
         LocalDateTime endDate,
-        Integer weekNumber,
         List<ReadAppointmentsDto> appointments
 ) {
 }

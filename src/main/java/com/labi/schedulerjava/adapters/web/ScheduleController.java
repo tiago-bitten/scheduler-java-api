@@ -31,8 +31,9 @@ public class ScheduleController {
     private RemoveScheduleUseCase removeScheduleUseCase;
 
     @PostMapping("/open")
-    public ResponseEntity<Void> open(@RequestBody CreateScheduleDto dto) {
-        openScheduleUseCase.execute(new OpenScheduleUseCase.InputValues(dto));
+    public ResponseEntity<Void> open(@RequestHeader("Authorization") String authHeader,
+                                     @RequestBody CreateScheduleDto dto) {
+        openScheduleUseCase.execute(new OpenScheduleUseCase.InputValues(authHeader, dto));
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 
