@@ -35,6 +35,9 @@ public class GroupController {
     @Autowired
     private DeleteGroupUseCase deleteGroupUseCase;
 
+    @Autowired
+    private FindGroupsNotInScheduleUseCase findGroupsNotInScheduleUseCase;
+
     @PostMapping("/create")
     public ResponseEntity<UseCase.OutputValues> create(@RequestBody @Valid CreateGroupDto dto) {
         UseCase.OutputValues outputValues =
@@ -74,10 +77,11 @@ public class GroupController {
     }
 
     @GetMapping("/not-in-schedule/{scheduleId}/ministry/{ministryId}")
-    public ResponseEntity<Void> findGroupsNotInSchedule(@PathVariable Long scheduleId,
-                                                        @PathVariable Long ministryId) {
-        findGroupsNotInScheduleUseCase.execute(new FindGroupsNotInScheduleUseCase.InputValues(scheduleId, ministryId));
-        return new ResponseEntity<>(HttpStatus.OK);
+    public ResponseEntity<UseCase.OutputValues> findGroupsNotInSchedule(@PathVariable Long scheduleId,
+                                                                        @PathVariable Long ministryId) {
+        UseCase.OutputValues outputValues =
+                findGroupsNotInScheduleUseCase.execute(new FindGroupsNotInScheduleUseCase.InputValues(scheduleId, ministryId));
+        return new ResponseEntity<>(outputValues, HttpStatus.OK);
     }
 
     @PutMapping("/{groupId}/disassociate")
