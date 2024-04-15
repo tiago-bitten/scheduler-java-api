@@ -28,6 +28,15 @@ public class AppointmentController {
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 
+    @PostMapping("/appoint-group")
+    public ResponseEntity<Void> appointGroup(@RequestHeader("Authorization") String authHeader,
+                                             @RequestParam Long scheduleId,
+                                             @RequestParam Long groupId,
+                                             @RequestParam Long ministryId,
+                                             @RequestParam Long activityId) {
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+    }
+
     @DeleteMapping("{id}")
     public ResponseEntity<Void> remove(@PathVariable Long id) {
         removeAppointmentUseCase.execute(new RemoveAppointmentUseCase.InputValues(id));
