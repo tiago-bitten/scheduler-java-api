@@ -73,6 +73,13 @@ public class GroupController {
         return new ResponseEntity<>(outputValues, HttpStatus.OK);
     }
 
+    @GetMapping("/not-in-schedule/{scheduleId}/ministry/{ministryId}")
+    public ResponseEntity<Void> findGroupsNotInSchedule(@PathVariable Long scheduleId,
+                                                        @PathVariable Long ministryId) {
+        findGroupsNotInScheduleUseCase.execute(new FindGroupsNotInScheduleUseCase.InputValues(scheduleId, ministryId));
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
+
     @PutMapping("/{groupId}/disassociate")
     public ResponseEntity<Void> disassociate(@PathVariable Long groupId,
                                              @RequestParam Long volunteerId) {

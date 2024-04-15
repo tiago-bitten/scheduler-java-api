@@ -21,7 +21,7 @@ public class SchedulerJavaApplication {
 	public static void main(String[] args) {
 		SpringApplication.run(SchedulerJavaApplication.class, args);
 	}
-
+/*
 	@Autowired
 	private MinistryRepository ministryRepository;
 
@@ -297,5 +297,5 @@ public class SchedulerJavaApplication {
 
 		userMinistryService.associate(user, List.of(1L, 2L, 3L, 4L, 5L, 6L));
 		return null;
-	}
+	}*/
 }
