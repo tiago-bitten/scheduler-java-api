@@ -76,11 +76,12 @@ public class GroupController {
         return new ResponseEntity<>(outputValues, HttpStatus.OK);
     }
 
-    @GetMapping("/not-in-schedule/{scheduleId}/ministry/{ministryId}")
-    public ResponseEntity<UseCase.OutputValues> findGroupsNotInSchedule(@PathVariable Long scheduleId,
-                                                                        @PathVariable Long ministryId) {
+    @GetMapping("/ministry/{ministryId}/schedule/{scheduleId}")
+    public ResponseEntity<UseCase.OutputValues> findGroupsNotInSchedule(@PathVariable Long ministryId,
+                                                                        @PathVariable Long scheduleId,
+                                                                        @RequestParam(required = false) String groupName) {
         UseCase.OutputValues outputValues =
-                findGroupsNotInScheduleUseCase.execute(new FindGroupsNotInScheduleUseCase.InputValues(scheduleId, ministryId));
+                findGroupsNotInScheduleUseCase.execute(new FindGroupsNotInScheduleUseCase.InputValues(ministryId, scheduleId));
         return new ResponseEntity<>(outputValues, HttpStatus.OK);
     }
 

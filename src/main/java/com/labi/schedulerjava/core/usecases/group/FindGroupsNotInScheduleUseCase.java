@@ -6,14 +6,15 @@ import com.labi.schedulerjava.core.domain.exception.BusinessRuleException;
 import com.labi.schedulerjava.core.domain.model.*;
 import com.labi.schedulerjava.core.domain.service.*;
 import com.labi.schedulerjava.core.usecases.UseCase;
-import com.labi.schedulerjava.dtos.ReadGroupDto;
-import com.labi.schedulerjava.dtos.ReadGroupSimpVolunteersDto;
-import com.labi.schedulerjava.dtos.ReadSimpVolunteerDto;
+import com.labi.schedulerjava.dtos.*;
 import lombok.Value;
+import org.apache.commons.lang3.NotImplementedException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Component
@@ -34,68 +35,79 @@ public class FindGroupsNotInScheduleUseCase extends UseCase<FindGroupsNotInSched
     @Autowired
     private VolunteerMinistryService volunteerMinistryService;
 
+    @Autowired
+    private AppointmentService appointmentService;
+
     @Override
     public OutputValues execute(InputValues input) {
-        Schedule schedule = scheduleService.findById(input.scheduleId)
-                .orElseThrow(() -> new BusinessRuleException("O ID informado " + input.scheduleId + " não corresponde a um horário cadastrado"));
-
         Ministry ministry = ministryService.findById(input.ministryId)
                 .orElseThrow(() -> new BusinessRuleException("O ID informado " + input.ministryId + " não corresponde a um ministério cadastrado"));
 
-        List<Group> groups = groupRepository.findAll(GroupSpecification.hasMinistryId(input.ministryId));
+        Schedule schedule = scheduleService.findById(input.scheduleId)
+                .orElseThrow(() -> new BusinessRuleException("O ID informado " + input.scheduleId + " não corresponde a uma escala cadastrada"));
 
-        List<Group> filteredGroups = groups.stream()
-                .filter(group -> group.getVolunteers().stream()
-                        .anyMatch(volunteer ->
-                        volunteer.getVolunteerMinistries().stream()
-                                .anyMatch(volunteerMinistry ->
-                                volunteerMinistry.getIsActive() &&
-                                        volunteerMinistry.getAppointments().stream()
-                                                .noneMatch(appointment -> appointment.getSchedule().equals(schedule) &&
-                                                        !unavailableDateService.isUnavailableDate(
-                                                                appointment.getSchedule().getStartDate(),
-                                                                appointment.getSchedule().getEndDate(),
-                                                                volunteer.getId()
-                                                        )
-                                                )
-                                )
-                        )
-                )
+        List<Group> groups = groupRepository.findAll(GroupSpecification.hasMinistryId(input.ministryId));
+        List<ReadVolunteersConditionsDto> conditionsDtos = new ArrayList<>();
+
+        for (Group group : groups) {
+            for (Volunteer volunteer : group.getVolunteers()) {
+                Optional<VolunteerMinistry> optionalVolunteerMinistry = volunteerMinistryService.findByVolunteerAndMinistry(volunteer, ministry);
+                if (optionalVolunteerMinistry.isEmpty() || !optionalVolunteerMinistry.get().getIsActive()) {
+                    addVolunteer(volunteer, conditionsDtos, false, "Voluntário não está vinculado ao ministério " + ministry.getName());
+                    continue;
+                }
+
+                VolunteerMinistry volunteerMinistry = optionalVolunteerMinistry.get();
+
+                if (appointmentService.validateAppointment(schedule, volunteer.getId())) {
+                    addVolunteer(volunteer, conditionsDtos, false, "Voluntário já está agendado nesta agenda");
+                    continue;
+                }
+
+                if (unavailableDateService.isUnavailableDate(schedule.getStartDate(), schedule.getEndDate(), volunteer.getId())) {
+                    addVolunteer(volunteer, conditionsDtos, false, "Voluntário está indisponível nesta data");
+                    continue;
+                }
+
+                addVolunteer(volunteer, conditionsDtos, true, null);
+            }
+        }
+
+
+        List<ReadGroupToAppointDto> groupsDtos = groups.stream()
+                .map(group -> toDto(group, conditionsDtos))
                 .toList();
 
-        List<ReadGroupSimpVolunteersDto> groupDtos = filteredGroups.stream()
-                .map(this::toDto)
-                .collect(Collectors.toList());
-
-        return new OutputValues(groupDtos);
+        return new OutputValues(groupsDtos);
     }
 
 
     @Value
     public static class InputValues implements UseCase.InputValues {
-        Long scheduleId;
         Long ministryId;
+        Long scheduleId;
     }
 
     @Value
     public static class OutputValues implements UseCase.OutputValues {
-        List<ReadGroupSimpVolunteersDto> groups;
+        List<ReadGroupToAppointDto> groups;
     }
 
-    private ReadGroupSimpVolunteersDto toDto(Group group) {
-        return new ReadGroupSimpVolunteersDto(
+    private ReadGroupToAppointDto toDto(Group group, List<ReadVolunteersConditionsDto> conditionsDtos) {
+        return new ReadGroupToAppointDto(
                 group.getId(),
                 group.getName(),
-                group.getVolunteers().stream().map(volunteer -> new ReadSimpVolunteerDto(
-                        volunteer.getId(),
-                        volunteer.getAccessKey(),
-                        volunteer.getName(),
-                        volunteer.getLastName(),
-                        volunteer.getCpf(),
-                        volunteer.getPhone(),
-                        volunteer.getBirthDate(),
-                        volunteer.getOrigin()
-                )).collect(Collectors.toList())
+                conditionsDtos
         );
+    }
+
+    private void addVolunteer(Volunteer volunteer, List<ReadVolunteersConditionsDto> conditions, Boolean available, String reason) {
+        conditions.add(new ReadVolunteersConditionsDto(
+                volunteer.getId(),
+                volunteer.getName(),
+                volunteer.getLastName(),
+                available,
+                reason
+        ));
     }
 }
