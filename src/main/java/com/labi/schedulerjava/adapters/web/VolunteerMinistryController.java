@@ -39,9 +39,10 @@ public class VolunteerMinistryController {
     }
 
     @GetMapping("/ministry/{ministryId}")
-    public ResponseEntity<UseCase.OutputValues> findVolunteerMinistriesByMinistryId(@PathVariable Long ministryId) {
+    public ResponseEntity<UseCase.OutputValues> findVolunteerMinistriesByMinistryId(@PathVariable Long ministryId,
+                                                                                    @RequestParam String volunteerName) {
         UseCase.OutputValues outputValues =
-                findVolunteerMinistryByMinistryIdUseCase.execute(new FindVolunteerMinistryByMinistryIdUseCase.InputValues(ministryId));
+                findVolunteerMinistryByMinistryIdUseCase.execute(new FindVolunteerMinistryByMinistryIdUseCase.InputValues(ministryId, volunteerName));
         return new ResponseEntity<>(outputValues, HttpStatus.OK);
     }
 }
