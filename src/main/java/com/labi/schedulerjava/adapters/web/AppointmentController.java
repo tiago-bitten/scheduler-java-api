@@ -1,7 +1,9 @@
 package com.labi.schedulerjava.adapters.web;
 
 import com.labi.schedulerjava.core.usecases.appointment.CreateAppointmentUseCase;
+import com.labi.schedulerjava.core.usecases.appointment.CreateGroupAppointmentUseCase;
 import com.labi.schedulerjava.core.usecases.appointment.RemoveAppointmentUseCase;
+import com.labi.schedulerjava.dtos.CreateGroupAppointmentDto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -17,6 +19,9 @@ public class AppointmentController {
     @Autowired
     private RemoveAppointmentUseCase removeAppointmentUseCase;
 
+    @Autowired
+    private CreateGroupAppointmentUseCase createGroupAppointmentUseCase;
+
     @PostMapping("/appoint")
     public ResponseEntity<Void> appoint(@RequestHeader("Authorization") String authHeader,
                                         @RequestParam Long scheduleId,
@@ -25,6 +30,15 @@ public class AppointmentController {
                                         @RequestParam Long activityId) {
         appointmentUseCase.execute(new CreateAppointmentUseCase.InputValues(scheduleId, volunteerId, ministryId,
                 activityId, authHeader));
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+    }
+
+    @PostMapping("/appoint-group")
+    public ResponseEntity<Void> appointGroup(@RequestHeader("Authorization") String authHeader,
+                                             @RequestParam Long scheduleId,
+                                             @RequestParam Long ministryId,
+                                             @RequestBody CreateGroupAppointmentDto dto) {
+        createGroupAppointmentUseCase.execute(new CreateGroupAppointmentUseCase.InputValues(authHeader, scheduleId, ministryId, dto));
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 
