@@ -81,7 +81,7 @@ public class GroupController {
                                                                         @PathVariable Long scheduleId,
                                                                         @RequestParam(required = false) String groupName) {
         UseCase.OutputValues outputValues =
-                findGroupsNotInScheduleUseCase.execute(new FindGroupsNotInScheduleUseCase.InputValues(ministryId, scheduleId));
+                findGroupsNotInScheduleUseCase.execute(new FindGroupsNotInScheduleUseCase.InputValues(ministryId, scheduleId, groupName));
         return new ResponseEntity<>(outputValues, HttpStatus.OK);
     }
 

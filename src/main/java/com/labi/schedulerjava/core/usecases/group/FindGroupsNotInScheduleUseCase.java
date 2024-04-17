@@ -10,6 +10,7 @@ import com.labi.schedulerjava.dtos.*;
 import lombok.Value;
 import org.apache.commons.lang3.NotImplementedException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
@@ -46,7 +47,13 @@ public class FindGroupsNotInScheduleUseCase extends UseCase<FindGroupsNotInSched
         Schedule schedule = scheduleService.findById(input.scheduleId)
                 .orElseThrow(() -> new BusinessRuleException("O ID informado " + input.scheduleId + " não corresponde a uma escala cadastrada"));
 
-        List<Group> groups = groupRepository.findAll(GroupSpecification.hasMinistryId(input.ministryId));
+        Specification<Group> spec = Specification.where(null);
+        spec.and(GroupSpecification.hasMinistryId(input.ministryId));
+        spec.and(GroupSpecification.hasName(input.groupName));
+
+        System.out.println("O nome do grupo é: " + input.groupName);
+
+        List<Group> groups = groupRepository.findAll(spec);
         List<ReadVolunteersConditionsDto> conditionsDtos = new ArrayList<>();
 
         for (Group group : groups) {
@@ -86,6 +93,7 @@ public class FindGroupsNotInScheduleUseCase extends UseCase<FindGroupsNotInSched
     public static class InputValues implements UseCase.InputValues {
         Long ministryId;
         Long scheduleId;
+        String groupName;
     }
 
     @Value
