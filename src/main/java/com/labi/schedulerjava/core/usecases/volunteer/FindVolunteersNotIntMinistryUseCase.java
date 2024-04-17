@@ -1,6 +1,7 @@
 package com.labi.schedulerjava.core.usecases.volunteer;
 
 import com.labi.schedulerjava.adapters.persistence.VolunteerRepository;
+import com.labi.schedulerjava.adapters.persistence.specification.VolunteerSpecification;
 import com.labi.schedulerjava.core.domain.exception.BusinessRuleException;
 import com.labi.schedulerjava.core.domain.model.Ministry;
 import com.labi.schedulerjava.core.domain.model.Volunteer;
@@ -9,6 +10,7 @@ import com.labi.schedulerjava.core.usecases.UseCase;
 import com.labi.schedulerjava.dtos.ReadSimpVolunteerDto;
 import lombok.Value;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
@@ -27,7 +29,9 @@ public class FindVolunteersNotIntMinistryUseCase extends UseCase<FindVolunteersN
         Ministry ministry = ministryService.findById(input.ministryId)
                 .orElseThrow(() -> new BusinessRuleException("O ID " + input.ministryId + " não corresponde a nenhum ministério"));
 
-        List<Volunteer> volunteers = volunteerRepository.findAll();
+        Specification<Volunteer> spec = Specification.where(VolunteerSpecification.hasName(input.volunteerName));
+
+        List<Volunteer> volunteers = volunteerRepository.findAll(spec);
         List<Volunteer> volunteersNotInMinistry = volunteers.stream()
                 .filter(volunteer -> volunteer.getVolunteerMinistries().stream()
                 .noneMatch(volunteerMinistry -> volunteerMinistry.getMinistry().getId().equals(ministry.getId()) && volunteerMinistry.getIsActive()))
@@ -52,6 +56,7 @@ public class FindVolunteersNotIntMinistryUseCase extends UseCase<FindVolunteersN
     @Value
     public static class InputValues implements UseCase.InputValues {
         Long ministryId;
+        String volunteerName;
     }
 
     @Value

@@ -76,9 +76,10 @@ public class VolunteerController {
     }
 
     @GetMapping("/not-in-ministry/{ministryId}")
-    public ResponseEntity<UseCase.OutputValues> findVolunteersNotInMinistry(@PathVariable Long ministryId) {
+    public ResponseEntity<UseCase.OutputValues> findVolunteersNotInMinistry(@PathVariable Long ministryId,
+                                                                            @RequestParam(required = false) String volunteerName) {
         UseCase.OutputValues outputValues =
-                findVolunteersNotIntMinistryUseCase.execute(new FindVolunteersNotIntMinistryUseCase.InputValues(ministryId));
+                findVolunteersNotIntMinistryUseCase.execute(new FindVolunteersNotIntMinistryUseCase.InputValues(ministryId, volunteerName));
         return new ResponseEntity<>(outputValues, HttpStatus.OK);
     }
 
