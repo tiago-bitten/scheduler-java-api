@@ -11,6 +11,8 @@ import lombok.Value;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import java.util.List;
+
 @Component
 public class CreateGroupAppointmentUseCase extends UseCase<CreateGroupAppointmentUseCase.InputValues, CreateGroupAppointmentUseCase.OutputValues> {
 
@@ -56,11 +58,11 @@ public class CreateGroupAppointmentUseCase extends UseCase<CreateGroupAppointmen
         if (!userMinistryService.existsUserMinistryRelation(user.getId(), input.getMinistryId()))
             throw new BusinessRuleException("Você não tem permissão para agendar voluntários neste ministério");
 
-        input.getDto().volunteerIdAndActivityId().forEach((volunteerId, activityId) -> {
-            Volunteer volunteer = volunteerService.findById(volunteerId)
-                    .orElseThrow(() -> new BusinessRuleException("O ID " + volunteerId + " não corresponde a nenhum voluntário cadastrado"));
-            Activity activity = activityService.findById(activityId)
-                    .orElseThrow(() -> new BusinessRuleException("O ID " + activityId + " não corresponde a nenhuma atividade cadastrada"));
+        input.getAppointments().forEach((appointment) -> {
+            Volunteer volunteer = volunteerService.findById(appointment.volunteerId())
+                    .orElseThrow(() -> new BusinessRuleException("O ID " + appointment.volunteerId() + " não corresponde a nenhum voluntário cadastrado"));
+            Activity activity = activityService.findById(appointment.activityId())
+                    .orElseThrow(() -> new BusinessRuleException("O ID " + appointment.activityId() + " não corresponde a nenhuma atividade cadastrada"));
 
             if (appointmentService.validateAppointment(schedule, volunteer.getId()))
                 throw new BusinessRuleException("Voluntário já agendado neste horário");
@@ -71,14 +73,14 @@ public class CreateGroupAppointmentUseCase extends UseCase<CreateGroupAppointmen
             volunteerMinistryService.validateVolunteerMinistry(volunteer.getId(), input.getMinistryId());
         });
 
-        input.getDto().volunteerIdAndActivityId().forEach((volunteerId, activityId) -> {
-            Volunteer volunteer = volunteerService.findById(volunteerId).get();
-            Activity activity = activityService.findById(activityId).get();
+        input.getAppointments().forEach((appointment) -> {
+            Volunteer volunteer = volunteerService.findById(appointment.volunteerId()).get();
+            Activity activity = activityService.findById(appointment.activityId()).get();
 
             VolunteerMinistry volunteerMinistry = volunteerMinistryService.findByVolunteerAndMinistry(volunteer, ministry).get();
 
-            Appointment appointment = new Appointment(schedule, volunteerMinistry, activity, user);
-            appointmentRepository.save(appointment);
+            Appointment instanceAppointment = new Appointment(schedule, volunteerMinistry, activity, user);
+            appointmentRepository.save(instanceAppointment);
         });
 
         return new OutputValues();
@@ -89,7 +91,7 @@ public class CreateGroupAppointmentUseCase extends UseCase<CreateGroupAppointmen
         String authHeader;
         Long scheduleId;
         Long ministryId;
-        CreateGroupAppointmentDto dto;
+        List<CreateGroupAppointmentDto> appointments;
     }
 
     @Value

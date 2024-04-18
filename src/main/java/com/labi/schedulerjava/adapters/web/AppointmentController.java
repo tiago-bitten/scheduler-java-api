@@ -9,6 +9,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 @RequestMapping("api/v1/appointments")
 public class AppointmentController {
@@ -37,7 +39,7 @@ public class AppointmentController {
     public ResponseEntity<Void> appointGroup(@RequestHeader("Authorization") String authHeader,
                                              @RequestParam Long scheduleId,
                                              @RequestParam Long ministryId,
-                                             @RequestBody CreateGroupAppointmentDto dto) {
+                                             @RequestBody List<CreateGroupAppointmentDto> dto) {
         createGroupAppointmentUseCase.execute(new CreateGroupAppointmentUseCase.InputValues(authHeader, scheduleId, ministryId, dto));
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }

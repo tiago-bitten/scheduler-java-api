@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Map;
 
 public record CreateGroupAppointmentDto(
-        Map<Long, Long> volunteerIdAndActivityId
+        Long volunteerId,
+        Long activityId
 ) {
 }
