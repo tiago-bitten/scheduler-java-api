@@ -2,6 +2,7 @@ package com.labi.schedulerjava.core.usecases.volunteer;
 
 import com.labi.schedulerjava.adapters.persistence.VolunteerRepository;
 import com.labi.schedulerjava.adapters.security.JwtTokenProvider;
+import com.labi.schedulerjava.core.domain.exception.BusinessRuleException;
 import com.labi.schedulerjava.core.domain.model.User;
 import com.labi.schedulerjava.core.domain.model.Volunteer;
 import com.labi.schedulerjava.core.domain.service.VolunteerLogService;
@@ -30,6 +31,11 @@ public class CreateVolunteerUseCase extends UseCase<CreateVolunteerUseCase.Input
     @Override
     public OutputValues execute(InputValues input) {
         Volunteer volunteer = new Volunteer(input.dto.name(), input.dto.lastName(), input.dto.cpf(), input.dto.phone(), input.dto.birthDate(), VolunteerOrigin.USER_REGISTERED);
+
+        volunteerRepository.findByCpf(volunteer.getCpf())
+                .ifPresent((vol) -> {
+                    throw new BusinessRuleException("CPF já cadastrado");
+                });
         volunteerRepository.save(volunteer);
 
         User user = jwtTokenProvider.getUserFromToken(input.authHeader);
