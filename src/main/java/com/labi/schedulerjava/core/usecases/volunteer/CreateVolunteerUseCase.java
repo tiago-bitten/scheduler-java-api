@@ -32,6 +32,7 @@ public class CreateVolunteerUseCase extends UseCase<CreateVolunteerUseCase.Input
     public OutputValues execute(InputValues input) {
         Volunteer volunteer = new Volunteer(input.dto.name(), input.dto.lastName(), input.dto.cpf(), input.dto.phone(), input.dto.birthDate(), VolunteerOrigin.USER_REGISTERED);
 
+        // verificar cpf já cadastrado
         volunteerRepository.findByCpf(volunteer.getCpf())
                 .ifPresent((vol) -> {
                     throw new BusinessRuleException("CPF já cadastrado");
