@@ -39,8 +39,9 @@ public class AppointmentController {
     public ResponseEntity<Void> appointGroup(@RequestHeader("Authorization") String authHeader,
                                              @RequestParam Long scheduleId,
                                              @RequestParam Long ministryId,
+                                             @RequestParam Long groupId,
                                              @RequestBody List<CreateGroupAppointmentDto> dto) {
-        createGroupAppointmentUseCase.execute(new CreateGroupAppointmentUseCase.InputValues(authHeader, scheduleId, ministryId, dto));
+        createGroupAppointmentUseCase.execute(new CreateGroupAppointmentUseCase.InputValues(authHeader, scheduleId, ministryId, groupId, dto));
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 

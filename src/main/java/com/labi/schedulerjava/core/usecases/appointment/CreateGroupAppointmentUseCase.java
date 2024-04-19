@@ -32,6 +32,10 @@ public class CreateGroupAppointmentUseCase extends UseCase<CreateGroupAppointmen
     private MinistryService ministryService;
 
     @Autowired
+    private
+    GroupService groupService;
+
+    @Autowired
     private JwtTokenProvider jwtTokenProvider;
 
     @Autowired
@@ -55,6 +59,9 @@ public class CreateGroupAppointmentUseCase extends UseCase<CreateGroupAppointmen
         Ministry ministry = ministryService.findById(input.getMinistryId())
                 .orElseThrow(() -> new BusinessRuleException("O ID informado " + input.getMinistryId() + " não corresponde a um ministério cadastrado"));
 
+        Group group = groupService.findById(input.getGroup())
+                .orElseThrow(() -> new BusinessRuleException("O ID informado " + input.getGroup() + " não corresponde a um grupo cadastrado"));
+
         if (!userMinistryService.existsUserMinistryRelation(user.getId(), input.getMinistryId()))
             throw new BusinessRuleException("Você não tem permissão para agendar voluntários neste ministério");
 
@@ -71,6 +78,9 @@ public class CreateGroupAppointmentUseCase extends UseCase<CreateGroupAppointmen
                 throw new BusinessRuleException("Voluntário não pode ser agendado nesta data");
 
             volunteerMinistryService.validateVolunteerMinistry(volunteer.getId(), input.getMinistryId());
+
+            if (!group.getVolunteers().contains(volunteer))
+                throw new BusinessRuleException(volunteer.getName() + " não pertence ao grupo");
         });
 
         input.getAppointments().forEach((appointment) -> {
@@ -91,6 +101,7 @@ public class CreateGroupAppointmentUseCase extends UseCase<CreateGroupAppointmen
         String authHeader;
         Long scheduleId;
         Long ministryId;
+        Long group;
         List<CreateGroupAppointmentDto> appointments;
     }
 
