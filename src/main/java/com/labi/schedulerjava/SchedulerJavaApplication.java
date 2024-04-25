@@ -43,7 +43,7 @@ public class SchedulerJavaApplication {
 	@Autowired
 	private VolunteerMinistryRepository volunteerMinistryRepository;
 
-
+/*
 	@Bean
 	public Object createMinistry() {
 		Ministry ministry = new Ministry("CEIA", "Ceia principal", "#494949");
@@ -297,5 +297,5 @@ public class SchedulerJavaApplication {
 
 		userMinistryService.associate(user, List.of(1L, 2L, 3L, 4L, 5L, 6L));
 		return null;
-	}
+	}*/
 }
