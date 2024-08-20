@@ -33,4 +33,9 @@ public class VolunteerMinistry extends BaseEntity{
         this.ministry = ministry;
         this.isActive = true;
     }
+
+    @PrePersist
+    public void prePersist() {
+        this.ministry.setTotalVolunteers(this.ministry.getTotalVolunteers() + 1);
+    }
 }
