@@ -65,5 +65,7 @@ public class Volunteer extends BaseEntity {
         this.birthDate = birthDate;
         this.origin = origin;
         this.volunteerMinistries = new ArrayList<>();
+        this.unavailableDates = new ArrayList<>();
+        this.volunteerLogs = new ArrayList<>();
     }
 }

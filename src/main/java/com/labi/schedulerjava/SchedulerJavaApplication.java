@@ -48,7 +48,7 @@ public class SchedulerJavaApplication {
 	@Bean
 	public Object createMinistry() {
 		List<Volunteer> volunteers = createRealisticVolunteers(100);
-		List<Group> groups = createGroups(20);  // Criando 20 grupos menores
+		List<Group> groups = createGroups(20);
 		groupRepository.saveAll(groups);
 
 		List<Ministry> ministries = createMinistries();
