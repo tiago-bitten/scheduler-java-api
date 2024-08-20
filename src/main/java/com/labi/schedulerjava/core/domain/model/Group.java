@@ -6,6 +6,7 @@ import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 
 import java.time.Instant;
+import java.util.ArrayList;
 import java.util.List;
 
 @Data
@@ -31,6 +32,7 @@ public class Group extends BaseEntity {
         this.name = name;
         this.createdAt = Instant.now();
         this.updatedAt = Instant.now();
+        this.volunteers = new ArrayList<>();
     }
 
     public void addVolunteer(Volunteer volunteer) {
