@@ -48,62 +48,59 @@ public class SchedulerJavaApplication {
 	@Bean
 	public Object createMinistry() {
 		List<Volunteer> volunteers = createRealisticVolunteers(100);
-		List<Group> groups = createGroups(10);  // Criando 10 grupos
+		List<Group> groups = createGroups(20);  // Criando 20 grupos menores
 		groupRepository.saveAll(groups);
 
-		assignVolunteersToGroups(volunteers, groups);
-		volunteerRepository.saveAll(volunteers);
-
-		List<Ministry> ministries = List.of(
-				new Ministry("Louvor", "Ministério de Louvor", "#FFB3BA"),
-				new Ministry("Intercessão", "Ministério de Intercessão", "#FFDFBA"),
-				new Ministry("Ação Social", "Ministério de Ação Social", "#FFFFBA"),
-				new Ministry("Ensino", "Ministério de Ensino", "#BAFFC9"),
-				new Ministry("Recepção", "Ministério de Recepção", "#BAE1FF"),
-				new Ministry("Mídia", "Ministério de Mídia", "#D5BAFF"),
-				new Ministry("Infantil", "Ministério Infantil", "#FFCCFF"),
-				new Ministry("Jovens", "Ministério de Jovens", "#FFABAB"),
-				new Ministry("Casais", "Ministério de Casais", "#FFD1DC"),
-				new Ministry("Comunhão", "Ministério de Comunhão", "#C1E1C1")
-		);
+		List<Ministry> ministries = createMinistries();
 		ministryRepository.saveAll(ministries);
 
-		List<Activity> activities = new ArrayList<>();
-		activities.addAll(createActivitiesForMinistry("Louvor", ministries.get(0), List.of("Vocal", "Bateria", "Guitarra", "Baixo", "Teclado")));
-		activities.addAll(createActivitiesForMinistry("Intercessão", ministries.get(1), List.of("Oração Matinal", "Vigília", "Jejum e Oração")));
-		activities.addAll(createActivitiesForMinistry("Ação Social", ministries.get(2), List.of("Distribuição de Alimentos", "Visita a Asilos", "Campanhas Solidárias")));
-		activities.addAll(createActivitiesForMinistry("Ensino", ministries.get(3), List.of("Escola Bíblica", "Estudo em Grupo", "Mentoria")));
-		activities.addAll(createActivitiesForMinistry("Recepção", ministries.get(4), List.of("Boas-vindas", "Acompanhamento de Visitantes", "Entrega de Folhetos")));
-		activities.addAll(createActivitiesForMinistry("Mídia", ministries.get(5), List.of("Fotografia", "Transmissão Ao Vivo", "Design Gráfico")));
-		activities.addAll(createActivitiesForMinistry("Infantil", ministries.get(6), List.of("Escola Dominical", "Brincadeiras Educativas", "Contação de Histórias")));
-		activities.addAll(createActivitiesForMinistry("Jovens", ministries.get(7), List.of("Encontros de Jovens", "Debates", "Atividades Esportivas")));
-		activities.addAll(createActivitiesForMinistry("Casais", ministries.get(8), List.of("Encontro de Casais", "Palestras sobre Casamento", "Retiro de Casais")));
-		activities.addAll(createActivitiesForMinistry("Comunhão", ministries.get(9), List.of("Almoços Comunitários", "Festas Anuais", "Eventos Especiais")));
-
+		List<Activity> activities = createActivities(ministries);
 		activityRepository.saveAll(activities);
 
-		// Vinculando voluntários a ministérios aleatoriamente
-		List<VolunteerMinistry> volunteerMinistries = new ArrayList<>();
-		Random random = new Random();
+		assignVolunteersToGroups(volunteers, groups, ministries);
+		volunteerRepository.saveAll(volunteers);
 
-		for (Volunteer volunteer : volunteers) {
-			int numMinistriesForVolunteer = random.nextInt(3) + 1;
-
-			Set<Ministry> assignedMinistries = new HashSet<>();
-			for (int i = 0; i < numMinistriesForVolunteer; i++) {
-				Ministry randomMinistry = ministries.get(random.nextInt(ministries.size()));
-
-				if (assignedMinistries.add(randomMinistry)) {
-					volunteerMinistries.add(new VolunteerMinistry(volunteer, randomMinistry));
-				}
-			}
-		}
-		volunteerMinistryRepository.saveAll(volunteerMinistries);
+		assignVolunteersToMinistries(volunteers, ministries);
 
 		return null;
 	}
 
-	private List<Activity> createActivitiesForMinistry(String ministryName, Ministry ministry, List<String> activityNames) {
+	private List<Ministry> createMinistries() {
+		return List.of(
+				new Ministry("Louvor", "Ministério de Louvor", "#FF6347"),       // Tomate
+				new Ministry("Intercessão", "Ministério de Intercessão", "#FFD700"),  // Ouro
+				new Ministry("Ação Social", "Ministério de Ação Social", "#32CD32"),  // Verde Limão
+				new Ministry("Ensino", "Ministério de Ensino", "#1E90FF"),       // Azul Dodger
+				new Ministry("Recepção", "Ministério de Recepção", "#FF4500"),   // Laranja Vermelho
+				new Ministry("Mídia", "Ministério de Mídia", "#DA70D6"),         // Orquídea
+				new Ministry("Infantil", "Ministério Infantil", "#FF69B4"),      // Rosa Quente
+				new Ministry("Jovens", "Ministério de Jovens", "#00BFFF"),       // Azul Profundo
+				new Ministry("Casais", "Ministério de Casais", "#FF1493"),       // Rosa Choque
+				new Ministry("Comunhão", "Ministério de Comunhão", "#7FFF00"),   // Verde Chartreuse
+				new Ministry("Evangelismo", "Ministério de Evangelismo", "#8A2BE2"),  // Azul Violeta
+				new Ministry("Missões", "Ministério de Missões", "#00FA9A")      // Verde Média Marinha
+		);
+	}
+
+	private List<Activity> createActivities(List<Ministry> ministries) {
+		List<Activity> activities = new ArrayList<>();
+		activities.addAll(createActivitiesForMinistry(ministries.get(0), List.of("Vocal", "Bateria", "Guitarra", "Baixo", "Teclado")));
+		activities.addAll(createActivitiesForMinistry(ministries.get(1), List.of("Oração Matinal", "Vigília", "Jejum e Oração")));
+		activities.addAll(createActivitiesForMinistry(ministries.get(2), List.of("Distribuição de Alimentos", "Visita a Asilos", "Campanhas Solidárias")));
+		activities.addAll(createActivitiesForMinistry(ministries.get(3), List.of("Escola Bíblica", "Estudo em Grupo", "Mentoria")));
+		activities.addAll(createActivitiesForMinistry(ministries.get(4), List.of("Boas-vindas", "Acompanhamento de Visitantes", "Entrega de Folhetos")));
+		activities.addAll(createActivitiesForMinistry(ministries.get(5), List.of("Fotografia", "Transmissão Ao Vivo", "Design Gráfico")));
+		activities.addAll(createActivitiesForMinistry(ministries.get(6), List.of("Escola Dominical", "Brincadeiras Educativas", "Contação de Histórias")));
+		activities.addAll(createActivitiesForMinistry(ministries.get(7), List.of("Encontros de Jovens", "Debates", "Atividades Esportivas")));
+		activities.addAll(createActivitiesForMinistry(ministries.get(8), List.of("Encontro de Casais", "Palestras sobre Casamento", "Retiro de Casais")));
+		activities.addAll(createActivitiesForMinistry(ministries.get(9), List.of("Almoços Comunitários", "Festas Anuais", "Eventos Especiais")));
+		activities.addAll(createActivitiesForMinistry(ministries.get(10), List.of("Evangelismo nas Ruas", "Distribuição de Folhetos", "Culto ao Ar Livre")));
+		activities.addAll(createActivitiesForMinistry(ministries.get(11), List.of("Missões Urbanas", "Missões Rurais", "Missões Internacionais")));
+
+		return activities;
+	}
+
+	private List<Activity> createActivitiesForMinistry(Ministry ministry, List<String> activityNames) {
 		return activityNames.stream()
 				.map(name -> new Activity(name, (long) (Math.random() * 7) + 1, ministry))
 				.collect(Collectors.toList());
@@ -118,7 +115,6 @@ public class SchedulerJavaApplication {
 		for (int i = 0; i < count; i++) {
 			String firstName = firstNames.get(new Random().nextInt(firstNames.size()));
 			String lastName = lastNames.get(new Random().nextInt(lastNames.size()));
-			String fullName = firstName + " " + lastName;
 
 			Volunteer volunteer = new Volunteer(
 					firstName,
@@ -161,12 +157,45 @@ public class SchedulerJavaApplication {
 		return groups;
 	}
 
-	private void assignVolunteersToGroups(List<Volunteer> volunteers, List<Group> groups) {
+	private void assignVolunteersToGroups(List<Volunteer> volunteers, List<Group> groups, List<Ministry> ministries) {
 		Random random = new Random();
 
 		for (Volunteer volunteer : volunteers) {
-			Group randomGroup = groups.get(random.nextInt(groups.size()));
-			randomGroup.addVolunteer(volunteer);
+			Group assignedGroup = null;
+			for (Group group : groups) {
+				boolean hasCommonMinistry = group.getVolunteers().stream()
+						.anyMatch(v -> v.getVolunteerMinistries().stream()
+								.anyMatch(m -> volunteer.getVolunteerMinistries().contains(m)));
+
+				if (hasCommonMinistry) {
+					assignedGroup = group;
+					break;
+				}
+			}
+
+			if (assignedGroup == null) {
+				assignedGroup = groups.get(random.nextInt(groups.size()));
+			}
+
+			assignedGroup.addVolunteer(volunteer);
+		}
+	}
+
+	private void assignVolunteersToMinistries(List<Volunteer> volunteers, List<Ministry> ministries) {
+		Random random = new Random();
+
+		for (Volunteer volunteer : volunteers) {
+			int numMinistriesForVolunteer = random.nextInt(3) + 1;
+
+			Set<Ministry> assignedMinistries = new HashSet<>();
+			for (int i = 0; i < numMinistriesForVolunteer; i++) {
+				Ministry randomMinistry = ministries.get(random.nextInt(ministries.size()));
+
+				if (assignedMinistries.add(randomMinistry)) {
+					VolunteerMinistry volunteerMinistry = new VolunteerMinistry(volunteer, randomMinistry);
+					volunteer.getVolunteerMinistries().add(volunteerMinistry);
+				}
+			}
 		}
 	}
 
