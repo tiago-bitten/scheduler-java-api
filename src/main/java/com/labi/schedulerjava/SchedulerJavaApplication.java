@@ -20,7 +20,6 @@ public class SchedulerJavaApplication {
 	public static void main(String[] args) {
 		SpringApplication.run(SchedulerJavaApplication.class, args);
 	}
-
 	@Autowired
 	private MinistryRepository ministryRepository;
 
@@ -42,20 +41,22 @@ public class SchedulerJavaApplication {
 	@Autowired
 	private VolunteerMinistryRepository volunteerMinistryRepository;
 
+	@Autowired
+	private GroupRepository groupRepository;
 
 	@Bean
 	public Object createMinistry() {
 		List<Ministry> ministries = List.of(
-				new Ministry("Louvor", "Ministério de Louvor", "#FF5733"),
-				new Ministry("Intercessão", "Ministério de Intercessão", "#33FFBD"),
-				new Ministry("Ação Social", "Ministério de Ação Social", "#337BFF"),
-				new Ministry("Ensino", "Ministério de Ensino", "#FF33A8"),
-				new Ministry("Recepção", "Ministério de Recepção", "#A833FF"),
-				new Ministry("Mídia", "Ministério de Mídia", "#FF8E33"),
-				new Ministry("Infantil", "Ministério Infantil", "#33FFA5"),
-				new Ministry("Jovens", "Ministério de Jovens", "#8E33FF"),
-				new Ministry("Casais", "Ministério de Casais", "#FF3369"),
-				new Ministry("Comunhão", "Ministério de Comunhão", "#33FFDA")
+				new Ministry("Louvor", "Ministério de Louvor", "#FFB3BA"),
+				new Ministry("Intercessão", "Ministério de Intercessão", "#FFDFBA"),
+				new Ministry("Ação Social", "Ministério de Ação Social", "#FFFFBA"),
+				new Ministry("Ensino", "Ministério de Ensino", "#BAFFC9"),
+				new Ministry("Recepção", "Ministério de Recepção", "#BAE1FF"),
+				new Ministry("Mídia", "Ministério de Mídia", "#D5BAFF"),
+				new Ministry("Infantil", "Ministério Infantil", "#FFCCFF"),
+				new Ministry("Jovens", "Ministério de Jovens", "#FFABAB"),
+				new Ministry("Casais", "Ministério de Casais", "#FFD1DC"),
+				new Ministry("Comunhão", "Ministério de Comunhão", "#C1E1C1")
 		);
 		ministryRepository.saveAll(ministries);
 
@@ -92,6 +93,9 @@ public class SchedulerJavaApplication {
 			}
 		}
 		volunteerMinistryRepository.saveAll(volunteerMinistries);
+
+		List<Group> groups = createGroupsWithVolunteers(volunteers, 10); // 10 grupos criados
+		groupRepository.saveAll(groups);
 
 		return null;
 	}
@@ -141,6 +145,25 @@ public class SchedulerJavaApplication {
 		return String.format("(47) 9%04d-%04d",
 				random.nextInt(10000),
 				random.nextInt(10000));
+	}
+
+	private List<Group> createGroupsWithVolunteers(List<Volunteer> volunteers, int groupCount) {
+		List<Group> groups = new ArrayList<>();
+		Random random = new Random();
+
+		for (int i = 0; i < groupCount; i++) {
+			Group group = new Group("Grupo " + (i + 1));
+			int volunteersInGroup = random.nextInt(10) + 5; // Grupos com 5 a 15 voluntários
+
+			for (int j = 0; j < volunteersInGroup; j++) {
+				Volunteer volunteer = volunteers.get(random.nextInt(volunteers.size()));
+				group.addVolunteer(volunteer);
+			}
+
+			groups.add(group);
+		}
+
+		return groups;
 	}
 
 	@Bean
