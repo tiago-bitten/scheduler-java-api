@@ -20,6 +20,7 @@ public class SchedulerJavaApplication {
 	public static void main(String[] args) {
 		SpringApplication.run(SchedulerJavaApplication.class, args);
 	}
+
 	@Autowired
 	private MinistryRepository ministryRepository;
 
@@ -46,6 +47,13 @@ public class SchedulerJavaApplication {
 
 	@Bean
 	public Object createMinistry() {
+		List<Volunteer> volunteers = createRealisticVolunteers(100);
+		List<Group> groups = createGroups(10);  // Criando 10 grupos
+		groupRepository.saveAll(groups);
+
+		assignVolunteersToGroups(volunteers, groups);
+		volunteerRepository.saveAll(volunteers);
+
 		List<Ministry> ministries = List.of(
 				new Ministry("Louvor", "Ministério de Louvor", "#FFB3BA"),
 				new Ministry("Intercessão", "Ministério de Intercessão", "#FFDFBA"),
@@ -74,9 +82,7 @@ public class SchedulerJavaApplication {
 
 		activityRepository.saveAll(activities);
 
-		List<Volunteer> volunteers = createRealisticVolunteers(100);
-		volunteerRepository.saveAll(volunteers);
-
+		// Vinculando voluntários a ministérios aleatoriamente
 		List<VolunteerMinistry> volunteerMinistries = new ArrayList<>();
 		Random random = new Random();
 
@@ -93,9 +99,6 @@ public class SchedulerJavaApplication {
 			}
 		}
 		volunteerMinistryRepository.saveAll(volunteerMinistries);
-
-		List<Group> groups = createGroupsWithVolunteers(volunteers, 10); // 10 grupos criados
-		groupRepository.saveAll(groups);
 
 		return null;
 	}
@@ -147,23 +150,24 @@ public class SchedulerJavaApplication {
 				random.nextInt(10000));
 	}
 
-	private List<Group> createGroupsWithVolunteers(List<Volunteer> volunteers, int groupCount) {
+	private List<Group> createGroups(int groupCount) {
 		List<Group> groups = new ArrayList<>();
-		Random random = new Random();
 
 		for (int i = 0; i < groupCount; i++) {
 			Group group = new Group("Grupo " + (i + 1));
-			int volunteersInGroup = random.nextInt(10) + 5; // Grupos com 5 a 15 voluntários
-
-			for (int j = 0; j < volunteersInGroup; j++) {
-				Volunteer volunteer = volunteers.get(random.nextInt(volunteers.size()));
-				group.addVolunteer(volunteer);
-			}
-
 			groups.add(group);
 		}
 
 		return groups;
+	}
+
+	private void assignVolunteersToGroups(List<Volunteer> volunteers, List<Group> groups) {
+		Random random = new Random();
+
+		for (Volunteer volunteer : volunteers) {
+			Group randomGroup = groups.get(random.nextInt(groups.size()));
+			randomGroup.addVolunteer(volunteer);
+		}
 	}
 
 	@Bean
