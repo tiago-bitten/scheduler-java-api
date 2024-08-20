@@ -199,8 +199,6 @@ public class SchedulerJavaApplication {
 		}
 	}
 
-	}
-
 	@Bean
 	public Object createUser() {
 		User user = new User("Admin", "admin@admin.com", "admin01");
