@@ -66,4 +66,9 @@ public class Volunteer extends BaseEntity {
         this.origin = origin;
         this.volunteerMinistries = new ArrayList<>();
     }
+
+    public void addVolunteerMinistry(VolunteerMinistry volunteerMinistry) {
+        this.volunteerMinistries.add(volunteerMinistry);
+        volunteerMinistry.setVolunteer(this);
+    }
 }

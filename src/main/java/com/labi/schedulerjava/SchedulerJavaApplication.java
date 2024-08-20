@@ -193,10 +193,12 @@ public class SchedulerJavaApplication {
 
 				if (assignedMinistries.add(randomMinistry)) {
 					VolunteerMinistry volunteerMinistry = new VolunteerMinistry(volunteer, randomMinistry);
-					volunteer.getVolunteerMinistries().add(volunteerMinistry);
+					volunteer.addVolunteerMinistry(volunteerMinistry);
 				}
 			}
 		}
+	}
+
 	}
 
 	@Bean
